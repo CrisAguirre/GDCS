@@ -1,0 +1,120 @@
+<form #formV="ngForm" [formGroup]="form">
+    <mat-card>
+        <mat-card-header>
+            <mat-card-title>{{'ttl.cargos'|translate}}</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+
+            <div class="col-sm-12  col-md-12 col-lg-12">
+
+                <div class="row mt-4">
+
+                    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-4 form-group" *ngIf="showSelectCompany">
+                        <!-- <app-input-select [label]="'lbl.empresa'" [lst]="lstCompanies" [xOption]="'nombreEmpresa'"
+                            [xId]="'id'" formControlName="idEmpresa" [controll]="f.idEmpresa"
+                            (eventEmmitter)="loadCargosByCompany($event)"></app-input-select> -->
+
+
+                        <app-input-select [label]="'lbl.empresa'" [lst]="lstEmpresa" [xOption]="'nombreEmpresa'" [xId]="'id'" formControlName="idEmpresa" [controll]="f.idEmpresa" [required]="false" (eventEmmitter)="loadEmpresa($event)">
+                        </app-input-select>
+
+                    </div>
+
+                    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-4 form-group">
+                        <app-input-general formControlName="cargo" [controll]="f.cargo" [label]="'lbl.cargo'">
+                        </app-input-general>
+                    </div>
+
+                    <!-- <div class="col-xs-12 col-md-6 form-group">
+                        <app-input-general formControlName="cargo_En" [controll]="f.cargo_En"
+                        [label]="'lbl.cargo'" [labelTranslate]="'lbl.campoEn'"></app-input-general>
+                    </div> -->
+
+                    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-4 form-group">
+                        <app-input-general formControlName="codAlterno" [controll]="f.codAlterno" [label]="'lbl.codigoCargo'"></app-input-general>
+                    </div>
+
+                    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-4 form-group">
+                        <app-input-general formControlName="nivelJerarquico" [controll]="f.nivelJerarquico" [label]="'lbl.nivelJerarquico'"></app-input-general>
+                    </div>
+
+                    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-4 form-group">
+                        <app-input-select [label]="'lbl.tipoCargo'" [lst]="lstTipoCargo" [xOption]="'tipoCargo'" [xId]="'id'" formControlName="idTipoCargo" [controll]="f.idTipoCargo"></app-input-select>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-12 pull-right form-group">
+                        <button mat-raised-button color="primary" class="pull-right" [disabled]="submit" (click)="addCargo()" title="{{'btn.guardar'|translate}}">{{'btn.guardar'|translate}}
+                            <mat-icon>save</mat-icon>
+                        </button>
+                        <button mat-raised-button type="button" class="pull-right mr-1" (click)="cleanForm()" title="{{'btn.limpiar'|translate}}">{{'btn.limpiar'|translate}}
+                            <mat-icon>clear_all</mat-icon>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="row mt-4">
+                    <div class="col-xs-12 col-md-12">
+                        <div class="col-xs-12 col-md-3">
+                            <mat-form-field>
+                                <mat-label>{{'lbl.buscar'|translate}}</mat-label>
+                                <input matInput (keyup)="applyFilter($event , dataSource)" placeholder="{{'lbl.buscarPlh'|translate}}" autocomplete="off">
+                            </mat-form-field>
+                        </div>
+
+                        <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8 col-xs-12 full-width" (matSortChange)="sortData($event)">
+
+                            <ng-container matColumnDef="cargo">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.cargo'|translate}}</th>
+                                <td mat-cell *matCellDef=" let element ">{{element.cargo}}</td>
+                            </ng-container>
+
+                            <!-- <ng-container matColumnDef="cargo_En">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.cargo'|translate}} {{'lbl.campoEn'|translate}}</th>
+                                <td mat-cell *matCellDef=" let element ">{{element.cargo_En}}</td>
+                            </ng-container> -->
+
+                            <ng-container matColumnDef="codAlterno">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.codigoCargo'|translate}}
+                                </th>
+                                <td mat-cell *matCellDef=" let element " style="width: 20%;">{{element.codAlterno}}</td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="nivelJerarquico">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                    {{'lbl.nivelJerarquico'|translate}}</th>
+                                <td mat-cell *matCellDef=" let element " style="width: 20%;">{{element.nivelJerarquico}}
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="tipoCargo">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.tipoCargo'|translate}}</th>
+                                <td mat-cell *matCellDef=" let element " style="width: 20%;">
+                                    {{element.tipoCargo['tipoCargo'+lang]}}</td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="options">
+                                <th mat-header-cell *matHeaderCellDef>{{'lbl.editarEliminar'|translate}}</th>
+                                <td mat-cell *matCellDef="let element">
+                                    <div *ngIf="verifyActions(element); let btnStates">
+                                        <button *ngIf="btnStates.btnEdit" (click)="edit(element)" type="button" title="{{'btn.editar'|translate}}" color="primary" mat-icon-button aria-label=" Example icon-button with a heart icon ">
+                                            <mat-icon>edit</mat-icon>
+                                        </button>
+
+                                        <button *ngIf="btnStates.btnDelete" type="button" color="warn" mat-icon-button title="{{'btn.eliminar'|translate}}" (click)="delete(element)">
+                                            <mat-icon>delete</mat-icon>
+                                        </button>
+                                    </div>
+                                </td>
+                            </ng-container>
+                            <tr mat-header-row *matHeaderRowDef="displayedColumns "></tr>
+                            <tr mat-row *matRowDef="let row; columns: displayedColumns; " [ngClass]="{hovered: row.hovered, highlighted: isSelectedTable(elementCurrent , row.id)}" (mouseover)="row.hovered = true" (mouseout)="row.hovered = false"></tr>
+                        </table>
+                        <mat-paginator [pageSizeOptions]="[5,10, 20]" showFirstLastButtons></mat-paginator>
+                    </div>
+                </div>
+            </div>
+        </mat-card-content>
+    </mat-card>
+</form>

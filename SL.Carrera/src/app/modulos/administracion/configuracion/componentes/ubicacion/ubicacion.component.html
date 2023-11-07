@@ -1,0 +1,304 @@
+<mat-accordion [multi]="false" *ngIf="showAccordeon" class="col-sm-12">
+
+    <!-- PAIS -->
+    <mat-expansion-panel [expanded]="false">
+        <mat-expansion-panel-header>
+            <mat-panel-title class="title-accordeon">
+                <b>{{'ttl.pais'|translate}}</b>
+            </mat-panel-title>
+        </mat-expansion-panel-header>
+
+        <form #formViewPais="ngForm" [formGroup]="formPais">
+            <div class="col-sm-12 col-md-12 col-lg-12">
+
+                <div class="row mt-4">
+
+                    <div class="col-xs-12 col-sm-6 col-md-6 form-group">
+                        <app-input-general formControlName="nacionalidad" [controll]="f.nacionalidad"
+                            [label]="'lbl.nacionalidad'" [required]="true"></app-input-general>
+                    </div>
+
+                    <div class="col-xs-12 col-sm-6 col-md-6 form-group">
+                        <app-input-general formControlName="pais" [controll]="f.pais" [label]="'lbl.pais'"
+                            [required]="true">
+                        </app-input-general>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-12 pull-right form-group">
+                        <app-buttons-fotter [showBtnAccept]="true" [submit]="submit" (eventEmmitterAccept)="addPais()"
+                            [labelBtnAccept]="'btn.guardar'" [iconAccept]="'save'" [showBtnCancel]="true"
+                            (eventEmmitterCancel)="cleanPais()" [labelBtnCancel]="'btn.limpiar'"
+                            [iconCancel]="'clear_all'">
+                        </app-buttons-fotter>
+                    </div>
+                </div>
+
+                <div class="row mt-4">
+                    <div class="col-xs-12 col-md-12">
+
+                        <div class="col-xs-12 col-md-6">
+                            <app-input-search-table (eventEmmitter)="applyFilter($event , dataSourcePais)">
+                            </app-input-search-table>
+                        </div>
+
+                        <table mat-table [dataSource]="dataSourcePais" matSort #sortPais="matSort"
+                            class="mat-elevation-z8 col-xs-12 full-width" (matSortChange)="sortDataPais($event)">
+
+                            <ng-container matColumnDef="id">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.id'|translate}}</th>
+                                <td mat-cell *matCellDef=" let element " style="font-size: 10px;">{{element.id}}</td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="nacionalidad">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.nacionalidad'|translate}}
+                                </th>
+                                <td mat-cell *matCellDef=" let element ">{{element.nacionalidad}}</td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="pais">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.pais'|translate}}</th>
+                                <td mat-cell *matCellDef=" let element ">{{element.pais}}</td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="options">
+                                <th mat-header-cell *matHeaderCellDef>{{'lbl.editarEliminar'|translate}}</th>
+                                <td mat-cell *matCellDef="let element" style="width: 18%;">
+                                    <button (click)="editPais(element)" type="button" title="{{'btn.editar'|translate}}"
+                                        color="primary" mat-icon-button>
+                                        <mat-icon>edit</mat-icon>
+                                    </button>
+
+                                    <button type="button" color="warn" mat-icon-button
+                                        title="{{'btn.eliminar'|translate}}" (click)="deletePais(element)">
+                                        <mat-icon>delete</mat-icon>
+                                    </button>
+                                </td>
+                            </ng-container>
+                            <tr mat-header-row *matHeaderRowDef="displayedColumnsPais "></tr>
+                            <tr mat-row *matRowDef="let row; columns: displayedColumnsPais; "
+                                [ngClass]="{hovered: row.hovered, highlighted: selectionPais.isSelected(row)}"
+                                (mouseover)="row.hovered = true" (mouseout)="row.hovered = false"></tr>
+                        </table>
+                        <mat-paginator #paginatorPais="matPaginator" [pageSizeOptions]="[5,10, 20]"
+                            showFirstLastButtons></mat-paginator>
+                    </div>
+                </div>
+
+            </div>
+        </form>
+
+    </mat-expansion-panel>
+
+    <!-- DEPARTAMENTO -->
+    <mat-expansion-panel [expanded]="false">
+        <mat-expansion-panel-header>
+            <mat-panel-title class="title-accordeon">
+                <b>{{'ttl.departamento'|translate}}</b>
+            </mat-panel-title>
+        </mat-expansion-panel-header>
+
+        <form #formViewDepartamento="ngForm" [formGroup]="formDepartamento">
+            <div class="col-sm-12 col-md-12 col-lg-12">
+
+                <div class="row mt-4">
+
+                    <div class="col-xs-12 col-sm-6 col-md-6 form-group">
+                        <app-input-select [label]="'lbl.pais'" [lst]="lstPaisAll" [xOption]="'pais'" [xId]="'id'"
+                            formControlName="idPais" [controll]="f2.idPais" [required]="true">
+                        </app-input-select>
+                    </div>
+
+                    <div class="col-xs-12 col-sm-6 col-md-6 form-group">
+                        <app-input-general formControlName="departamento" [controll]="f2.departamento"
+                            [label]="'lbl.departamento'" [required]="true">
+                        </app-input-general>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-12 pull-right form-group">
+                        <app-buttons-fotter [showBtnAccept]="true" [submit]="submit"
+                            (eventEmmitterAccept)="addDepartamento()" [labelBtnAccept]="'btn.guardar'"
+                            [iconAccept]="'save'" [showBtnCancel]="true" (eventEmmitterCancel)="cleanDepartamento()"
+                            [labelBtnCancel]="'btn.limpiar'" [iconCancel]="'clear_all'">
+                        </app-buttons-fotter>
+                    </div>
+                </div>
+
+                <div class="row mt-4">
+                    <div class="col-xs-12 col-md-12">
+
+                        <div class="col-xs-12 col-md-6">
+                            <app-input-search-table (eventEmmitter)="applyFilter($event , dataSourceDepartamento)">
+                            </app-input-search-table>
+                        </div>
+
+                        <table mat-table [dataSource]="dataSourceDepartamento" matSort #sortDepartamento="matSort"
+                            class="mat-elevation-z8 col-xs-12 full-width"
+                            (matSortChange)="sortDataDepartamento($event)">
+
+                            <ng-container matColumnDef="id">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.id'|translate}}</th>
+                                <td mat-cell *matCellDef=" let element " style="font-size: 10px;">{{element.id}}</td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="departamento">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.departamento'|translate}}
+                                </th>
+                                <td mat-cell *matCellDef=" let element ">{{element.departamento}}</td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="idPais">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.pais'|translate}}</th>
+                                <td mat-cell *matCellDef=" let element ">{{element.paisModel.pais}}</td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="options">
+                                <th mat-header-cell *matHeaderCellDef>{{'lbl.editarEliminar'|translate}}</th>
+                                <td mat-cell *matCellDef="let element" style="width: 18%;">
+                                    <button (click)="editDepartamento(element)" type="button"
+                                        title="{{'btn.editar'|translate}}" color="primary" mat-icon-button>
+                                        <mat-icon>edit</mat-icon>
+                                    </button>
+
+                                    <button type="button" color="warn" mat-icon-button
+                                        title="{{'btn.eliminar'|translate}}" (click)="deleteDepartamento(element)">
+                                        <mat-icon>delete</mat-icon>
+                                    </button>
+                                </td>
+                            </ng-container>
+                            <tr mat-header-row *matHeaderRowDef="displayedColumnsDepartamento "></tr>
+                            <tr mat-row *matRowDef="let row; columns: displayedColumnsDepartamento; "
+                                [ngClass]="{hovered: row.hovered, highlighted: selectionDepartamento.isSelected(row)}"
+                                (mouseover)="row.hovered = true" (mouseout)="row.hovered = false"></tr>
+                        </table>
+                        <mat-paginator #paginatorDepartamento="matPaginator" [pageSizeOptions]="[5,10, 20]"
+                            showFirstLastButtons></mat-paginator>
+                    </div>
+                </div>
+
+            </div>
+        </form>
+
+    </mat-expansion-panel>
+
+    <!-- CIUDAD -->
+    <mat-expansion-panel [expanded]="false">
+        <mat-expansion-panel-header>
+            <mat-panel-title class="title-accordeon">
+                <b>{{'ttl.ciudad'|translate}}</b>
+            </mat-panel-title>
+        </mat-expansion-panel-header>
+
+        <form #formViewCiudad="ngForm" [formGroup]="formCiudad">
+            <div class="col-sm-12 col-md-12 col-lg-12">
+
+                <div class="row mt-4">
+
+                    <div class="col-xs-12 col-sm-6 col-md-6 form-group">
+                        <app-input-select [label]="'lbl.pais'" [lst]="lstPaisAll" [xOption]="'pais'" [xId]="'id'"
+                            formControlName="idPais" [controll]="f3.idPais" [required]="true"
+                            (eventEmmitter)="changePais($event)">
+                        </app-input-select>
+                    </div>
+
+                    <div class="col-xs-12 col-sm-6 col-md-6 form-group">
+                        <app-input-select [label]="'lbl.departamento'" [lst]="lstDepartamentoView"
+                            [xOption]="'departamento'" [xId]="'id'" formControlName="idDepartamento"
+                            [controll]="f3.idDepartamento" [required]="true">
+                        </app-input-select>
+                    </div>
+
+                    <div class="col-xs-12 col-sm-6 col-md-6 form-group">
+                        <app-input-general formControlName="codAlterno" [controll]="f3.codAlterno"
+                            [label]="'lbl.codAlterno'" [required]="false"></app-input-general>
+                    </div>
+
+                    <div class="col-xs-12 col-sm-6 col-md-6 form-group">
+                        <app-input-general formControlName="ciudad" [controll]="f3.ciudad" [label]="'lbl.ciudad'"
+                            [required]="true">
+                        </app-input-general>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-12 pull-right form-group">
+                        <app-buttons-fotter [showBtnAccept]="true" [submit]="submit" (eventEmmitterAccept)="addCiudad()"
+                            [labelBtnAccept]="'btn.guardar'" [iconAccept]="'save'" [showBtnCancel]="true"
+                            (eventEmmitterCancel)="cleanCiudad()" [labelBtnCancel]="'btn.limpiar'"
+                            [iconCancel]="'clear_all'">
+                        </app-buttons-fotter>
+                    </div>
+                </div>
+
+                <div class="row mt-4">
+                    <div class="col-xs-12 col-md-12">
+
+                        <div class="col-xs-12 col-md-6">
+                            <app-input-search-table (eventEmmitter)="applyFilter($event , dataSourceCiudad)">
+                            </app-input-search-table>
+                        </div>
+
+                        <table mat-table [dataSource]="dataSourceCiudad" matSort #sortCiudad="matSort"
+                            class="mat-elevation-z8 col-xs-12 full-width" (matSortChange)="sortDataCiudad($event)">
+
+                            <ng-container matColumnDef="id">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.id'|translate}}</th>
+                                <td mat-cell *matCellDef=" let element " style="font-size: 10px;">{{element.id}}</td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="idPais">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.pais'|translate}}
+                                </th>
+                                <td mat-cell *matCellDef=" let element ">{{element.departamentoModel.paisModel.pais}}
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="idDepartamento">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.departamento'|translate}}
+                                </th>
+                                <td mat-cell *matCellDef=" let element ">{{element.departamentoModel.departamento}}</td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="ciudad">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.ciudad'|translate}}</th>
+                                <td mat-cell *matCellDef=" let element ">{{element.ciudad}}</td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="codAlterno">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.codAlterno'|translate}}
+                                </th>
+                                <td mat-cell *matCellDef=" let element ">{{element.codAlterno}}</td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="options">
+                                <th mat-header-cell *matHeaderCellDef>{{'lbl.editarEliminar'|translate}}</th>
+                                <td mat-cell *matCellDef="let element" style="width: 18%;">
+                                    <button (click)="editCiudad(element)" type="button"
+                                        title="{{'btn.editar'|translate}}" color="primary" mat-icon-button>
+                                        <mat-icon>edit</mat-icon>
+                                    </button>
+
+                                    <button type="button" color="warn" mat-icon-button
+                                        title="{{'btn.eliminar'|translate}}" (click)="deleteCiudad(element)">
+                                        <mat-icon>delete</mat-icon>
+                                    </button>
+                                </td>
+                            </ng-container>
+                            <tr mat-header-row *matHeaderRowDef="displayedColumnsCiudad "></tr>
+                            <tr mat-row *matRowDef="let row; columns: displayedColumnsCiudad; "
+                                [ngClass]="{hovered: row.hovered, highlighted: selectionCiudad.isSelected(row)}"
+                                (mouseover)="row.hovered = true" (mouseout)="row.hovered = false"></tr>
+                        </table>
+                        <mat-paginator #paginatorCiudad="matPaginator" [pageSizeOptions]="[5,10, 20]"
+                            showFirstLastButtons></mat-paginator>
+                    </div>
+                </div>
+
+            </div>
+        </form>
+
+    </mat-expansion-panel>
+</mat-accordion>

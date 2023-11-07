@@ -1,0 +1,87 @@
+<div class="col-sm-12">
+
+    <app-input-search-table (eventEmmitter)="applyFilter($event , dataSource)">
+    </app-input-search-table>
+
+    <div class="height-container pl-1 pr-1">
+        <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8 col-xs-12 full-width"
+            (matSortChange)="sortData($event)">
+
+            <!-- Checkbox Column -->
+            <ng-container matColumnDef="select">
+                <th mat-header-cell *matHeaderCellDef>
+                    <mat-checkbox (change)="$event ? masterToggle() : null"
+                        [checked]="selection.hasValue() && isAllSelected()"
+                        [indeterminate]="selection.hasValue() && !isAllSelected()" [aria-label]="checkboxLabel()">
+                    </mat-checkbox>
+                </th>
+                <td mat-cell *matCellDef="let row">
+                    <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(row) : null"
+                        [checked]="selection.isSelected(row)" [aria-label]="checkboxLabel(row)">
+                    </mat-checkbox>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="codigoCargo">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.codigoCargo'|translate}}</th>
+                <td mat-cell *matCellDef=" let element " style="width: 10%;">
+                    {{element.cargoModel == null ? element.cargoHumanoModel.codCargoGlobal : element.cargoModel?.codAlterno}}
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="codigoCargoCarrera">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.codCargoCarrera'|translate}}</th>
+                <td mat-cell *matCellDef=" let element " style="width: 8%;">
+                    {{element.codigoAlterno}}
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="grado">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.grado'|translate}}</th>
+                <td mat-cell *matCellDef=" let element " style="width: 10%;">
+                    {{element.idGradoCargo}}
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="nivelJerarquico">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.nivelJerarquico'|translate}}</th>
+                <td mat-cell *matCellDef=" let element " style="width: 10%;">
+                    {{element.cargoModel == null ? element.cargoHumanoModel.cargoNivel : element.cargoModel?.nivelJerarquico}}
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="cargo">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.cargo'|translate}}</th>
+                <td mat-cell *matCellDef=" let element " style="width: 20%;">
+                    {{element.cargoModel == null ? element.cargoHumanoModel.cargoGlobal : element.cargoModel?.cargo}}
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="lugar">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.tipoDependencia'|translate}}
+                </th>
+                <td mat-cell *matCellDef=" let element " style="width: 20%;">
+                    {{element.tipoLugar['lugar'+lang]}}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="dependenciaLugar">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                    {{'lbl.tipoDependenciaLugar'|translate}}</th>
+                <td mat-cell *matCellDef=" let element " style="width: 20%;">
+                    {{element.dependenciaHija ? element.dependenciaHija['nombre'+lang] : ''}}
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns ; sticky: true"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="selection.toggle(row)">
+            </tr>
+        </table>
+        <mat-paginator [pageSizeOptions]="[5,10, 20]" showFirstLastButtons></mat-paginator>
+    </div>
+
+</div>
+
+<mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>{{'btn.cerrar'|translate}}</button>
+    <button mat-raised-button [mat-dialog-close]="sendResult()" color="primary">{{'btn.guardar'|translate}}</button>
+</mat-dialog-actions>

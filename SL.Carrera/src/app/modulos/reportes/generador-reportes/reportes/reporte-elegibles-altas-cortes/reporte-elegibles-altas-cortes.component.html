@@ -1,0 +1,94 @@
+<form #formV="ngForm" [formGroup]="form">
+    <div class="row">
+
+        <div *ngIf="showSelectCompany" class="col-xs-12 col-md-6 form-group">
+            <app-input-select [label]="'lbl.empresa'" [lst]="lstEmpresa" [xOption]="'nombreEmpresa'" [xId]="'id'"
+                [formControl]="company" [controll]="company" (eventEmmitter)='loadConvocatoriasByEmpresa($event)'>
+            </app-input-select>
+        </div>
+
+        <div class="col-xs-12 col-md-6 form-group">
+            <app-input-select [label]="'lbl.convocatoria'" [lst]="lstConvocatoria" [xOption]="'nombreConvocatoria'"
+                [xId]="'id'" formControlName="idConvocatoria" [controll]="f.idConvocatoria"
+                (eventEmmitter)="eventConvocatoria($event)">
+            </app-input-select>
+        </div>
+
+        <div class="col-xs-12 col-md-4 col-lg-4 form-group">
+            <app-input-general formControlName="acuerdo" [controll]="f.acuerdo" [label]="'lbl.acuerdo'"
+                [required]="true">
+            </app-input-general>
+        </div>
+
+        <div class="col-xs-12 col-md-4 form-group">
+            <app-input-date [label]="'lbl.fechaAcuerdo'" formControlName="fechaAcuerdo" [controll]="f.fechaAcuerdo"
+                [required]="true"></app-input-date>
+        </div>
+
+
+        <div class="col-xs-12 col-md-12 form-group">
+            <mat-form-field appearance="{{appearanceInput}}">
+                <mat-label>{{'lbl.informacionElegible'|translate}}</mat-label>
+                <textarea rows="5" matInput formControlName="informacionElegible" [required]="true"></textarea>
+            </mat-form-field>
+        </div>
+
+        <div class="col-xs-12 col-md-12 form-group">
+            <mat-form-field appearance="{{appearanceInput}}">
+                <mat-label>{{'lbl.informacionAcuerdo'|translate}}</mat-label>
+                <textarea rows="5" matInput formControlName="informacionAcuerdo" [required]="true"></textarea>
+            </mat-form-field>
+        </div>
+
+        <div class="col-xs-12 col-md-12 form-group">
+            <mat-form-field appearance="{{appearanceInput}}">
+                <mat-label>{{'lbl.articuloPrincipal'|translate}}</mat-label>
+                <textarea rows="5" matInput formControlName="articuloPrincipal" [required]="true"></textarea>
+            </mat-form-field>
+        </div>
+
+        <div class="col-xs-12 col-md-12 form-group">
+            <mat-form-field appearance="{{appearanceInput}}">
+                <mat-label>{{'lbl.articuloSecundario'|translate}}</mat-label>
+                <textarea rows="5" matInput formControlName="articuloSecundario" [required]="true"></textarea>
+            </mat-form-field>
+        </div>
+
+        <div class="col-xs-12 col-md-12 form-group">
+            <mat-form-field appearance="{{appearanceInput}}">
+                <mat-label>{{'lbl.informacionPublicacion'|translate}}</mat-label>
+                <textarea rows="5" matInput formControlName="informacionPublicacion" [required]="true"></textarea>
+            </mat-form-field>
+        </div>
+
+        <div class="col-xs-12 col-md-6 col-lg-4 form-group">
+            <app-input-general formControlName="nombreFirma" [controll]="f.nombreFirma" [label]="'lbl.nombreFirma'"
+                [required]="true">
+            </app-input-general>
+        </div>
+
+        <div class="col-xs-12 col-md-6 col-lg-4 form-group">
+            <app-input-general formControlName="cargoFirma" [controll]="f.cargoFirma" [label]="'lbl.cargoFirma'"
+                [required]="true">
+            </app-input-general>
+        </div>
+
+        <div class="row pull-right" >
+            <div class="col-sm-12 pull-right form-group">
+                <button mat-raised-button color="primary" class="pull-right" [disabled]="submit" (click)="estadoFecha()"
+                    title="{{'btn.confirmar'|translate}}">{{'btn.confirmar'|translate}}
+                </button>
+            </div>
+        </div>
+
+
+        <!-- <div class="row">
+            <div class="col-sm-12 pull-right form-group">
+                <app-buttons-fotter [labelBtnAccept]="'btn.generar'" [showBtnAccept]="true" [submit]="submit"
+                    (eventEmmitterAccept)="getReport()" [showBtnCancel]="true" >
+                </app-buttons-fotter>
+            </div>
+        </div> -->
+
+    </div>
+</form>

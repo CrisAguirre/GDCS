@@ -1,0 +1,21 @@
+@media (max-width: 300px) {
+    .dropdown-menu{
+          height:200px;
+          overflow-y:auto;
+       }
+    }
+
+
+@media (min-width: 992px){
+    .navbar-expand-lg .navbar-nav .dropdown-menu {
+        position: absolute;
+        overflow-y: overlay;
+        height: 500px;
+        max-width: 390px;
+        /* left: -290px; */
+        left: -250px;
+        min-width: 300px;
+        width: 320px;
+    }
+
+}

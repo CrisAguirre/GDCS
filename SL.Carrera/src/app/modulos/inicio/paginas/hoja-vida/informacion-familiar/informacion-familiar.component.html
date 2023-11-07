@@ -1,0 +1,200 @@
+<form #formV="ngForm" [formGroup]="form">
+
+
+    <mat-accordion>
+        <mat-expansion-panel [expanded]="true">
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    {{'ttl.informacionFamiliar'|translate}}
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+
+
+            <div class="row">
+
+                <div class="col-xs-12 col-md-3 form-group">
+
+                    <app-input-general formControlName="firtsName" [controll]="f.firtsName" [label]="'lbl.primerNombre'" [typeField]="'onlyText'"></app-input-general>
+
+
+                    <!-- <mat-form-field appearance="{{appearanceInput}}">
+                        <mat-label>{{'lbl.primerNombre'|translate}}</mat-label>
+                        <input matInput formControlName="firtsName" placeholder="{{'lbl.primerNombre'|translate}}" autocomplete="off" type="text" required>
+                        <mat-error *ngIf="f.firtsName.hasError('required')">
+                            <strong>{{'msg.campoRequerido'|translate}}</strong>
+                        </mat-error>
+                    </mat-form-field> -->
+                </div>
+
+                <div class="col-xs-12 col-md-3 form-group">
+
+                    <app-input-general formControlName="secondName" [controll]="f.secondName" [label]="'lbl.segundoNombre'" [typeField]="'onlyText'" [required]="false"></app-input-general>
+                    <!-- <mat-form-field appearance="{{appearanceInput}}">
+                        <mat-label>{{'lbl.segundoNombre'|translate}}</mat-label>
+                        <input matInput formControlName="secondName" placeholder="{{'lbl.segundoNombre'|translate}}" autocomplete="off" type="text">
+                        <mat-error *ngIf="f.secondName.hasError('required')">
+                            <strong>{{'msg.campoRequerido'|translate}}</strong>
+                        </mat-error>
+                    </mat-form-field> -->
+                </div>
+
+                <div class="col-xs-12 col-md-3 form-group">
+                    <app-input-general formControlName="firtsLastname" [controll]="f.firtsLastname" [label]="'lbl.primerApellido'" [typeField]="'onlyText'"></app-input-general>
+                    <!-- <mat-form-field appearance="{{appearanceInput}}">
+                        <mat-label>{{'lbl.primerApellido'|translate}}</mat-label>
+                        <input matInput formControlName="firtsLastname" placeholder="{{'lbl.primerApellido'|translate}}" autocomplete="off" type="text" required>
+                        <mat-error *ngIf="f.firtsLastname.hasError('required')">
+                            <strong>{{'msg.campoRequerido'|translate}}</strong>
+                        </mat-error>
+                    </mat-form-field> -->
+                </div>
+
+                <div class="col-xs-12 col-md-3 form-group">
+
+                    <app-input-general formControlName="secondLastname" [controll]="f.secondLastname" [label]="'lbl.segundoApellido'" [typeField]="'onlyText'" [required]="false"></app-input-general>
+
+                    <!-- <mat-form-field appearance="{{appearanceInput}}">
+                        <mat-label>{{'lbl.segundoApellido'|translate}}</mat-label>
+                        <input matInput formControlName="secondLastname" placeholder="{{'lbl.segundoApellido'|translate}}" autocomplete="off" type="text">
+                    </mat-form-field> -->
+                </div>
+
+            </div>
+
+
+            <div class="row">
+
+                <div class="col-xs-12 col-md-3 form-group">
+                    <app-input-date [label]="'lbl.fechaNacimiento'" [maxDate]="now" [required]="true" formControlName="birthdate" [controll]="f.birthdate"></app-input-date>
+                    <!-- <mat-form-field appearance="{{appearanceInput}}" class="example-full-width">
+                        <mat-label>{{'lbl.fechaNacimiento'|translate}}</mat-label>
+                        <input matInput formControlName="birthdate" [matDatepicker]="picker" autocomplete="off" required>
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker touchUi disabled="false" #picker></mat-datepicker>
+                        <mat-error *ngIf="f.birthdate.hasError('required')">
+                            <strong>{{'msg.campoRequerido'|translate}}</strong>
+                        </mat-error>
+                    </mat-form-field> -->
+                </div>
+
+                <div class="col-xs-12 col-md-3 form-group">
+                     <app-input-select [label]="'lbl.sexo'" [lst]="lstSex" [xOption]="'sexo'" [xId]="'id'" formControlName="sex" [controll]="f.sex" [required]="false">
+                    </app-input-select>   
+                </div>
+
+                <div class="col-xs-12 col-md-3 form-group">
+                    <app-input-select [label]="'lbl.parentesco'" [lst]="lstRelationships" [xOption]="'parentesco'" [xId]="'id'" formControlName="relationship" [controll]="f.relationship" [required]="false">
+                    </app-input-select> 
+                </div>
+
+                <div class="col-xs-12 col-md-3 form-group">
+                    <mat-form-field appearance="{{appearanceInput}}">
+                        <mat-label>{{'lbl.otro'|translate}}</mat-label>
+                        <input matInput formControlName="otherRelationship" placeholder="{{'lbl.otroPlh'|translate}}" autocomplete="off" type="text">
+                    </mat-form-field>
+                </div>
+
+                <div class="col-sx-12 col-md-3 form-group">
+                    <label>{{'lbl.dependeEconomicamente'|translate}}</label> <br>
+                    <mat-radio-group aria-label="Clase" formControlName="dependsEconomically" required>
+                        <mat-radio-button *ngFor="let g of lstYesNot" labelPosition="after" [value]="g.id" class="mr-1" style="font-size: 12px;">{{g.valor}}</mat-radio-button>
+                        <mat-error *ngIf="f.dependsEconomically.hasError('required') && f.dependsEconomically.touched">
+                            <strong style="font-size: 11px;">{{'msg.campoRequerido'|translate}}</strong>
+                        </mat-error>
+                    </mat-radio-group>
+                </div>
+
+            </div>
+
+            <div class="row">
+                <div class="col-md-12 form-group">
+                    <button mat-raised-button color="primary" class="pull-right" [disabled]="submit" (click)="addFamily()" title="{{'btn.guardar'|translate}}">{{'btn.guardar'|translate}} <mat-icon>save</mat-icon>
+                    </button>
+                    <button mat-raised-button type="button" class="pull-right mr-1" (click)="cleanForm()" title="{{'btn.limpiar'|translate}}">{{'btn.limpiar'|translate}}
+                        <mat-icon>clear_all</mat-icon></button>
+                </div>
+            </div>
+
+            <div class="clear-fix"></div>
+
+            <div class="row">
+
+                <div class="col-xs-12 col-md-12 form-group">
+
+                    <div class="col-xs-12 col-md-3">
+                        <mat-form-field>
+                            <mat-label>{{'lbl.buscar'|translate}}</mat-label>
+                            <input matInput (keyup)="applyFilter($event , dataSource)" placeholder="{{'lbl.buscarPlh'|translate}}" autocomplete="off">
+                        </mat-form-field>
+                    </div>
+
+                    <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8 col-xs-12 full-width" (matSortChange)="sortData($event)">
+
+                        <ng-container matColumnDef="firtsName">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.primerNombre'|translate}}</th>
+                            <td mat-cell *matCellDef=" let element "> {{element.primerNombre}} </td>
+                        </ng-container>
+
+                        <!-- <ng-container matColumnDef="secondName">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.segundoNombre'|translate}}</th>
+                            <td mat-cell *matCellDef=" let element "> {{element.segundoNombre}} </td>
+                        </ng-container> -->
+
+                        <ng-container matColumnDef="firtsLastname">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.primerApellido'|translate}}</th>
+                            <td mat-cell *matCellDef="let element "> {{element.primerApellido}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="secondLastname">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.segundoApellido'|translate}}</th>
+                            <td mat-cell *matCellDef="let element"> {{element.segundoApellido}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="birthdate">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.fechaNacimiento'|translate}}</th>
+                            <td mat-cell *matCellDef="let element"> {{element.fechaNacimiento | date:formatDateView}}
+                            </td>
+                        </ng-container>
+
+                        <!-- <ng-container matColumnDef="sex">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.sexo'|translate}}</th>
+                            <td mat-cell *matCellDef="let element"> {{element.sex}} </td>
+                        </ng-container> -->
+
+                        <ng-container matColumnDef="relationship">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.parentesco'|translate}}</th>
+                            <td mat-cell *matCellDef="let element"> {{element.relationship}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="dependsEconomically">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.dependeEconomicamente'|translate}}</th>
+                            <td mat-cell *matCellDef=" let element">{{(element.dependeEconomicamente == 0 ? 'lbl.no' : 'lbl.si') | translate}}</td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="options">
+                            <th mat-header-cell *matHeaderCellDef>{{'btn.editar'|translate}} / {{'btn.eliminar'|translate}}</th>
+                            <td mat-cell *matCellDef="let element" class="mat-cell-left">
+                                <button (click)="edit(element)" type="button" color="primary" mat-icon-button title="{{'btn.editar'|translate}}">
+                                    <mat-icon>edit</mat-icon>
+                                </button>
+
+                                <button (click)="delete(element)" type="button" color="warn" mat-icon-button title="{{'btn.eliminar'|translate}}">
+                                    <mat-icon>delete</mat-icon>
+                                </button>
+                            </td>
+                        </ng-container>
+
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns "></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns; " [ngClass]="{hovered: row.hovered, highlighted: isSelectedTable(elementCurrent , row.id)}" (mouseover)="row.hovered = true" (mouseout)="row.hovered = false"></tr>
+                    </table>
+                    <mat-paginator [pageSizeOptions]="[5,10, 20]" showFirstLastButtons></mat-paginator>
+                </div>
+
+            </div>
+
+        </mat-expansion-panel>
+
+
+    </mat-accordion>
+
+</form>

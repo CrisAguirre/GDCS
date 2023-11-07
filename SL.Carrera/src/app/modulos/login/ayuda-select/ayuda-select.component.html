@@ -1,0 +1,11 @@
+<mat-form-field appearance="{{appearanceInput}}">
+    <mat-label *ngIf="!itemCurrent"><i class="fa fa-info-circle"></i></mat-label>
+    <mat-select title="{{'lbl.ayuda'|translate}}">
+        <mat-select-trigger>
+            <i class="fa fa-info-circle" title="{{itemCurrent ? itemCurrent.titulo : ''}}"></i>
+        </mat-select-trigger>
+        <mat-option *ngFor="let g of lstAyuda" [value]="g" (click)='change(g)'>
+            {{g.titulo}}
+        </mat-option>
+    </mat-select>
+</mat-form-field>

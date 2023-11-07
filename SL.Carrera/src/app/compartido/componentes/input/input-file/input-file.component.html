@@ -1,0 +1,25 @@
+<!-- <div class="col-sm-10 pr-0">
+    <mat-form-field appearance="{{appearanceInput}}">
+        <mat-label>{{label|translate}}</mat-label>
+        <ngx-mat-file-input #inputFile [formControl]="controll" valuePlaceholder="{{placeholder|translate}}" [accept]="configFile.allowExtensions" [errorStateMatcher]="matcher">
+        </ngx-mat-file-input>
+        <button mat-icon-button matSuffix *ngIf="showBtnClear" (click)="inputFile.clear($event); clean()">
+            <mat-icon>clear</mat-icon>
+        </button>
+        <mat-hint>{{'msg.archivoPermitido'|translate}} ({{configFile.allowExtensions}})</mat-hint>
+        <mat-error *ngIf="controll.hasError('required')">
+            {{'msg.seleccioneArchivo'|translate}} ({{configFile.allowExtensions}})
+        </mat-error>
+        <mat-error *ngIf="controll.hasError('maxContentSize')">
+            {{'msg.tamanioArchivo'|translate}} {{controll?.getError('maxContentSize').maxSize | byteFormat}} ({{controll?.getError('maxContentSize').actualSize | byteFormat}}).
+        </mat-error>
+        <mat-error *ngIf="controll.hasError('badExtension')">
+            {{controll.errors.badExtension}} ({{configFile.allowExtensions}})
+        </mat-error>
+    </mat-form-field>
+</div>
+<div class="col-sm-2 p-0">
+    <button mat-icon-button class="mt-2" type="button" color="primary" aria-label="Ver Adjunto" [disabled]="!elementCurrent2.soporte" (click)="viewFile(elementCurrent2.soporte)" title="{{(!elementCurrent2.soporte ? 'lbl.cargarArchivo':'lbl.verAdjunto')|translate}}">
+        <mat-icon>{{!elementCurrent2.soporte ? 'attach_file':'remove_red_eye'}}</mat-icon>
+    </button>
+</div> -->

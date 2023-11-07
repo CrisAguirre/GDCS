@@ -1,0 +1,445 @@
+<form [formGroup]="form">
+    <mat-accordion #accordion="matAccordion" [multi]="true">
+        <mat-expansion-panel [expanded]="true">
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    {{'ttl.informacionPersonal'|translate}}
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+
+            <div class="row">
+                <div class="col-xs-12 col-md-2 form-group">
+                    <app-input-general formControlName="numDocumento" [controll]="f.numDocumento" [label]="'lbl.documento'"></app-input-general>
+                </div>
+
+                <div class="col-xs-12 col-md-4 form-group">
+                    <app-input-general formControlName="servidor" [controll]="f.servidor" [label]="'lbl.nombreServidor'"></app-input-general>
+                </div>
+
+                <div class="col-xs-12 col-md-2 form-group">
+                    <app-input-general formControlName="sexo" [controll]="f.sexo" [label]="'lbl.sexo'"></app-input-general>
+                </div>
+
+                <div class="col-xs-12 col-md-2 form-group">
+                    <app-input-general formControlName="edad" [controll]="f.edad" [label]="'lbl.edad'"></app-input-general>
+                </div>
+
+                <div class="col-xs-12 col-md-2 form-group">
+                    <app-input-general formControlName="estadoCivil" [controll]="f.estadoCivil" [label]="'lbl.estadoCivil'"></app-input-general>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-12 col-md-3 form-group">
+                    <app-input-general [label]="'lbl.lugarNacimiento'" formControlName="lugarNacimiento" [controll]="f.lugarNacimiento"></app-input-general>
+                </div>
+
+                <div class="col-xs-12 col-md-3 form-group">
+                    <app-input-general [label]="'lbl.ciudadResidencia'" formControlName="ciudadResidencia" [controll]="f.ciudadResidencia"></app-input-general>
+                </div>
+
+                <div class="col-xs-12 col-md-3 form-group">
+                    <app-input-general [label]="'lbl.telefono'" formControlName="telefono" [controll]="f.telefono"></app-input-general>
+                </div>
+
+                <div class="col-xs-12 col-md-3 form-group">
+                    <app-input-general [label]="'lbl.celular'" formControlName="celular" [controll]="f.celular"></app-input-general>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-12 col-md-3 form-group">
+                    <app-input-general formControlName="correo" [controll]="f.correo" [label]="'lbl.correo'"></app-input-general>
+                </div>
+
+                <div class="col-xs-12 col-md-3 form-group">
+                    <app-input-general formControlName="profesion" [controll]="f.profesion" [label]="'lbl.profesion'"></app-input-general>
+                </div>
+
+                <div class="col-xs-12 col-md-3 form-group">
+                    <app-input-general formControlName="esquema" [controll]="f.esquema" [label]="'lbl.esquema'"></app-input-general>
+                </div>
+            </div>
+        </mat-expansion-panel>
+
+        <mat-expansion-panel>
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    {{'ttl.informacionLaboral'|translate}}
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+
+            <div class="row">
+                <div class="col-xs-12 col-md-3 form-group">
+                    <!-- <app-input-date [label]="'lbl.fechaIngreso'" formControlName="fechaIngreso" [controll]="f.fechaIngreso" disabled></app-input-date> -->
+                    <mat-form-field appearance="fill">
+                        <mat-label>{{'lbl.fechaIngreso'|translate}}</mat-label>
+                        <input formControlName="fechaIngreso" matInput [matDatepicker]="dp1" disabled>
+                        <mat-datepicker-toggle matSuffix [for]="dp1"></mat-datepicker-toggle>
+                        <mat-datepicker #dp1></mat-datepicker>
+                    </mat-form-field>
+                </div>
+
+                <div class="col-xs-12 col-md-4 form-group">
+                    <app-input-general [label]="'lbl.establecimientoActual'" formControlName="establecimientoActual" [controll]="f.establecimientoActual"></app-input-general>
+                </div>
+
+                <div class="col-xs-12 col-md-3 form-group">
+                    <app-input-general [label]="'lbl.cargo'" formControlName="cargoInfoLaboral" [controll]="f.cargoInfoLaboral"></app-input-general>
+                </div>
+            </div>
+        </mat-expansion-panel>
+
+        <mat-expansion-panel>
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    {{'ttl.informacionTraslado'|translate}}
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+
+            <div *ngIf="showAlert" class="alert alert-warning" role="alert">
+                {{'comp.msgTrasladoSinFechaHabil'|translate}}
+            </div>
+
+            <div class="row">
+                <div class="col-xs-12 col-md-4 form-group">
+                    <app-input-select [label]="'lbl.tipoSolicitud'" [lst]="lstTipoTraslado" [xOption]="'tipoTraslado'" [xId]="'id'" formControlName="idTipoTraslado" [controll]="f.idTipoTraslado" (eventEmmitter)="loadFormByTipoTraslado($event)" [required]="true">
+                    </app-input-select>
+                </div>
+
+                <div *ngIf="showLstSoportes" class="col-xs-12 col-md-4 form-group">
+                    <app-input-select [label]="'lbl.formatoSolicitudTraslado'" [lst]="lstSoporteByTraslado" [xOption]="'nombreSoporte'" [xId]="'idSoporte'" formControlName="idSoporteXTraslado" [controll]="f.idSoporteXTraslado" [required]="false">
+                    </app-input-select>
+                </div>
+
+                <div *ngIf="showLstSoportes" class="col-xs-12 col-md-4 mt-lg-n1 form-group">
+                    <button mat-raised-button color="primary" type="button" [disabled]="submit2" (click)="descargarSoporteTraslado()" title="{{ 'btn.descargar' | translate }}">
+                        {{ 'btn.descargar' | translate }}
+                        <mat-icon>cloud_download</mat-icon>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Campo para el motivo de solicitud traslado -->
+            <div class="row">
+                <div class="col-xs-12 col-md-12 form-group">
+                    <mat-form-field appearance="{{appearanceInput}}">
+                        <mat-label>{{'lbl.motivo'|translate}}</mat-label>
+                        <textarea rows="3" matInput formControlName="motivoTraslado" placeholder="{{'lbl.descripcion'|translate}}" [required]="true"></textarea>
+                        <mat-error *ngIf="motivoTraslado?.hasError('required')">
+                            <strong>{{'msg.campoRequerido'|translate}}</strong>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+
+            <!-- Campos en común para tipo traslado: salud, servidor carrera, servicio, seguridad -->
+            <div *ngIf="activateForm !== 5" class="row">
+                <div class="col-xs-10 col-md-10 form-group">
+                    <app-input-general formControlName="cargo" [controll]="f.cargo" [label]="'lbl.cargo'"></app-input-general>
+                </div>
+
+                <div class="col-xs-2 col-sm-2 col-md-2 mt-lg-n1 form-group">
+                    <button mat-raised-button class="pull-left" color="primary" (click)="buscarCargo()" type="button" title="{{'btn.buscar'|translate}}">{{'btn.buscar' | translate}}
+                        <mat-icon>search</mat-icon>
+                    </button>
+                </div>
+            </div>
+
+            <div *ngIf="activateForm !== 5" class="row">
+                <div class="col-xs-10 col-md-10 form-group">
+                    <app-input-general formControlName="idDespacho" [controll]="f.idDespacho" [label]="'lbl.despacho'"></app-input-general>
+                </div>
+
+                <div class="col-xs-2 col-sm-2 col-md-2 mt-lg-n1 form-group">
+                    <button mat-raised-button class="pull-left" color="primary" (click)="buscarTraslado()" type="button" title="{{'btn.buscar'|translate}}">{{'btn.buscar' | translate}}
+                        <mat-icon>search</mat-icon>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Campos para tipo traslado para SERVIDOR DE CARRERA -->
+            <div *ngIf="activateForm === 1" class="row">
+                <div class="col-xs-12 col-md-3 form-group">
+                    <app-input-general formControlName="calificacionServCarrera" [controll]="f.calificacionServCarrera" [label]="'lbl.calificacionServicios'" [maxlength]="5" [numMin]="0" [required]="false"></app-input-general>
+                </div>
+            </div>
+
+            <!-- Campos para tipo traslado SALUD -->
+            <div *ngIf="activateForm === 2" class="row">
+                <div class="col-xs-12 col-md-4 form-group">
+                    <app-input-select [label]="'lbl.modalidad'" [lst]="lstModalidad" [xOption]="'modalidad'" [xId]="'id'" formControlName="modalidad" [controll]="f.modalidad">
+                    </app-input-select>
+                </div>
+
+                <div class="col-xs-12 col-md-4 form-group">
+                    <app-input-select [label]="'lbl.dictamenMedico'" [lst]="lstDictamenMedico" [xOption]="'dictamenMedico'" [xId]="'id'" formControlName="dictamenMedico" [controll]="f.dictamenMedico">
+                    </app-input-select>
+                </div>
+            </div>
+
+            <!-- Campos para tipo traslado por SERVICIO -->
+            <div *ngIf="activateForm === 4" class="row">
+                <div class="col-xs-12 col-md-3 form-group">
+                    <app-input-general formControlName="calificacionServicios" [controll]="f.calificacionServicios" [label]="'lbl.calificacionServicios'" [maxlength]="5" [numMin]="0" [required]="false"></app-input-general>
+                </div>
+            </div>
+
+            <!-- Campos para tipo traslado RECÍPROCO -->
+            <div *ngIf="activateForm === 5" class="row">
+                <div class="col-sm-12 form-group subtitle">
+                    <label>{{'lbl.servidorDestinatario'|translate}}</label>
+                </div>
+                <div class="col-xs-12 col-md-5 form-group">
+                    <mat-form-field appearance="{{appearanceInput}}">
+                        <mat-label>{{'lbl.documento'|translate}}</mat-label>
+                        <!-- <input matInput formControlName="codUsuarioReciproco" placeholder="{{'lbl.documento'|translate}}" autocomplete="off" type="tel" (blur)="getInfoEmpleado()" digitOnly required> -->
+                        <input matInput formControlName="numDocumentoUsuarioReciproco" placeholder="{{'lbl.documento'|translate}}" autocomplete="off" type="tel" (blur)="getInfoEmpleado()" digitOnly required>
+
+                        <mat-error *ngIf="f.codUsuarioReciproco.hasError('required')">
+                            <strong>{{'msg.campoRequerido'|translate}}</strong>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div *ngIf="activateForm === 5" class="row">
+                <div class="col-xs-12 col-md-5 form-group">
+                    <app-input-general formControlName="nombreUsuarioReciproco" [controll]="f.nombreUsuarioReciproco" [label]="'lbl.servidorDestinatario'"></app-input-general>
+                </div>
+
+                <div class="col-xs-12 col-md-4 form-group">
+                    <app-input-general formControlName="sexoUsuarioReciproco" [controll]="f.sexoUsuarioReciproco" [label]="'lbl.sexo'"></app-input-general>
+                </div>
+
+                <div class="col-xs-12 col-md-3 form-group">
+                    <app-input-general formControlName="gradoUsuarioReciproco" [controll]="f.gradoUsuarioReciproco" [label]="'lbl.grado'"></app-input-general>
+                </div>
+
+                <div class="col-xs-12 col-md-4 form-group">
+                    <app-input-general formControlName="codCargoUsuarioReciproco" [controll]="f.codCargoUsuarioReciproco" [label]="'lbl.codigoCargo'"></app-input-general>
+                </div>
+
+                <div class="col-xs-12 col-md-8 form-group">
+                    <app-input-general formControlName="cargoUsuarioReciproco" [controll]="f.cargoUsuarioReciproco" [label]="'lbl.cargo'"></app-input-general>
+                </div>
+
+                <div class="col-xs-12 col-md-4 form-group">
+                    <app-input-general formControlName="codEstablecimientoPermuta" [controll]="f.codEstablecimientoPermuta" [label]="'lbl.codEstablecimientoPermuta'"></app-input-general>
+                </div>
+
+                <div class="col-xs-12 col-md-8 form-group">
+                    <app-input-general formControlName="establecimientoPermuta" [controll]="f.establecimientoPermuta" [label]="'lbl.establecimientoPermuta'"></app-input-general>
+                </div>
+
+                <div class="col-xs-12 col-md-3 form-group">
+                    <app-input-general formControlName="calificacionServicioReciproco" [controll]="f.calificacionServicioReciproco" [label]="'lbl.calificacionServicios'" [maxlength]="5" [numMin]="0" [required]="false"></app-input-general>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-12 form-group subtitle">
+                    <label>{{'ttl.archivosAdjuntos'|translate}}</label>
+                </div>
+
+                <div class="col-xs-12 col-md-4 form-group mt-3">
+                    <app-input-select [label]="'lbl.tipoDocumento'" [lst]="lstTipoDocumentoByTraslado" [xOption]="'tipoDocumento'" [xId]="'id'" [formControl]="idTipoDocumentoTraslado" [controll]="idTipoDocumentoTraslado">
+                    </app-input-select>
+                </div>
+
+                <div class="col-xs-12 col-md-4 pr-0 mt-3">
+                    <mat-form-field appearance="{{appearanceInput}}">
+                        <mat-label>{{'lbl.cargarArchivo'|translate}}</mat-label>
+                        <ngx-mat-file-input #inputSoport class="inputSoport" [formControl]="idSoporte" valuePlaceholder="{{'lbl.seleccioneArchivo'| translate}}" [accept]="configFile.allowExtensions" [errorStateMatcher]="matcher" [required]="true">
+                        </ngx-mat-file-input>
+                        <button mat-icon-button matSuffix *ngIf="idSoporte.value" (click)="inputSoport.clear($event); deleteFile()">
+                            <mat-icon>clear</mat-icon>
+                        </button>
+                        <mat-hint>{{'msg.archivoPermitido'|translate}} ({{configFile.allowExtensions}})</mat-hint>
+                        <mat-error *ngIf="idSoporte.hasError('required')">
+                            {{'msg.seleccioneArchivo'|translate}} ({{configFile.allowExtensions}})
+                        </mat-error>
+                        <mat-error *ngIf="idSoporte.hasError('maxContentSize')">
+                            {{'msg.tamanioArchivo'|translate}}
+                            {{idSoporte?.getError('maxContentSize').maxSize | byteFormat}}
+                            ({{idSoporte?.getError('maxContentSize').actualSize | byteFormat}}).
+                        </mat-error>
+                        <mat-error *ngIf="idSoporte.hasError('badExtension')">
+                            {{idSoporte.errors.badExtension}} ({{configFile.allowExtensions}})
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-sm-1 p-0 mt-3">
+                    <button mat-icon-button class="mt-2" type="button" color="primary" (click)="openDialogFile('.inputSoport')" title="{{'lbl.cargarArchivo'|translate}}">
+                        <mat-icon>attach_file</mat-icon>
+                    </button>
+                </div>
+
+                <div class="col-xs-12 col-sm-12 col-md-3 mt-3 form-group">
+                    <button mat-raised-button class="pull-left" color="primary" (click)="agregarSoporteTraslado()" type="button" [disabled]="submit" title="{{'btn.agregar'|translate}}">{{'btn.agregar' | translate}}
+                        <mat-icon>add</mat-icon>
+                    </button>
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="col-xs-12 col-md-12 form-group">
+                    <table mat-table matSort [dataSource]="dataSource" #TableOneSort="matSort" matSortActive="initDate" matSortDirection="asc" class="mat-elevation-z8 col-xs-12 full-width" (matSortChange)="sortData1($event)">
+                        <ng-container matColumnDef="tipoDocumentoTraslado">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.tipoDocumento'|translate}}</th>
+                            <!-- <td mat-cell *matCellDef="let element"> {{getTipoDocumentoTraslado(element)}} </td> -->
+                            <td mat-cell *matCellDef="let element"> {{element.tipoDocumentoTraslado.tipoDocumento}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="nombreSoporteTraslado">
+                            <th mat-header-cell *matHeaderCellDef>{{'lbl.soporte'|translate}}</th>
+                            <td mat-cell *matCellDef="let element"> {{element.soporte.nombreAuxiliar}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="verSoporte">
+                            <th mat-header-cell *matHeaderCellDef>{{'lbl.verSoporte'|translate}}</th>
+                            <td mat-cell *matCellDef="let element">
+                                <button *ngIf="element.soporte.id" (click)="viewFile(element.soporte.id)" type="button" color="warn" title="{{'lbl.verSoporte'|translate}}" mat-icon-button>
+                                    <mat-icon>attach_file</mat-icon>
+                                </button>
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="options">
+                            <th mat-header-cell *matHeaderCellDef>{{'lbl.editarEliminar'|translate}}</th>
+                            <td mat-cell *matCellDef="let element">
+                                <button (click)="deleteSoporte(element)" type="button" color="warn" mat-icon-button title="{{'lbl.eliminar'|translate}}">
+                                    <mat-icon>delete</mat-icon>
+                                </button>
+                            </td>
+                        </ng-container>
+
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns "></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns; " [ngClass]="{hovered: row.hovered, highlighted: isSelectedTable(elementCurrent , row.id)}" (mouseover)="row.hovered = true" (mouseout)="row.hovered = false"></tr>
+                    </table>
+                    <mat-paginator #matPaginator="matPaginator" [pageSizeOptions]="[5,10, 20]" showFirstLastButtons></mat-paginator>
+                </div>
+
+            </div>
+
+        </mat-expansion-panel>
+
+    </mat-accordion>
+
+
+    <div class="row mt-2">
+        <div class="col-sm-12 pull-right">
+            <!-- <button mat-raised-button color="primary" class="pull-right" [disabled]="submit" (click)="save()" title="{{'btn.guardar'|translate}}">{{'btn.guardar'|translate}}<mat-icon>save</mat-icon></button> -->
+            <app-buttons-fotter [showBtnAccept]="showBtnAccept" [submit]="submit" (eventEmmitterAccept)="save()" [labelBtnAccept]="'btn.solicitar'" [iconAccept]="'save'" [showBtnCancel]="true" (eventEmmitterCancel)="cleanForm()" [labelBtnCancel]="'btn.limpiar'" [iconCancel]="'clear_all'"></app-buttons-fotter>
+        </div>
+    </div>
+</form>
+
+<!-- Dialog Cargos -->
+<ng-template #dialogInfoCargos>
+    <h2 matDialogTitle>{{'ttl.cargos'| translate}}</h2>
+
+    <div class="row mt-4">
+        <div class="col-xs-12 col-md-12">
+            <div class="col-xs-12 col-md-6">
+                <mat-form-field>
+                    <mat-label>{{'lbl.buscar'|translate}}</mat-label>
+                    <input matInput (keyup)="applyFilter($event , dataSourceDialogCargos)" placeholder="{{'lbl.buscarPlh'|translate}}" autocomplete="off">
+                </mat-form-field>
+            </div>
+            <table mat-table [dataSource]="dataSourceDialogCargos" class="mat-elevation-z8 col-xs-12 full-width" matSort (matSortChange)="sortData($event)">
+
+                <ng-container matColumnDef="codigoCargo">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                        {{'lbl.codigoCargo'|translate}}</th>
+                    <td mat-cell *matCellDef=" let element ">
+                        {{element.detallePerfilModel.cargoHumanoModel ? element.detallePerfilModel.cargoHumanoModel.codCargo : element.detallePerfilModel.cargoModel.codAlterno}}
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="cargo">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                        {{'lbl.cargo'|translate}}</th>
+                    <td mat-cell *matCellDef=" let element ">
+                        {{element.detallePerfilModel.cargoHumanoModel ? element.detallePerfilModel.cargoHumanoModel.cargo : element.detallePerfilModel.cargoModel.cargo}}
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="options">
+                    <th mat-header-cell *matHeaderCellDef>{{'lbl.seleccionar'|translate}}</th>
+                    <td mat-cell *matCellDef="let element">
+                        <button (click)="selectCargo(element)" mat-icon-button color="primary" type="button" title="{{'btn.seleccionar'|translate}}">
+                            <mat-icon>radio_button_unchecked</mat-icon>
+                        </button>
+                    </td>
+                </ng-container>
+                <tr mat-header-row *matHeaderRowDef="displayedColumnsDialogCargos"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumnsDialogCargos; "></tr>
+            </table>
+            <mat-paginator #paginatorDialogCargos="matPaginator" [pageSizeOptions]="[5,10, 20]" showFirstLastButtons>
+            </mat-paginator>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-12 pull-right form-group">
+            <app-buttons-fotter [showBtnCancel]="true" (eventEmmitterCancel)="closeDialogInfoCargos()" [labelBtnCancel]="'btn.cerrar'" [iconCancel]="'close'"></app-buttons-fotter>
+        </div>
+    </div>
+</ng-template>
+
+<!-- Dialog Despachos -->
+<ng-template #dialogInfo>
+    <h2 matDialogTitle>{{'ttl.despachos'| translate}}</h2>
+
+    <div class="row mt-4">
+        <div class="col-xs-12 col-md-12">
+            <div class="col-xs-12 col-md-6">
+                <mat-form-field>
+                    <mat-label>{{'lbl.buscar'|translate}}</mat-label>
+                    <input matInput (keyup)="applyFilter($event , dataSourceDialog)" placeholder="{{'lbl.buscarPlh'|translate}}" autocomplete="off">
+                </mat-form-field>
+            </div>
+            <table mat-table [dataSource]="dataSourceDialog" class="mat-elevation-z8 col-xs-12 full-width" matSort (matSortChange)="sortData($event)">
+
+                <ng-container matColumnDef="codigoDespacho">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                        {{'lbl.codigoDespacho'|translate}}</th>
+                    <td mat-cell *matCellDef=" let element ">{{element.codigoDespacho}}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="despacho">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                        {{'lbl.despacho'|translate}}</th>
+                    <td mat-cell *matCellDef=" let element ">{{element.despacho}}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="sede">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                        {{'lbl.sede'|translate}}</th>
+                    <td mat-cell *matCellDef=" let element ">{{element.sede}}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="options">
+                    <th mat-header-cell *matHeaderCellDef>{{'lbl.seleccionar'|translate}}</th>
+                    <td mat-cell *matCellDef="let element">
+                        <button (click)="selectDespacho(element)" mat-icon-button color="primary" type="button" title="{{'btn.seleccionar'|translate}}">
+                            <!-- {{'btn.seleccionar' | translate}} -->
+                            <mat-icon>radio_button_unchecked</mat-icon>
+                        </button>
+                    </td>
+                </ng-container>
+                <tr mat-header-row *matHeaderRowDef="displayedColumnsDialog"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumnsDialog; "></tr>
+            </table>
+            <mat-paginator #paginatorDialog="matPaginator" [pageSizeOptions]="[5,10, 20]" showFirstLastButtons>
+            </mat-paginator>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-12 pull-right form-group">
+            <app-buttons-fotter [showBtnCancel]="true" (eventEmmitterCancel)="closeDialogInfo()" [labelBtnCancel]="'btn.cerrar'" [iconCancel]="'close'"></app-buttons-fotter>
+        </div>
+    </div>
+</ng-template>

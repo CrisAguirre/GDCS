@@ -1,0 +1,39 @@
+<app-progress-bar [show]="showProgressBar"></app-progress-bar>
+
+<mat-card>
+    <mat-tab-group>
+        <mat-tab *ngIf="showTab('tipoGrupo')" label="{{'ttl.tipoGrupo'|translate}}">
+            <ng-container matTabContent="matTabContent" *ngTemplateOutlet="tipoGrupo"></ng-container>
+        </mat-tab>
+
+        <mat-tab *ngIf="showTab('tipoFuncion')" label="{{'ttl.tipoFuncion'|translate}}">
+            <ng-container matTabContent="matTabContent" *ngTemplateOutlet="tipoFuncion"></ng-container>
+        </mat-tab>
+
+        <mat-tab *ngIf="showTab('competencia')" label="{{'ttl.competenciaRequerida'|translate}}">
+            <ng-container matTabContent="matTabContent" *ngTemplateOutlet="competencia"></ng-container>
+        </mat-tab>
+
+        <mat-tab *ngIf="showTab('servicioCargos')" label="{{'ttl.servicioCargos'|translate}}">
+            <ng-container matTabContent="matTabContent" *ngTemplateOutlet="servicioCargos"></ng-container>
+        </mat-tab>
+    </mat-tab-group>
+
+    <ng-template #tipoGrupo>
+        <app-tipo-grupo [path]="'tipoGrupo'" (messageEvent)="receiveMessage($event)"></app-tipo-grupo>
+    </ng-template>
+
+    <ng-template #tipoFuncion>
+        <app-tipo-funcion [path]="'tipoFuncion'" (messageEvent)="receiveMessage($event)"></app-tipo-funcion>
+    </ng-template>
+
+    <ng-template #competencia>
+        <app-competencia-requerida [path]="'competencia'" (messageEvent)="receiveMessage($event)">
+        </app-competencia-requerida>
+    </ng-template>
+
+    <ng-template #servicioCargos>
+        <app-servicio-cargos [path]="'servicioCargos'" (messageEvent)="receiveMessage($event)">
+        </app-servicio-cargos>
+    </ng-template>
+</mat-card>

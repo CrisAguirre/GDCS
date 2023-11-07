@@ -1,0 +1,97 @@
+<mat-card>
+    <mat-card-header>
+        <mat-card-title>{{'ttl.opcionSedes'|translate}}</mat-card-title>
+
+        <!-- <mat-card-subtitle>{{subtitle}}</mat-card-subtitle> -->
+    </mat-card-header>
+
+    <div class="col-sm-12 col-md-12 col-lg-12">
+        <div class="row">
+            <div class="col-sm-12 pull-right form-group">
+                <button mat-raised-button color="primary" class="pull-right" (click)="goBack()" title="{{'btn.regresar'|translate}}">{{'btn.regresar'|translate}}<mat-icon>
+                        keyboard_backspace</mat-icon>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <mat-card-content>
+        <div class="row">
+            <div class="col-xs-12 col-md-12 form-group">
+                <div class="col-xs-12 col-md-6">
+                    <mat-form-field>
+                        <mat-label>{{'lbl.buscar'|translate}}</mat-label>
+                        <input matInput (keyup)="applyFilter($event, dataSource)" placeholder="{{'lbl.buscarPlh'|translate}}" autocomplete="off">
+                    </mat-form-field>
+                </div>
+
+                <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8 col-xs-12 full-width" matSort #TableOneSort="matSort" matSortActive="codCargo" matSortDirection="asc">
+                    <!-- <ng-container matColumnDef="convocatoria">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.convocatoria'|translate}}</th>
+                        <td mat-cell *matCellDef=" let element ">{{element.convocatoria ? element.convocatoria : ''}}</td>
+                    </ng-container> -->
+
+                    <ng-container matColumnDef="codigoDespacho">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header style="text-align: justify;">{{'lbl.codigoDespacho'|translate}}</th>
+                        <td mat-cell *matCellDef=" let element " style="width: 20%;">{{element.codigoDespacho ? element.codigoDespacho : ''}}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="despacho">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.despacho'|translate}}</th>
+                        <td mat-cell *matCellDef=" let element ">{{element.despacho ? element.despacho : ''}}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="distrito">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.distrito'|translate}}</th>
+                        <td mat-cell *matCellDef=" let element ">{{element.distrito ? element.distrito : ''}}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="municipio">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.municipio'|translate}}</th>
+                        <td mat-cell *matCellDef=" let element ">{{element.municipio}}</td>
+                    </ng-container>
+
+                    <!-- <ng-container matColumnDef="vacanteFuncionario">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header style="text-align: center;">{{'lbl.vacanteFuncionario'|translate}}</th>
+                        <td mat-cell *matCellDef=" let element ">{{element.vacanteFuncionario ? element.vacanteFuncionario : ''}}</td>
+                    </ng-container> -->
+
+                    <!-- <ng-container matColumnDef="fechaVacante">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header style="text-align: center;">{{'lbl.fechaVacante'|translate}}</th>
+                        <td mat-cell *matCellDef=" let element ">{{element.fechaVacante | date:formatDateView}}</td>
+                    </ng-container> -->
+
+                    <!-- <ng-container matColumnDef="situacionVacante">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.situacionVacante'|translate}}</th>
+                        <td mat-cell *matCellDef=" let element ">{{element.situacionActualVacante}}</td>
+                    </ng-container> -->
+
+                    <ng-container matColumnDef="options">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header style="text-align: center;">{{'lbl.seleccion'|translate}}</th>
+                        <td mat-cell *matCellDef="let element" style="width: 5%;" class="text-center">
+                            <div *ngIf="verifyActions(element); let btnStates">
+
+                                <button *ngIf="btnStates.btnActive" [disabled]="disableButton" (click)="inscripcionAspiranteVacante(element)" type="button" title="{{'btn.inscripcionAspiranteVacante'|translate}}" color="warn" mat-icon-button>
+                                    <mat-icon>touch_app</mat-icon>
+                                </button>
+
+                                <button *ngIf="btnStates.btnInactive" [disabled]="disableButton" type="button" title="{{'btn.inscripcionAspiranteVacante'|translate}}" color="dark" mat-icon-button>
+                                    <mat-icon>touch_app</mat-icon>
+                                </button>
+
+                                <button *ngIf="btnStates.btnAnularVacante" (click)="anularInscripcionVacante(element)" type="button" title="{{'btn.anular'|translate}}" color="warn" mat-icon-button>
+                                    <mat-icon>do_disturb_alt</mat-icon>
+                                </button>
+
+                            </div>
+                        </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns "></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns; " [ngClass]="{hovered: row.hovered, highlighted: isSelectedTable(elementCurrent , row.id)}" (mouseover)="row.hovered = true" (mouseout)="row.hovered = false"></tr>
+                </table>
+                <mat-paginator #matPaginator [pageSizeOptions]="[5,10, 20]" showFirstLastButtons></mat-paginator>
+            </div>
+        </div>
+    </mat-card-content>
+</mat-card>

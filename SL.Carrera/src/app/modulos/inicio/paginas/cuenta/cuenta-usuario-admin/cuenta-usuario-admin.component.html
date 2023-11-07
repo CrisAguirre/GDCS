@@ -1,0 +1,77 @@
+<form #formV="ngForm" [formGroup]="form">
+    <mat-card>
+        <mat-card-header>
+            <mat-card-title>{{'ttl.cuentaUsuarioAdmin'|translate}}</mat-card-title>
+        </mat-card-header>
+
+        <mat-card-content>
+
+            <div class="row">
+                <div class="col-xs-12 col-md-3 form-group">
+                    <app-input-general formControlName="names" [controll]="f.names" [label]="'lbl.nombres'" [typeField]="'onlyText'"></app-input-general>
+                </div>
+                
+                <div class="col-xs-12 col-md-3 form-group">
+                    <app-input-general formControlName="surnames" [controll]="f.surnames" [label]="'lbl.apellidos'" [typeField]="'onlyText'"></app-input-general>
+                </div>
+
+                <div class="col-xs-12 col-md-3 form-group">
+                    <app-input-select [label]="'lbl.tipoIdentificacion'" [lst]="lstTypesIdentification" [xOption]="'tipoDocumento'" [xId]="'id'" formControlName="typeIdentification" [controll]="f.typeIdentification">
+                    </app-input-select>
+                </div>
+
+                <div class="col-xs-12 col-md-3 form-group">
+                    <mat-form-field appearance="{{appearanceInput}}">
+                        <mat-label>{{'lbl.identificacion'|translate}}</mat-label>
+                        <input matInput formControlName="identification" placeholder="{{'lbl.identificacion'|translate}}" autocomplete="off" type="tel" digitOnly required>
+
+                        <mat-error *ngIf="f.identification.errors?.pattern && !f.celphone.hasError('required')">
+                            {{'msg.ingreseCelular'|translate}}
+                        </mat-error>
+                        <mat-error *ngIf="f.identification.errors?.minlength && !f.identification.hasError('required') && !f.identification.hasError('pattern')">
+                            {{'msg.ingreseCelular'|translate}}
+                        </mat-error>
+                        <mat-error *ngIf="f.identification.hasError('required')">
+                            <strong>{{'msg.campoRequerido'|translate}}</strong>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-12 col-md-3 form-group">
+                    <app-input-date [label]="'lbl.fechaNacimiento'" [maxDate]="minDateBirthdate" [minDate]="maxDateBirthdate" [required]="true" formControlName="birthdate" [controll]="f.birthdate"></app-input-date>
+                </div>
+
+                <div class="col-xs-12 col-md-3 form-group">
+                    <mat-form-field appearance="{{appearanceInput}}">
+                        <mat-label>{{'lbl.celular'|translate}}</mat-label>
+                        <input matInput formControlName="celphone" placeholder="{{'lbl.celular'|translate}}" autocomplete="off" type="tel" digitOnly>
+
+                        <mat-error *ngIf="f.celphone.errors?.pattern && !f.celphone.hasError('required')">
+                            {{'msg.ingreseCelular'|translate}}
+                        </mat-error>
+                        <mat-error *ngIf="f.celphone.errors?.minlength && !f.celphone.hasError('required') && !f.celphone.hasError('pattern')">
+                            {{'msg.ingreseCelular'|translate}
+                        </mat-error>
+                        <mat-error *ngIf="f.celphone.hasError('required')">
+                            <strong>{{'msg.campoRequerido'|translate}}</strong>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+
+                <div class="col-xs-12 col-md-3 form-group">
+                    <app-input-general formControlName="address" [controll]="f.address" [label]="'lbl.direccion'" [required]="false"></app-input-general>
+                </div>
+            </div>
+
+            <div class="row mt-2">
+                <div class="col-sm-12 pull-right">
+                    <button mat-raised-button color="primary" class="pull-right" [disabled]="submit" (click)="save()" title="{{'btn.guardar'|translate}}">{{'btn.guardar'|translate}}<mat-icon>save</mat-icon></button>
+                </div>
+            </div>
+
+        </mat-card-content>
+
+    </mat-card>
+</form>

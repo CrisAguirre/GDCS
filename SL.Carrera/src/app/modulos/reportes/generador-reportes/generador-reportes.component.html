@@ -1,0 +1,86 @@
+<mat-card>
+    <mat-card-header>
+        <mat-card-title>{{'ttl.reportes'|translate}}</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+        <div class="row">
+
+            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 form-group">
+                <app-input-select [label]="'lbl.reportes'" [lst]="lstReportes" [xOption]="'nombreReporte'" [xId]="'id'" [formControl]="idReporte" [controll]="idReporte" [required]="false" (eventEmmitter)="loadDataByReporte($event)">
+                </app-input-select>
+            </div>
+
+            <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 form-group">
+                <app-input-select [label]="'lbl.tipoArchivoReporte'" [lst]="lstTipoReporte" [xOption]="'extensionName'" [xId]="'extension'" [formControl]="idTipoReporte" [controll]="idTipoReporte" [required]="true">
+                </app-input-select>
+            </div>
+        </div>
+
+        <div class="col-sm-12" [ngClass]="{reportClass: curReport != null}">
+
+            <!-- reporte ejemplo -->
+            <app-reporte-base *ngIf="show(rConfigInfoReport)" (emitFormOk)="formOk($event)" (emitFormBad)="formBad($event)">
+            </app-reporte-base>
+
+            <!-- reportes aspirantes -->
+            <!-- <app-reporte-aspirante-inscrito *ngIf="show(rAspiranteInscritoReport) || 
+                show(rAspiranteAdmitidoReport) || show(rAspiranteInadmitidoReport)" 
+                [reportName]="show(rAspiranteInscritoReport) ? '1' : show(rAspiranteAdmitidoReport) ? '2' : '3'" 
+                (emitFormOk)="formOk($event)" (emitFormBad)="formBad($event)">
+            </app-reporte-aspirante-inscrito> -->
+            <app-reporte-aspirante-inscrito *ngIf="show(rAspiranteInscritoReport)" [reportName]="'1'" (emitFormOk)="formOk($event)" (emitFormBad)="formBad($event)">
+            </app-reporte-aspirante-inscrito>
+            <app-reporte-aspirante-inscrito *ngIf="show(rAspiranteAdmitidoReport)" [reportName]="'2'" (emitFormOk)="formOk($event)" (emitFormBad)="formBad($event)">
+            </app-reporte-aspirante-inscrito>
+            <app-reporte-aspirante-inscrito *ngIf="show(rAspiranteInadmitidoReport)" [reportName]="'3'" (emitFormOk)="formOk($event)" (emitFormBad)="formBad($event)">
+            </app-reporte-aspirante-inscrito>
+
+            <!-- reporte listado preseleccionados -->
+            <app-reporte-preseleccionados *ngIf="show(rListadoPreseleccionadosReport)" (emitFormOk)="formOk($event)" (emitFormBad)="formBad($event)">
+            </app-reporte-preseleccionados>
+
+            <!-- reporte vacantes funcionarios-->
+            <app-reporte-vacantes-funcionarios *ngIf="show(rVacantesFuncionario)" (emitFormOk)="formOk($event)" (emitFormBad)="formBad($event)">
+            </app-reporte-vacantes-funcionarios>
+
+            <!-- reporte vacantes empleados -->
+            <!-- <app-reporte-vacantes-empleados *ngIf="show(rVacantesEmpleado)"
+                (emitFormOk)="formOk($event)" (emitFormBad)="formBad($event)">
+            </app-reporte-vacantes-empleados> -->
+
+            <!-- reporte listado preseleccionados -->
+            <app-reporte-inscritos-altas-cortes *ngIf="show(rInscritosAltasCortesReport)" (emitFormOk)="formOk($event)" (emitFormBad)="formBad($event)">
+            </app-reporte-inscritos-altas-cortes>
+
+            <!-- reporte generador prueba -->
+            <app-reporte-resultado-prueba *ngIf="show(rResultadoPruebaReport)" (emitFormOk)="formOk($event)" (emitFormBad)="formBad($event)">
+            </app-reporte-resultado-prueba>
+
+            <!-- reporte estadisticas convocatoria -->
+            <app-reporte-estadistica-convocatoria *ngIf="show(rEstadisticaConvocatoriaReport)" (emitFormOk)="formOk($event)" (emitFormBad)="formBad($event)">
+            </app-reporte-estadistica-convocatoria>
+
+            <!-- Reporte aspirantes excluidos -->
+            <app-reporte-aspirantes-excluidos *ngIf="show(rAspirantesExcluidosReport)" (emitFormOk)="formOk($event)" (emitFormBad)="formBad($event)">
+            </app-reporte-aspirantes-excluidos>
+
+            <!-- Reporte vacante desierta -->
+            <app-reporte-vacante-desierta *ngIf="show(rVacanteDesiertaReport)" (emitFormOk)="formOk($event)" (emitFormBad)="formBad($event)">
+            </app-reporte-vacante-desierta>
+
+            <!-- Reporte elegible-altas-cortes -->
+            <app-reporte-elegibles-altas-cortes *ngIf="show(rElegiblesAltasCortesReport)" (emitFormOk)="formOk($event)" (emitFormBad)="formBad($event)">
+            </app-reporte-elegibles-altas-cortes>
+            
+            <app-reporte-traslados *ngIf="show(rTrasladosReport)" (emitFormOk)="formOk($event)" (emitFormBad)="formBad($event)">
+            </app-reporte-traslados>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-12 pull-right form-group">
+                <app-buttons-fotter [labelBtnAccept]="'btn.generar'" [showBtnAccept]="true" [submit]="submit" (eventEmmitterAccept)="getReport()" [showBtnCancel]="true" (eventEmmitterCancel)="clean()">
+                </app-buttons-fotter>
+            </div>
+        </div>
+    </mat-card-content>
+</mat-card>

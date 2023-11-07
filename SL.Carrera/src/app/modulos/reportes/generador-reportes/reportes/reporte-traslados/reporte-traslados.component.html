@@ -1,0 +1,13 @@
+<form #formV="ngForm" [formGroup]="form">
+    <div class="row">
+
+        <div class="col-xs-12 col-md-6 form-group">
+            <app-input-date [label]="'lbl.fechaInicial'" [maxDate]="f.fechaFinal.value" formControlName="fechaInicial" [controll]="f.fechaInicial" [required]="true" (eventEmmitter)="eventFechas($event)"></app-input-date>
+        </div>
+
+        <div class="col-xs-12 col-md-6 form-group">
+            <app-input-date [label]="'lbl.fechaFinal'" [minDate]="f.fechaInicial.value" formControlName="fechaFinal" [controll]="f.fechaFinal" [required]="true" (eventEmmitter)="eventFechas($event)"></app-input-date>
+        </div>
+
+    </div>
+</form>

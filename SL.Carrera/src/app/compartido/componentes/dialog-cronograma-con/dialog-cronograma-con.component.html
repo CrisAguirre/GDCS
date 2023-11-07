@@ -1,0 +1,37 @@
+<div class="col-sm-12">
+    <h2 matDialogTitle>{{'ttl.cronograma'| translate}}</h2>
+
+    <div class="row">
+
+        <div class="col-md-12 col-sm-12">
+            <mat-table [dataSource]="dataSource" class="mat-elevation-z8 col-xs-12 full-width" matSort matSortActive="actividadConvocatoria" matSortDirection="asc">
+                <ng-container matColumnDef="actividadConvocatoria">
+                    <th mat-header-cell *matHeaderCellDef style="width: 30% !important;">{{'lbl.actividad'|translate}}</th>
+                    <td mat-cell *matCellDef="let child">{{child.actividadaConvocatoria}}</td>
+                </ng-container>
+                <ng-container matColumnDef="fechaInicial">
+                    <th mat-header-cell *matHeaderCellDef style="width: 10%;">{{'lbl.fechaInicial'|translate}}</th>
+                    <td mat-cell *matCellDef="let child">{{child.fechaInicial | date:formatDateView}}</td>
+                </ng-container>
+                <ng-container matColumnDef="fechaFinal">
+                    <th mat-header-cell *matHeaderCellDef style="width: 10%;">{{'lbl.fechaFinal'|translate}}</th>
+                    <td mat-cell *matCellDef="let child">{{child.fechaFinal | date:formatDateView}}</td>
+                </ng-container>
+                <ng-container matColumnDef="esProrroga">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 10%;text-align: center;">{{'lbl.esProrroga'|translate}}</th>
+                    <td mat-cell *matCellDef=" let child ">{{(child.esProrroga == 1 ? 'lbl.si':'')|translate}}</td>
+                </ng-container>
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let child; columns: displayedColumns"></tr>
+            </mat-table>
+            <mat-paginator [pageSizeOptions]="[5,10, 20]" showFirstLastButtons></mat-paginator>
+
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-12 pull-right form-group">
+            <app-buttons-fotter [showBtnCancel]="true" (eventEmmitterCancel)="clean()" [labelBtnCancel]="'btn.cerrar'"></app-buttons-fotter>
+        </div>
+    </div>
+</div>

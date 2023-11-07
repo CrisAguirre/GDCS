@@ -1,0 +1,108 @@
+<form #formV="ngForm" [formGroup]="form">
+    <mat-card-header>
+        <mat-card-title>{{'ttl.cargarCitacionAspirante'|translate}}</mat-card-title>
+    </mat-card-header>
+    <div class="row">
+        <div class="col-xs-12 col-md-6 form-group">
+            <div class="row">
+                <div class="col-sm-11 pr-0">
+                    <mat-form-field appearance="{{appearanceInput}}">
+                        <mat-label>{{'lbl.cargarArchivo'|translate}}</mat-label>
+                        <ngx-mat-file-input #inputSoport class="inputSoport" formControlName="idArchivoCargue" valuePlaceholder="{{'lbl.seleccioneArchivo'| translate}}" [accept]="configFile.allowExtensions" (change)="loadInfoFile($event)" [errorStateMatcher]="matcher">
+                        </ngx-mat-file-input>
+                        <button mat-icon-button matSuffix *ngIf="this.f.idArchivoCargue.value" (click)="inputSoport.clear($event); deleteFile()">
+                            <mat-icon>clear</mat-icon>
+                        </button>
+                        <mat-hint>{{'msg.archivoPermitido'|translate}} ({{configFile.allowExtensions}})</mat-hint>
+                        <mat-error *ngIf="f.idArchivoCargue.hasError('required')">
+                            {{'msg.seleccioneArchivo'|translate}} ({{configFile.allowExtensions}})
+                        </mat-error>
+                        <mat-error *ngIf="f.idArchivoCargue.hasError('maxContentSize')">
+                            {{'msg.tamanioArchivo'|translate}}
+                            {{f.idArchivoCargue?.getError('maxContentSize').maxSize | byteFormat}}
+                            ({{f.idArchivoCargue?.getError('maxContentSize').actualSize | byteFormat}}).
+                        </mat-error>
+                        <mat-error *ngIf="f.idArchivoCargue.hasError('badExtension')">
+                            {{f.idArchivoCargue.errors.badExtension}} ({{configFile.allowExtensions}})
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-sm-1 p-0">
+                    <button mat-icon-button class="mt-2" type="button" color="primary" (click)="openDialogFile('.inputSoport')" title="{{'lbl.cargarArchivo'|translate}}">
+                        <mat-icon>attach_file</mat-icon>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div *ngIf="showMsgExport" class="col-sm-12 mt-4">
+            <mat-label>{{'lbl.descarArchivoNoprocesados'|translate}}</mat-label>
+        </div>
+        <div class="col-sm-12 pull-right form-group">
+
+            <button *ngIf="showButtonExport" mat-raised-button class="pull-left mr-1" color="primary" (click)="exporter.exportTable('xlsx', { fileName: 'No_Procesados' })" title="{{'btn.exportarExcel'|translate}}">
+                {{'btn.exportarExcel'|translate}} <i class="fa fa-file-excel-o"></i></button>
+            <button *ngIf="showButtonExport" mat-raised-button class="pull-left mr-1" color="primary" (click)="exporter.exportTable('txt', { fileName: 'No_Procesados' })" title="{{'btn.exportarPlano'|translate}}">
+                {{'btn.exportarPlano'|translate}} <i class="fa fa-file-text-o"></i></button>
+
+            <app-buttons-fotter [labelBtnAccept]="'btn.cargar'" [showBtnAccept]="true" [submit]="submit" (eventEmmitterAccept)="saveInfoFile()" [showBtnCancel]="true" (eventEmmitterCancel)="clean()"></app-buttons-fotter>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-xs-12 col-md-12 form-group">
+
+            <!-- <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 col-xs-12 full-width"> -->
+            <mat-table matTableExporter [dataSource]="dataSource" matSort class="mat-elevation-z8 col-xs-12 full-width" #exporter="matTableExporter">
+                <ng-container matColumnDef="idConvocatoria">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.convocatoria'|translate}}</th>
+                    <td mat-cell *matCellDef=" let element " style="width: 15%;">{{element.idConvocatoria}}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="idLugarPrueba">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.lugarPrueba'|translate}}</th>
+                    <td mat-cell *matCellDef=" let element " style="width: 15%;">{{element.idLugarPrueba}}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="fechaPrueba">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.fechaPrueba'|translate}}</th>
+                    <!-- <td mat-cell *matCellDef=" let element " style="width: 10%;">{{element.fechaPrueba | date:formatDateView}}</td> -->
+                    <td mat-cell *matCellDef=" let element " style="width: 10%;">{{element.fechaPruebaStr | date:formatDateView}}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="horaPrueba">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.horaPrueba'|translate}}</th>
+                    <!-- <td mat-cell *matCellDef=" let element " style="width: 10%;">{{element.horaPrueba | date:formatTimeView}}</td> -->
+                    <td mat-cell *matCellDef=" let element " style="width: 10%;">{{element.horaPrueba}}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="idTipoPrueba">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.tipoPrueba'|translate}}</th>
+                    <td mat-cell *matCellDef=" let element " style="width: 10%;">{{element.idTipoPrueba}}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="identificacionAspirante">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.identificacion'|translate}}</th>
+                    <td mat-cell *matCellDef=" let element " style="width: 10%;">{{element.identificacionAspirante}}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="codigoAlternoPerfil">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.codigoAlternoPerfil'|translate}}</th>
+                    <td mat-cell *matCellDef=" let element " style="width: 10%;">{{element.codigoAlternoPerfil}}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="msgError">
+                    <th mat-header-cell *matHeaderCellDef >{{'lbl.error'|translate}}</th>
+                    <td mat-cell *matCellDef=" let element " style="width: 8%;">{{element.msgError}}</td>
+                </ng-container>
+                
+                <tr mat-header-row *matHeaderRowDef="displayedColumns "></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns; "></tr>
+            </mat-table>
+            <mat-paginator #matPaginator [pageSizeOptions]="[5,10, 20]" showFirstLastButtons>
+            </mat-paginator>
+        </div>
+    </div>
+</form>

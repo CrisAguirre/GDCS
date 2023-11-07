@@ -1,0 +1,68 @@
+<!-- <div class="col-sm-12  col-md-12 col-lg-12"> -->
+    <!-- <mat-card>
+            <mat-card-header>
+                <mat-card-title>{{'ttl.informacionAspirantes'|translate}}</mat-card-title>
+            </mat-card-header>
+            <mat-card-content> -->
+
+    <div class="col-xs-12 col-md-12 form-group">
+        <div class="col-xs-12 col-md-6">
+            <mat-form-field>
+                <mat-label>{{'lbl.buscar'|translate}}</mat-label>
+                <input matInput (keyup)="applyFilter($event , dataSource)" placeholder="{{'lbl.buscarPlh'|translate}}"
+                    autocomplete="off">
+            </mat-form-field>
+        </div>
+
+        <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8 col-xs-12 full-width"
+            (matSortChange)="sortData($event)">
+
+            <ng-container matColumnDef="identificacion">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.identificacion'|translate}}
+                </th>
+                <td mat-cell *matCellDef=" let element " style="width: 15%;">
+                    {{commonService.getNumeroDocumento(element)}}
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="nombreCompleto">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.nombresCompletos'|translate}}
+                </th>
+                <td mat-cell *matCellDef=" let element " style="width: 15%;">
+                    {{commonService.getNameAspirante(element)}}
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="cargoAspirante">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                    {{'lbl.nombreCargo'|translate}}</th>
+                <td mat-cell *matCellDef=" let element " style="width: 25%;">
+                    {{commonService.getCargoAspirante(element)}}
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="gradoCargo">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                    {{'lbl.grado'|translate}}</th>
+                <td mat-cell *matCellDef=" let element " style="width: 10%;">{{commonService.getGradoCargo(element)}}
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="estadoAspirante">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                    {{'lbl.estadoAspirante'|translate}}</th>
+                <td mat-cell *matCellDef=" let element " style="width: 25%;">
+                    {{commonService.getEstadoAspirante(element)}}
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns "></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns; "
+                [ngClass]="{hovered: row.hovered, highlighted: isSelectedTable(elementCurrent , row.id)}"
+                (mouseover)="row.hovered = true" (mouseout)="row.hovered = false"></tr>
+        </table>
+        <mat-paginator [pageSizeOptions]="[5,10, 20]" showFirstLastButtons></mat-paginator>
+    </div>
+    <!-- </mat-card-content>
+        </mat-card> -->
+<!-- </div> -->

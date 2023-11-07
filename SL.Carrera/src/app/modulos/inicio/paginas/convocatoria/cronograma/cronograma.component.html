@@ -1,0 +1,172 @@
+<mat-card>
+    <mat-card-header>
+        <mat-card-title>{{'ttl.cronograma'|translate}}</mat-card-title>
+        <!-- <mat-card-subtitle>Subtitulo</mat-card-subtitle> -->
+    </mat-card-header>
+    <mat-card-content>
+        <form #formV="ngForm" [formGroup]="form">
+
+            <div class="row mt-4" *ngIf="showSelectCompany">
+                <div class="col-xs-12 col-md-4 form-group">
+                    <mat-form-field appearance="{{appearanceInput}}">
+                        <mat-label>{{'lbl.empresa'|translate}}</mat-label>
+                        <mat-select formControlName="idEmpresa" (selectionChange)='loadCronogramaByEmpresa($event)'>
+                            <mat-option *ngFor="let g of lstCompanies" [value]="g.id">
+                                {{g.nombreEmpresa}}
+                            </mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="f.idEmpresa.hasError('required')">
+                            <strong>{{'msg.campoRequerido'|translate}}</strong>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+
+            <div class="row">
+
+                <div class="col-xs-12 col-md-4 form-group">
+                    <app-input-select [label]="'lbl.convocatoria'" [lst]="lstConvocatories" [xOption]="'nombreConvocatoria'" [xId]="'id'" formControlName="idConvocatoria" [controll]="f.idConvocatoria" (eventEmmitter)="loadDataConvocatorySelected($event)"></app-input-select>
+                </div>
+
+                <div class="col-xs-12 col-md-4 form-group">
+                    <app-input-select [label]="'lbl.actividad'" [lst]="lstActivities" [xOption]="'actividadConvocatoria'" [xId]="'id'" formControlName="idActividadConvocatoria" [controll]="f.idActividadConvocatoria"></app-input-select>
+                </div>
+
+                <div class="col-xs-12 col-md-4 form-group">
+                    <app-input-general formControlName="otroActividadConvocatoria" [controll]="f.otroActividadConvocatoria" [label]="'lbl.cualActividad'"></app-input-general>
+                </div>
+
+                <div #divFechaInicial class="col-xs-12 col-md-4 form-group">
+                    <!-- <app-input-date [label]="'lbl.fechaInicial'" [minDate]="convocatoryCurrent.fechaInicial" [maxDate]="convocatoryCurrent.fechaFinalDynamic" formControlName="fechaInicial" [controll]="f.fechaInicial"></app-input-date> -->
+                    <app-input-date [label]="'lbl.fechaInicial'" [minDate]="convocatoryCurrent.fechaInicial" formControlName="fechaInicial" [controll]="f.fechaInicial" [required]="true"></app-input-date>
+                </div>
+
+                <div class="col-xs-12 col-md-4 form-group">
+                    <!-- <app-input-date [label]="'lbl.fechaFinal'" [minDate]="convocatoryCurrent.fechaInicialDynamic" [maxDate]="convocatoryCurrent.fechaFinal" formControlName="fechaFinal" [controll]="f.fechaFinal"></app-input-date> -->
+                    <app-input-date [label]="'lbl.fechaFinal'" [minDate]="convocatoryCurrent.fechaInicialDynamic" formControlName="fechaFinal" [controll]="f.fechaFinal" [required]="true"></app-input-date>
+                </div>
+
+                <div class="col-xs-12 col-md-4 form-group">
+                    <!-- <div class="col-xs-12 col-md-4 form-group"> -->
+                    <div class="row">
+                        <div class="col-sm-10 pr-0">
+                            <mat-form-field appearance="{{appearanceInput}}">
+                                <mat-label>{{'lbl.adjuntarSoporte'|translate}}</mat-label>
+                                <ngx-mat-file-input #inputFileSoport class="inputFileSoport" formControlName="idSoporteProrroga" valuePlaceholder="{{(!elementCurrent.idSoporteProrroga? 'lbl.seleccioneArchivo':elementCurrent.infoSoporte)|translate}}" [accept]="configFile.allowExtensions"
+                                    [errorStateMatcher]="matcher">
+                                </ngx-mat-file-input>
+                                <button mat-icon-button matSuffix *ngIf="elementCurrent.idSoporteProrroga || this.f.idSoporteProrroga.value" (click)="inputFileSoport.clear($event); deleteFileView()">
+                                    <mat-icon>clear</mat-icon>
+                                </button>
+                                <mat-hint *ngIf="f.esProrroga.value==1">{{'msg.archivoPermitido'|translate}} ({{configFile.allowExtensions}})
+                                </mat-hint>
+                                <mat-error *ngIf="f.idSoporteProrroga.hasError('required')">
+                                    {{'msg.seleccioneArchivo'|translate}} ({{configFile.allowExtensions}})
+                                </mat-error>
+                                <mat-error *ngIf="f.idSoporteProrroga.hasError('maxContentSize')">
+                                    {{'msg.tamanioArchivo'|translate}} {{f.idSoporteProrroga?.getError('maxContentSize').maxSize | byteFormat}} ({{f.idSoporteProrroga?.getError('maxContentSize').actualSize | byteFormat}}).
+                                </mat-error>
+                                <mat-error *ngIf="f.idSoporteProrroga.hasError('badExtension')">
+                                    {{f.idSoporteProrroga.errors.badExtension}} ({{configFile.allowExtensions}})
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-sm-2 p-0">
+                            <button mat-icon-button *ngIf="f.esProrroga.value==1" class="mt-2" type="button" color="primary" (click)="!elementCurrent.idSoporteProrroga ? openDialogFile('.inputFileSoport') :viewFile(elementCurrent.idSoporteProrroga)" title="{{(!elementCurrent.idSoporteProrroga ? 'lbl.cargarArchivo':'lbl.verAdjunto')|translate}}">
+                                <mat-icon>{{!elementCurrent.idSoporteProrroga ? 'attach_file':'remove_red_eye'}}</mat-icon>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="row">
+                <div class="col-sm-12 pull-right form-group">
+                    <app-buttons-fotter [showBtnAccept]="true" [submit]="submit" (eventEmmitterAccept)="add()" [labelBtnAccept]="'btn.guardar'" [iconAccept]="'save'" [showBtnCancel]="true" (eventEmmitterCancel)="cleanAllForm()" (eventEmmitterCancel)="cleanTabla()" [labelBtnCancel]="'btn.limpiar'" [iconCancel]="'clear_all'"></app-buttons-fotter>
+                </div>
+            </div>
+
+            <!-- <div class="row">
+                <div class="col-sm-12 pull-right form-group">
+                    
+                    <button mat-raised-button type="button" class="pull-right mr-1" title="{{'btn.prorroga'|translate}}">{{'btn.prorroga'|translate}}
+                <mat-icon>clear_all</mat-icon></button>
+                </div>
+            </div> -->
+
+            <div class="row">
+                <div class="col-xs-12 col-md-12 form-group">
+
+                    <div class="col-xs-12 col-md-3">
+                        <mat-form-field>
+                            <mat-label>{{'lbl.buscar'|translate}}</mat-label>
+                            <input matInput (keyup)="applyFilter($event , dataSource)" placeholder="{{'lbl.buscarPlh'|translate}}" autocomplete="off">
+                        </mat-form-field>
+                    </div>
+
+                    <table mat-table [dataSource]="dataSource" matSort matSortActive="codeConvocatoria" matSortDirection="asc" class="mat-elevation-z8 col-xs-12 full-width" (matSortChange)="sortData($event)">
+
+                        <ng-container matColumnDef="codeConvocatoria">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 30%;">{{'lbl.codigoConvocatoria'|translate}}</th>
+                            <td mat-cell *matCellDef=" let element ">
+                                {{element.convocatoria}}
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="activity">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 20%;">{{'lbl.actividad'|translate}}</th>
+                            <td mat-cell *matCellDef=" let element ">{{element.actividadaConvocatoria}}</td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="initDate">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 10%;">{{'lbl.fechaInicial'|translate}}</th>
+                            <td mat-cell *matCellDef=" let element ">{{element.fechaInicial | date:formatDateView}}</td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="dateEnd">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 10%;">{{'lbl.fechaFinal'|translate}}</th>
+                            <td mat-cell *matCellDef=" let element ">{{element.fechaFinal | date:formatDateView}}</td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="esProrroga">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 10%;text-align: center;">{{'lbl.esProrroga'|translate}}</th>
+                            <td mat-cell *matCellDef=" let element ">{{(element.esProrroga == 1 ? 'lbl.si':'')|translate}}</td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="soport">
+                            <th mat-header-cell *matHeaderCellDef style="text-align: center; width: 5%;">{{'lbl.soporte'|translate}}</th>
+                            <td mat-cell *matCellDef="let element" style="text-align: center;">
+                                <button *ngIf="element.idSoporteProrroga" (click)="viewFile(element.idSoporteProrroga)" type="button" title="{{'lbl.verSoporte'|translate}}" color="warn" mat-icon-button>
+                                    <mat-icon>attach_file</mat-icon>
+                                </button> </td>
+                        </ng-container>
+
+
+                        <ng-container matColumnDef="options">
+                            <th mat-header-cell *matHeaderCellDef style="text-align: center; width: 25%;">{{'lbl.acciones'|translate}}</th>
+                            <td mat-cell *matCellDef="let element" class="mat-cell-left">
+                                <div *ngIf="element.mostrarBtns">
+                                    <button (click)="edit(element)" type="button" title="{{'btn.editar'|translate}}" color="primary" mat-icon-button>
+                                        <mat-icon>edit</mat-icon>
+                                    </button>
+                                    <button type="button" color="warn" mat-icon-button title="{{'btn.eliminar'|translate}}" (click)="delete(element)">
+                                        <mat-icon>delete</mat-icon>
+                                    </button>
+                                    <button *ngIf="element.registroActivo == 1" type="button" color="success" mat-icon-button title="{{'btn.prorroga'|translate}}" (click)="prorroga(element)">
+                                        <mat-icon>date_range</mat-icon>
+                                    </button>
+                                </div>
+                            </td>
+                        </ng-container>
+
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns "></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns; " [ngClass]="{hovered: row.hovered, highlighted: isSelectedTable(elementCurrent , row.id)}" (mouseover)="row.hovered = true" (mouseout)="row.hovered = false"></tr>
+                    </table>
+                    <mat-paginator [pageSizeOptions]="[5,10, 20]" showFirstLastButtons></mat-paginator>
+                </div>
+            </div>
+
+        </form>
+    </mat-card-content>
+</mat-card>

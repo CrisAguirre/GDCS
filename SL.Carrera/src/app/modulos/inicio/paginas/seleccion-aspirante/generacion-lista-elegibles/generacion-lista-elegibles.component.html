@@ -1,0 +1,379 @@
+<mat-card>
+    <mat-card-header>
+        <mat-card-title>{{'ttl.generacionListaElegibles'| translate}}</mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+
+        <form #formV="ngForm" [formGroup]="form">
+
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-4 form-group" *ngIf="showSelectCompany">
+                    <app-input-select [label]="'lbl.empresa'" [lst]="lstCompanies" [xOption]="'nombreEmpresa'"
+                        [xId]="'id'" formControlName="idEmpresa" [controll]="f.idEmpresa" [required]="false"
+                        (eventEmmitter)="loadDataByEmpresa($event)">
+                    </app-input-select>
+                </div>
+
+                <div class="col-xs-12 col-md-4 form-group">
+                    <app-input-select [label]="'lbl.convocatoria'" [lst]="lstConvocatories"
+                        [xOption]="'nombreConvocatoria'" [xId]="'id'" formControlName="idConvocatoria"
+                        [controll]="f.idConvocatoria" (eventEmmitter)="loadDataByConvocatoria($event)"
+                        [required]="false">
+                    </app-input-select>
+                </div>
+
+            </div>
+
+        </form>
+
+
+        <div class="row">
+
+            <div class="col-sm-12 text-right">
+                <label><b>{{msgListaElegibles}}</b></label>
+            </div>
+
+            <div class="col-xs-12 col-sm-6">
+                <app-input-search-table (eventEmmitter)="applyFilter($event , dataSource)">
+                </app-input-search-table>
+            </div>
+
+            <div class="col-xs-12 col-md-12 form-group">
+
+                <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8 col-xs-12 full-width"
+                    (matSortChange)="sortData($event)">
+                    <ng-container matColumnDef="identificacion">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.identificacion'|translate}}
+                        </th>
+                        <td mat-cell *matCellDef=" let element " style="width: 10%;">
+                            {{commonService.getNumeroDocumento(element.inscripcionAspiranteModel)}}
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="nombresCompletos">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.nombresCompletos'|translate}}</th>
+                        <td mat-cell *matCellDef=" let element " style="width: 30%;">
+                            {{element.inscripcionAspiranteModel ?
+                            commonService.getNameAspirante(element.inscripcionAspiranteModel) : ''}}
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="cargoAspirante">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                            {{'lbl.nombreCargo'|translate}}</th>
+                        <td mat-cell *matCellDef=" let element " style="width: 20%;">
+                            {{commonService.getCargoAspirante(element.inscripcionAspiranteModel)}}
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="gradoCargo">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                            {{'lbl.grado'|translate}}</th>
+                        <td mat-cell *matCellDef=" let element " style="width: 10%;">
+                            {{commonService.getGradoCargo(element.inscripcionAspiranteModel)}}
+                        </td>
+                    </ng-container>
+
+                   <!--  <ng-container matColumnDef="tipoPrueba">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                            {{'lbl.tipoPrueba'|translate}}</th>
+                        <td mat-cell *matCellDef=" let element " style="width: 15%;">
+                            {{element.tipoPruebaModel ? element.tipoPruebaModel['tipoPrueba' +lang] : ''}}
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="puntajeClasificacion">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                            {{'lbl.puntajeClasificacion'|translate}}</th>
+                        <td mat-cell *matCellDef=" let element " style="width: 15%;">
+                            {{element.puntajeClasificacion}}
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="puntajeClasificacionCursoFormacion">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                            {{'lbl.puntajeClasificacionCursoFormacion'|translate}}</th>
+                        <td mat-cell *matCellDef=" let element " style="width: 15%;">
+                            {{element.puntajeClasificacionCursoFormacion}}
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="puntajeRecomendado">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                            {{'lbl.puntajeRecomendado'|translate}}</th>
+                        <td mat-cell *matCellDef=" let element " style="width: 15%;">
+                            {{element.puntajeRecomendado}}
+                        </td>
+                    </ng-container> -->
+
+                    <ng-container matColumnDef="dependencia">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                            {{'lbl.dependencia'|translate}}</th>
+                        <td mat-cell *matCellDef=" let element " style="width: 35%;">
+                            {{commonService.getDependenciaLugar(element.inscripcionAspiranteModel)}}
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="detallePuntajes">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                            {{'lbl.detallePuntajes'|translate}}</th>
+                        <td mat-cell *matCellDef=" let element " style="width: 15%;">
+                            <button type="button" mat-icon-button title="{{'btn.verDetallePuntajes'|translate}}"
+                                (click)="verDetallePuntajes(element)">
+                                <mat-icon>receipt_long</mat-icon>
+                            </button>
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="detalleRecomendacion">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                            {{'lbl.detalleRecomendacion'|translate}}</th>
+                        <td mat-cell *matCellDef=" let element " style="width: 15%;">
+                            <button type="button" mat-icon-button title="{{'btn.verMasDetalles'|translate}}"
+                                (click)="seeCombinationsStages(element)">
+                                <mat-icon>remove_red_eye</mat-icon>
+                            </button>
+                        </td>
+                    </ng-container>
+
+
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns "></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns; "
+                        [ngClass]="{hovered: row.hovered, highlighted: selection.isSelected(row)}"
+                        (mouseover)="row.hovered = true" (mouseout)="row.hovered = false"></tr>
+                </table>
+                <mat-paginator [pageSizeOptions]="[5,10, 20]" showFirstLastButtons></mat-paginator>
+            </div>
+
+            <mat-accordion [multi]="false" *ngIf="showTablaInscripcionAsp" class="col-sm-12">
+                <mat-expansion-panel [expanded]="false">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title class="title-accordeon">
+                            <b>{{'ttl.informacionAspirantes'|translate}}</b>
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <app-tabla-informacion-aspirantes [idConvocatoria]="f.idConvocatoria.value" [estadosMostrar]="lstEstadosTablaInfo"></app-tabla-informacion-aspirantes>
+                </mat-expansion-panel>
+            </mat-accordion>
+
+        </div>
+
+        <div class="row">
+            <div class="col-sm-12 pull-right form-group">
+                <app-buttons-fotter [showBtnCancel]="true" (eventEmmitterCancel)="clean()"
+                    [labelBtnCancel]="'btn.limpiar'" style="margin-left: 5px; margin-right: 5px;"></app-buttons-fotter>
+
+                <ng-container>
+                    <button *ngIf="f.idConvocatoria?.value" mat-raised-button color="primary" class="pull-right" [disabled]="submit"
+                        (click)="getReporteElegiblesByCargo()" title="{{ 'btn.generarReporte' | translate }}"
+                        style="margin-left: 5px; margin-right: 5px;">
+                        {{ 'btn.generarReporte' | translate }}
+                        <mat-icon>get_app</mat-icon>
+                    </button>
+
+                    <button mat-raised-button color="primary" class="pull-right" [disabled]="submit"
+                        (click)="generarListaElegibles()" title="{{ 'btn.generarListaElegibles' | translate }}"
+                        style="margin-left: 5px; margin-right: 5px;">
+                        {{ 'btn.generarListaElegibles' | translate }}
+                        <mat-icon>add_alert</mat-icon>
+                    </button>
+                </ng-container>
+            </div>
+        </div>
+
+    </mat-card-content>
+</mat-card>
+
+<ng-template #dialogInfo>
+    <h2 matDialogTitle>{{'ttl.modalidad'| translate}}</h2>
+    <div class="row">
+        <div class="col-xs-12 col-md-12 form-group">
+            <table mat-table [dataSource]="dataSourceInfo" matSort class="mat-elevation-z8 col-xs-12 full-width">
+                <ng-container matColumnDef="subTipo">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                        {{'lbl.modalidad'|translate}}</th>
+                    <td mat-cell *matCellDef=" let element ">{{element.tipoAdicionalModel['tipoAdicional' + lang]}}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="subPuntajeMaximo">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                        {{'lbl.puntajeMaximo'|translate}}</th>
+                    <td mat-cell *matCellDef=" let element ">{{element.puntajeMaximo}}</td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumnsInfo "></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumnsInfo; "></tr>
+            </table>
+            <mat-paginator #paginatorDialog="matPaginator" [pageSizeOptions]="[5,10, 20]" showFirstLastButtons>
+            </mat-paginator>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12 pull-right form-group">
+            <app-buttons-fotter [showBtnCancel]="true" (eventEmmitterCancel)="closeDialogInfo()"
+                [labelBtnCancel]="'btn.cerrar'" [iconCancel]="'close'"></app-buttons-fotter>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #dialogInfo2>
+    <h2 matDialogTitle>{{'ttl.detalleAspirante'| translate}}</h2>
+    <div class="row">
+        <div class="col-xs-12 col-md-12 form-group">
+
+            <label *ngIf="lstTableDetails.length > 0" class="col-sm-12"><b>{{'lbl.identificacion'|translate}}:
+                </b><small>{{commonService.getNumeroDocumento(lstTableDetails[0].inscripcionAspiranteModel)}}</small></label>
+            <label *ngIf="lstTableDetails.length > 0" class="col-sm-12">
+                <b>{{'lbl.nombresCompletos'|translate}}:
+                </b><small>{{commonService.getNameAspirante(lstTableDetails[0].inscripcionAspiranteModel)}}</small></label>
+
+            <table mat-table [dataSource]="dataSourceInfo2" matSort #sortInfo2="matSort"
+                class="mat-elevation-z8 col-xs-12 full-width" (matSortChange)="sortDataInfo2($event)">
+
+                <!-- <ng-container matColumnDef="identificacion">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.identificacion'|translate}}
+                    </th>
+                    <td mat-cell *matCellDef=" let element " style="width: 15%;">
+                        {{commonService.getNumeroDocumento(element.inscripcionAspiranteModel)}}
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="nombresCompletos">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.nombresCompletos'|translate}}</th>
+                    <td mat-cell *matCellDef=" let element " style="width: 40%;">
+                        {{element.inscripcionAspiranteModel ?
+                        commonService.getNameAspirante(element.inscripcionAspiranteModel) : ''}}
+                    </td>
+                </ng-container> -->
+
+                <ng-container matColumnDef="cargoAspirante">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                        {{'lbl.nombreCargo'|translate}}</th>
+                    <td mat-cell *matCellDef=" let element " style="width: 25%;">
+                        {{commonService.getCargoAspirante(element.inscripcionAspiranteModel)}}
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="gradoCargo">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                        {{'lbl.grado'|translate}}</th>
+                    <td mat-cell *matCellDef=" let element " style="width: 10%;">
+                        {{commonService.getGradoCargo(element.inscripcionAspiranteModel)}}
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="tipoPrueba">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                        {{'lbl.tipoPrueba'|translate}}</th>
+                    <td mat-cell *matCellDef=" let element " style="width: 15%;">
+                        {{element.tipoPruebaModel ? element.tipoPruebaModel['tipoPrueba' +lang] : ''}}
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="puntajeClasificacion">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                        {{'lbl.puntajeClasificacion'|translate}}</th>
+                    <td mat-cell *matCellDef=" let element " style="width: 15%;">
+                        {{element.puntajeClasificacion}}
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="puntajeClasificacionCursoFormacion">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                        {{'lbl.puntajeClasificacionCursoFormacion'|translate}}</th>
+                    <td mat-cell *matCellDef=" let element " style="width: 15%;">
+                        {{element.puntajeClasificacionCursoFormacion}}
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="puntajeRecomendadoCap">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                        {{'lbl.puntajeRecomendadoCap'|translate}}</th>
+                    <td mat-cell *matCellDef=" let element " style="width: 15%;">
+                        {{element.puntajeRecomendadoCap}}
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="puntajeRecomendadoExp">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                        {{'lbl.puntajeRecomendadoExp'|translate}}</th>
+                    <td mat-cell *matCellDef=" let element " style="width: 15%;">
+                        {{element.puntajeRecomendadoExp}}
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="valorRealAdicional">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.valorRealExperiencia'|translate}}</th>
+                    <td mat-cell *matCellDef=" let element " style="width: 15%;" class="text-center">
+
+                        <ng-container *ngIf="showButtonEdit ">
+                            {{element.valorRealAdicional}}
+                            <button type="button" mat-icon-button title="{{'btn.editar'|translate}}"
+                                (click)="activarInputValorReal(element)">
+                                <mat-icon>edit</mat-icon>
+                            </button>
+                        </ng-container>
+
+                        <ng-container *ngIf="showInputEdit ">
+                            <!-- <app-input-general [formControl]="valorRealAd" [controll]="valorRealAd" [required]="false" (blur)="setValorRealAdicional(element)" (keypress)="validateNumber($event)" [typeField]="'number'" [numMin]="0"></app-input-general> -->
+                            <mat-form-field appearance="{{appearanceInput}}" style="width: 120px;">
+                                <input matInput type="number" [(ngModel)]="element.valorRealAdicional"
+                                    (blur)="setValorRealAdicional(element)" required="{{false}}"
+                                    (keypress)="validateNumber($event)" minlength="1" min="1">
+                            </mat-form-field>
+                        </ng-container>
+
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="valorRealCapacitacion">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.valorRealCapacitacion'|translate}}</th>
+                    <td mat-cell *matCellDef=" let element " style="width: 15%;" class="text-center">
+
+                        <ng-container *ngIf="showButtonEdit2 ">
+                            {{element.valorRealAdicionalCapacitacion}}
+                            <button type="button" mat-icon-button title="{{'btn.editar'|translate}}"
+                                (click)="activarInputValorCapacitacion(element)">
+                                <mat-icon>edit</mat-icon>
+                            </button>
+                        </ng-container>
+
+                        <ng-container *ngIf="showInputEdit2 ">
+                            <mat-form-field appearance="{{appearanceInput}}" style="width: 120px;">
+                                <input matInput type="number" [(ngModel)]="element.valorRealAdicionalCapacitacion"
+                                    (blur)="setValorRealCapacitacion(element)" required="{{false}}"
+                                    (keypress)="validateNumber($event)" minlength="1" min="1">
+                            </mat-form-field>
+                        </ng-container>
+
+                    </td>
+                </ng-container>
+
+                <!-- <ng-container matColumnDef="totalPuntos">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.totalPuntos'|translate}}</th>
+                    <td mat-cell *matCellDef=" let element " style="width: 15%;">
+                        {{element.totalPuntos}}
+                    </td>
+                </ng-container> -->
+
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns2 "></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns2; "
+                    [ngClass]="{hovered: row.hovered, highlighted: selection.isSelected(row)}"
+                    (mouseover)="row.hovered = true" (mouseout)="row.hovered = false"></tr>
+            </table>
+            <mat-paginator #paginatorDialog2="matPaginator" [pageSizeOptions]="[5,10, 20]" showFirstLastButtons>
+            </mat-paginator>
+        </div>
+        <div class="col-xs-12 col-md-12 form-group text-right">
+            <h5><b>{{'lbl.puntajeTotal'|translate}} :</b> {{total}}</h5>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12 pull-right form-group">
+            <app-buttons-fotter [showBtnCancel]="true" (eventEmmitterCancel)="closeDialogInfo2()"
+                [labelBtnCancel]="'btn.cerrar'" [iconCancel]="'close'"></app-buttons-fotter>
+        </div>
+    </div>
+</ng-template>

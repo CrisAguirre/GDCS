@@ -1,0 +1,9 @@
+<button *ngIf="showBtnAccept" mat-raised-button color="primary" class="pull-right" [disabled]="submit" (click)="clickAccept($event)" title="{{ labelBtnAccept | translate }}">
+  {{ labelBtnAccept | translate }}
+  <mat-icon *ngIf="iconAccept">{{ iconAccept }}</mat-icon>
+</button>
+
+<button *ngIf="showBtnCancel" mat-raised-button type="button" class="pull-right mr-1" (click)="clickCancel($event)" title="{{ labelBtnCancel | translate }}">
+  {{ labelBtnCancel | translate }}
+  <mat-icon *ngIf="iconCancel">{{iconCancel}}</mat-icon>
+</button>

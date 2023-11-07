@@ -1,0 +1,29 @@
+<!-- <mat-form-field appearance="{{appearanceInput}}">
+    <mat-select [formControl]="langControll" (selectionChange)='changeLanguaje($event)' title="Cambiar Idioma" required>
+        <mat-select-trigger>
+            {{langCurrent.title}} <span class="flag-icon flag-icon-{{langCurrent.img}}"></span>
+        </mat-select-trigger>
+        <mat-option *ngFor="let g of lstLangs" [value]="g.lang">
+            {{g.title}} <span class="flag-icon flag-icon-{{g.img}}"></span>
+        </mat-option>
+    </mat-select>
+</mat-form-field> -->
+
+<mat-form-field appearance="{{appearanceInput}}">
+    <mat-select [formControl]="langControll" (selectionChange)='changeLanguaje($event)' title="{{'lbl.cambiarIdioma'|translate}}" required>
+        <mat-select-trigger>
+            {{langCurrent.title}}
+            <span style="display:inline-block;">
+                <img class="manImg" src="./assets/imagenes/translate/{{langCurrent.img}}.svg"/>
+            </span>
+        </mat-select-trigger>
+        <mat-option *ngFor="let g of lstLangs" [value]="g.lang">
+            {{g.title}}
+            <span style="display:inline-block;">
+                <img class="manImg" src="./assets/imagenes/translate/{{g.img}}.svg"/>
+            </span>
+        </mat-option>
+    </mat-select>
+</mat-form-field>
+<!-- <button class="btn" [ngClass]="{'active': activeLang == 'es-CO'}" (click)="cambiarLenguaje('es-CO')">Español</button>
+<button class="btn" [ngClass]="{'active': activeLang == 'en-US'}" (click)="cambiarLenguaje('en-US')">Inglés</button> -->

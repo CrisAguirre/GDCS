@@ -1,0 +1,11 @@
+th.mat-sort-header-sorted {
+    color: black;
+}
+
+td.mat-cell.mat-cell-left {
+    text-align: center !important;
+}
+
+::ng-deep .mat-tooltip  {
+    white-space: pre-line    !important;
+}

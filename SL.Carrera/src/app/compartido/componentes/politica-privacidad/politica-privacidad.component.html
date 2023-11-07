@@ -1,0 +1,23 @@
+<style>
+    .table-cookie tr,
+    td,
+    th {
+        border: 1px solid #c1c1c1;
+        padding: 3px;
+    }
+    
+    .table-cookie td:first-child {
+        text-align: center;
+    }
+</style>
+<h2 mat-dialog-title>{{content['nombre'+lang]}}</h2>
+<mat-dialog-content class="mat-typography ml-2 mr-2">
+
+    <div id="div_message" [innerHTML]="textoHtml" class="col-sm-12 text-justify">
+    </div>
+
+
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>{{'btn.cerrar'|translate}}</button>
+</mat-dialog-actions>

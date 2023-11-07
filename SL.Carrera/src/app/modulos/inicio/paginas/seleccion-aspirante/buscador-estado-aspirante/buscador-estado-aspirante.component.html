@@ -1,0 +1,102 @@
+<!-- <form #formV="ngForm" [formGroup]="form"> -->
+<mat-card class="mb-2">
+    <mat-card-header>
+        <mat-card-title>{{'ttl.buscadorEstadoAspirante'|translate}}</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+
+        <form #formV="ngForm" [formGroup]="form">
+
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-4 form-group">
+                    <app-input-general formControlName="identificacion" [controll]="f.identificacion" [label]="'lbl.identificacion'" [typeField]="'number'" [numMin]="0" autocomplete="off" [required]="true"></app-input-general>
+                </div>
+
+                <div class="col-xs-12  mt-n1 form-group">
+                    <button mat-raised-button color="primary" class="mr-1"
+                        (click)="buscarEstadoAspirante()" title="{{ 'btn.buscar' | translate }}">
+                        {{ 'btn.buscar' | translate }}
+                        <mat-icon>person_search</mat-icon>
+                    </button>
+
+                    <button mat-raised-button type="button" class="mr-1" (click)="cleanForm()"
+                        title="{{'btn.limpiar'|translate}}">{{'btn.limpiar'|translate}}
+                        <mat-icon>clear_all</mat-icon>
+                    </button>
+                </div>
+            </div>
+
+        </form>
+
+        <div *ngIf="showResult" class="offset-sm-2 col-sm-8 mt-3">
+            <mat-divider></mat-divider>
+        </div>
+
+        <div *ngIf="showResult" class="col-sm-12 text-center mt-5">
+            <h6>{{'lbl.estadoAspirante' | translate}}</h6>
+        </div>
+
+        <div *ngIf="showResult" class="row col-sm-12 mt-4">
+            <div class="col-xs-12 col-sm-12 col-md-4 form-group">
+                <app-input-general [formControl]="identificacion" [controll]="identificacion"
+                    [label]="'lbl.identificacion'"></app-input-general>
+            </div>
+
+            <div class="col-xs-12 col-sm-12 col-md-4 form-group">
+                <app-input-general [formControl]="nombreAspirante" [controll]="nombreAspirante"
+                    [label]="'lbl.nombreAspirante'"></app-input-general>
+            </div>
+        </div>
+
+        <div *ngIf="showResult" class="row">
+            <div class="col-xs-12 col-md-12">
+
+                <div class="col-xs-12 col-md-6">
+                    <mat-form-field>
+                        <mat-label>{{'lbl.buscar'|translate}}</mat-label>
+                        <input matInput (keyup)="applyFilter($event, dataSource)" placeholder="{{'lbl.buscarPlh'|translate}}" autocomplete="off">
+                    </mat-form-field>
+                </div>
+
+                <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 col-xs-12 full-width" matSort (matSortChange)="sortData($event)">
+                    <ng-container matColumnDef="nombreConvocatoria">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.nombreConvocatoria'|translate}}</th>
+                        <td mat-cell *matCellDef=" let element " style="width: 20%;">
+                            {{element.convocatoria ? element.convocatoria.nombreConvocatoria : ''}}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="numeroConvocatoria">
+                            <th mat-header-cell *matHeaderCellDef style="text-align: justify;" mat-sort-header>{{'lbl.numeroConvocatoria'|translate}}</th>
+                            <td mat-cell *matCellDef=" let element " class="mat-cell-right" style="width: 8%;">
+                                {{element.convocatoria ? element.convocatoria.numeroConvocatoria : ''}}
+                            </td>
+                        </ng-container>
+
+                    <ng-container matColumnDef="cargoAspirante">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.cargo'|translate}}</th>
+                        <td mat-cell *matCellDef=" let element " style="width: 19%;">
+                            {{commonService.getCargoAspirante(element)}}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="estadoAspirante">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.estadoAspirante'|translate}}</th>
+                        <td mat-cell *matCellDef=" let element " style="width: 10%;">
+                            {{element.estadoAspiranteModel ? element.estadoAspiranteModel['nombreCategoria'+this.lang] : ''}}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="fecha">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.fechaInscripcion'|translate}}</th>
+                        <td mat-cell *matCellDef=" let element " style="width: 8%;">
+                            {{element.fechaRegistro | date:formatDateView}}</td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns "></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns; " [ngClass]="{hovered: row.hovered, highlighted: isSelectedTable(elementCurrent , row.id)}" (mouseover)="row.hovered = true" (mouseout)="row.hovered = false"></tr>
+                </table>
+                <mat-paginator #paginator="matPaginator" [pageSizeOptions]="[5,10, 20]" showFirstLastButtons>
+                </mat-paginator>
+            </div>
+        </div>
+
+    </mat-card-content>
+</mat-card>

@@ -1,0 +1,27 @@
+<form #formV="ngForm">
+        <mat-card>
+                <mat-card-header>
+                        <div class="row " style="text-align: center;">
+                                <h5><b>{{'APP.nombre'|translate}}</b></h5>&nbsp;
+                                <h5>{{'APP.nombre2'|translate}}</h5>
+                        </div>
+                </mat-card-header>
+                <div class="col-xs-12 col-md-12 form-group">
+                        <div *ngFor="let v of lstCategoriaVideo">
+                                <div class="row mt-12">
+                                        <!-- <h3><b>{{v['nombreCategoria' + lang]}}</b></h3> -->
+                                        <h5><b>{{v['nombreCategoria' + lang]}}</b></h5>
+                                        <!-- <h5><b>{{v['nombreCategoria' + lang]}}</b></h5>
+                                        <mat-card-title>{{v['nombreCategoria' + lang]}}</mat-card-title> -->
+                                </div>
+                                <div class="row">
+                                        <div *ngFor="let n of v.videos">
+                                                <iframe class="escala" [src]="('https://www.youtube.com/embed/' + n.url) | safe" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                                                <h6 style="text-align: center;">{{n['nombreVideo' + lang]}}</h6>
+                                        </div>
+                                </div>
+                                <hr class="barra">
+                        </div>
+                </div>
+        </mat-card>
+</form>

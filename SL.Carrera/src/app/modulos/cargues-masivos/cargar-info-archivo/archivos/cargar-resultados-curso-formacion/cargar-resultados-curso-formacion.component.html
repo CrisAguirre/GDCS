@@ -1,0 +1,135 @@
+<form>
+    <mat-card-header>
+        <mat-card-title>{{'ttl.cargarResultadoCursoFormacion'|translate}}</mat-card-title>
+    </mat-card-header>
+    <div class="row">
+        <div class="col-xs-12 col-md-6 form-group">
+            <div class="row">
+                <div class="col-sm-11 pr-0">
+                    <mat-form-field appearance="{{appearanceInput}}">
+                        <mat-label>{{'lbl.cargarArchivo'|translate}}</mat-label> 
+                        <ngx-mat-file-input #inputSoport class="inputSoport" [formControl]="idArchivoCargue" valuePlaceholder="{{'lbl.seleccioneArchivo'| translate}}" [accept]="configFile.allowExtensions" (change)="loadInfoFile($event)" [errorStateMatcher]="matcher" [required]="true">
+                        </ngx-mat-file-input>
+                        <button mat-icon-button matSuffix *ngIf="idArchivoCargue.value" (click)="inputSoport.clear($event); deleteFile()">
+                            <mat-icon>clear</mat-icon>
+                        </button>
+                        <mat-hint>{{'msg.archivoPermitido'|translate}} ({{configFile.allowExtensions}})</mat-hint>
+                        <mat-error *ngIf="idArchivoCargue.hasError('required')">
+                            {{'msg.seleccioneArchivo'|translate}} ({{configFile.allowExtensions}})
+                        </mat-error>
+                        <mat-error *ngIf="idArchivoCargue.hasError('maxContentSize')">
+                            {{'msg.tamanioArchivo'|translate}}
+                            {{idArchivoCargue?.getError('maxContentSize').maxSize | byteFormat}}
+                            ({{idArchivoCargue?.getError('maxContentSize').actualSize | byteFormat}}).
+                        </mat-error>
+                        <mat-error *ngIf="idArchivoCargue.hasError('badExtension')">
+                            {{idArchivoCargue.errors.badExtension}} ({{configFile.allowExtensions}})
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-sm-1 p-0">
+                    <button mat-icon-button class="mt-2" type="button" color="primary" (click)="openDialogFile('.inputSoport')" title="{{'lbl.cargarArchivo'|translate}}">
+                        <mat-icon>attach_file</mat-icon>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div *ngIf="showMsgExport" class="col-sm-12 mt-4">
+            <mat-label>{{'lbl.descarArchivoNoprocesados'|translate}}</mat-label>
+        </div>
+        <div class="col-sm-12 pull-right form-group">
+            <button *ngIf="showButtonExport" mat-raised-button class="pull-left mr-1" color="primary" (click)="exporter.exportTable('xlsx', { fileName: 'No_Procesados' })" title="{{'btn.exportarExcel'|translate}}">
+                {{'btn.exportarExcel'|translate}} <i class="fa fa-file-excel-o"></i></button>
+            <button *ngIf="showButtonExport" mat-raised-button class="pull-left mr-1" color="primary" (click)="exporter.exportTable('txt', { fileName: 'No_Procesados' })" title="{{'btn.exportarPlano'|translate}}">
+                {{'btn.exportarPlano'|translate}} <i class="fa fa-file-text-o"></i></button>
+
+            <app-buttons-fotter [labelBtnAccept]="'btn.cargar'" [showBtnAccept]="true" [submit]="submit" (eventEmmitterAccept)="saveInfoFile()" [showBtnCancel]="true" (eventEmmitterCancel)="clean()"></app-buttons-fotter>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-xs-12 col-md-12 form-group">
+
+            <mat-table matTableExporter [dataSource]="dataSource" class="mat-elevation-z8 col-xs-12 full-width" #exporter="matTableExporter">
+                                
+                <ng-container matColumnDef="idConvocatoria">
+                    <th mat-header-cell *matHeaderCellDef >{{'lbl.convocatoria'|translate}}</th>
+                    <td mat-cell *matCellDef=" let element " style="width: 15%;">{{element.idConvocatoria}}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="cedula">
+                    <th mat-header-cell *matHeaderCellDef >{{'lbl.identificacion'|translate}}</th>
+                    <td mat-cell *matCellDef=" let element " style="width: 8%;">{{element.cedula}}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="nombres">
+                    <th mat-header-cell *matHeaderCellDef >{{'lbl.nombres'|translate}}</th>
+                    <td mat-cell *matCellDef=" let element " style="width: 15%;">{{element.nombres}}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="apellidos">
+                    <th mat-header-cell *matHeaderCellDef >{{'lbl.apellidos'|translate}}</th>
+                    <td mat-cell *matCellDef=" let element " style="width: 8%;">{{element.apellidos}}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="resolucion">
+                    <th mat-header-cell *matHeaderCellDef >{{'lbl.resolucion'|translate}}</th>
+                    <td mat-cell *matCellDef=" let element " style="width: 8%;">{{element.resolucion}}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="fechaResolucion">
+                    <th mat-header-cell *matHeaderCellDef >{{'lbl.fechaResolucion'|translate}}</th>
+                    <td mat-cell *matCellDef=" let element " style="width: 8%;">{{element.fechaResolucion}}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="totalCFJI100">
+                    <th mat-header-cell *matHeaderCellDef >{{'lbl.totalCFJI_100'|translate}}</th>
+                    <td mat-cell *matCellDef=" let element " style="width: 8%;">{{element.totalCFJI_100}}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="pierdeXInasistencia">
+                    <th mat-header-cell *matHeaderCellDef >{{'lbl.pierdePorInasistencia'|translate}}</th>
+                    <td mat-cell *matCellDef=" let element " style="width: 8%;">{{element.pierdePorInasistencia}}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="pierdeXNota">
+                    <th mat-header-cell *matHeaderCellDef >{{'lbl.pierdePorNota'|translate}}</th>
+                    <td mat-cell *matCellDef=" let element " style="width: 8%;">{{element.pierdePorNota}}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="esHomologado">
+                    <th mat-header-cell *matHeaderCellDef >{{'lbl.homologado'|translate}}</th>
+                    <td mat-cell *matCellDef=" let element " style="width: 8%;">{{element.esHomologado}}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="notaConsolidada">
+                    <th mat-header-cell *matHeaderCellDef >{{'lbl.notaConsolidadaHomologacion'|translate}}</th>
+                    <td mat-cell *matCellDef=" let element " style="width: 8%;">{{element.notaConsolidadaHomologacion}}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="retiroVoluntario">
+                    <th mat-header-cell *matHeaderCellDef >{{'lbl.retiroVoluntario'|translate}}</th>
+                    <td mat-cell *matCellDef=" let element " style="width: 8%;">{{element.retiroVoluntario}}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="noInscrito">
+                    <th mat-header-cell *matHeaderCellDef >{{'lbl.noInscritoCursoFormacion'|translate}}</th>
+                    <td mat-cell *matCellDef=" let element " style="width: 8%;">{{element.noInscrito}}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="msgError">
+                    <th mat-header-cell *matHeaderCellDef >{{'lbl.error'|translate}}</th>
+                    <td mat-cell *matCellDef=" let element " style="width: 8%;">{{element.msgError}}</td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns "></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns; "></tr>
+            </mat-table>
+            <mat-paginator #matPaginator [pageSizeOptions]="[5,10, 20]" showFirstLastButtons>
+            </mat-paginator>
+        </div>
+    </div>
+</form>

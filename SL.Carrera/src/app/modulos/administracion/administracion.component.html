@@ -1,0 +1,17 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="#"></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <i class="material-icons">keyboard_arrow_down</i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item" *ngFor="let tab of tabs">
+                <a mat-button class="nav-link" routerLink="{{tab.path}}" routerLinkActive="active-link-admin" [routerLinkActiveOptions]="{exact: true}">{{tab.label|translate}}</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<div class="mt-4">
+    <router-outlet></router-outlet>
+</div>

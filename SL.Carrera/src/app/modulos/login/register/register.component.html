@@ -1,0 +1,80 @@
+<div class="login-wrapper centrar" fxLayout="row" fxLayoutAlign="center center">
+    <mat-card class="box">
+
+        <mat-card-header class="mt-xl-n5">
+            <div class="row " style="text-align: center;">
+                <h5><b>{{'APP.nombre'|translate}}</b></h5>&nbsp;
+                <h5>{{'APP.nombre2'|translate}}</h5>
+            </div>
+        </mat-card-header>
+
+        <mat-card-header>
+            <h5><b>{{'ttl.registrate'|translate}}</b></h5>
+        </mat-card-header>
+
+        <form [formGroup]="form" class="login-form">
+
+            <mat-card-content>
+
+                <!-- <div> -->
+                    <mat-form-field class="login-full-width">
+                        <mat-label>{{'lbl.correo'|translate}}</mat-label>
+                        <input autocomplete="off" formControlName="email" matInput
+                            placeholder="{{'lbl.correoEjemplo'|translate}}">
+                        <mat-icon matSuffix>mail</mat-icon>
+                        <mat-error *ngIf="f.email.errors?.pattern && !f.email.hasError('required')">
+                            {{'msg.ingreseCorreo'|translate}}
+                        </mat-error>
+                        <mat-error *ngIf="f.email.hasError('required')">
+                            {{'msg.campoRequerido'|translate}}
+                        </mat-error>
+                    </mat-form-field>
+
+                    <!-- <div *ngIf="submit || (f.email.invalid && f.email.touched) || f.email.invalid && f.email.dirty">
+                        <small *ngIf="f.email.errors?.required" style="color: red;">El campo correo es requerido</small>
+                        <small *ngIf="f.email.errors?.pattern" style="color: red;">Por favor ingrese un correo valido</small>
+                    </div> -->
+                <!-- </div> -->
+
+                <mat-form-field class="login-full-width">
+                    <input [type]="revealPassword ? 'password' : 'text'" autocomplete="off" formControlName="passw1"
+                        matInput placeholder="{{'lbl.contrasenia'|translate}}" (keydown)="noSpace($event)">
+                    <mat-icon matSuffix (click)="revealPassword = !revealPassword" class="hover-hand">
+                        {{revealPassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+                    <mat-error *ngIf="f.passw1.hasError('required')">
+                        {{'msg.campoContraseniaRequerido'|translate}}
+                    </mat-error>
+                    <mat-error class="error-password"
+                        *ngIf="f.passw1.errors?.pattern && !f.passw1.hasError('required')">
+                        {{msgErrorPassword}}
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field class="login-full-width">
+                    <input [type]="revealPassword ? 'password' : 'text'" autocomplete="off" formControlName="passw2"
+                        matInput placeholder="{{'lbl.repitaContrasenia'|translate}}" (keydown)="noSpace($event)">
+                    <mat-icon matSuffix (click)="revealPassword = !revealPassword" class="hover-hand">
+                        {{revealPassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+                    <mat-hint>{{validatePasswords()}}</mat-hint>
+                    <mat-error *ngIf="f.passw2.hasError('required')">
+                        {{'msg.campoRequerido'|translate}}
+                    </mat-error>
+                    <mat-error class="error-password"
+                        *ngIf="f.passw2.errors?.pattern && !f.passw2.hasError('required')">
+                        {{msgErrorPassword}}
+                    </mat-error>
+                </mat-form-field>
+
+
+                <label>{{msg}}</label>
+                <span class="mat-text-center mt-lg-1">{{'msg.privacidad1'|translate}}<span class="mat-text-link" (click)="openPrivacidad(1)">{{'msg.privacidad2'|translate}}</span>{{'msg.privacidad3'|translate}}<span class="mat-text-link" (click)="openPrivacidad(2)">{{'msg.privacidad4'|translate}}</span>{{'msg.privacidad5'|translate}}</span>
+                
+
+            </mat-card-content>
+
+            <button mat-stroked-button color="accent" class="btn-block mt-1" (click)="register()"
+                [disabled]="btnDisabled"><b>{{'btn.registrar'|translate}}</b></button>
+
+        </form>
+    </mat-card>
+</div>

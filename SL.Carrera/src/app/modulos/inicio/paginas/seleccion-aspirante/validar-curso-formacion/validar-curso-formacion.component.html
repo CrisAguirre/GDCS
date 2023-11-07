@@ -1,0 +1,99 @@
+<mat-card>
+    <mat-card-header>
+        <mat-card-title>{{'ttl.validarCursoFormacion'| translate}}</mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+
+        <form #formV="ngForm" [formGroup]="form">
+
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-4 form-group" *ngIf="showSelectCompany">
+                    <app-input-select [label]="'lbl.empresa'" [lst]="lstCompanies" [xOption]="'nombreEmpresa'"
+                        [xId]="'id'" formControlName="idEmpresa" [controll]="f.idEmpresa" [required]="false"
+                        (eventEmmitter)="loadDataByEmpresa($event)">
+                    </app-input-select>
+                </div>
+
+                <div class="col-xs-12 col-md-4 form-group">
+                    <app-input-select [label]="'lbl.convocatoria'" [lst]="lstConvocatories"
+                        [xOption]="'nombreConvocatoria'" [xId]="'id'" formControlName="idConvocatoria"
+                        [controll]="f.idConvocatoria" (eventEmmitter)="loadDataByConvocatoria($event)"
+                        [required]="false">
+                    </app-input-select>
+                </div>
+
+            </div>
+
+        </form>
+
+
+        <div class="row">
+
+            <div class="col-xs-12 col-sm-6">
+                <app-input-search-table (eventEmmitter)="applyFilter($event , dataSource)">
+                </app-input-search-table>
+            </div>
+
+            <div class="col-xs-12 col-md-12 form-group">
+
+                <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8 col-xs-12 full-width"
+                    (matSortChange)="sortData($event)">
+                    <ng-container matColumnDef="identificacion">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.identificacion'|translate}}</th>
+                        <td mat-cell *matCellDef=" let element " style="width: 15%;">
+                            {{element.inscripcionAspiranteModel ?
+                            commonService.getNumeroDocumento(element.inscripcionAspiranteModel) : ''}}
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="nombresCompletos">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.nombresCompletos'|translate}}</th>
+                        <td mat-cell *matCellDef=" let element " style="width: 40%;">
+                            {{element.inscripcionAspiranteModel ?
+                            commonService.getNameAspirante(element.inscripcionAspiranteModel) : ''}}
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="resultado">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                            {{'lbl.resultadoCursoFormacion'|translate}}</th>
+                        <td mat-cell *matCellDef=" let element " style="width: 15%;">
+                            {{getResultadoCursoFormacionAspirante(element)}}</td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns "></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns; "
+                        [ngClass]="{hovered: row.hovered, highlighted: selection.isSelected(row)}"
+                        (mouseover)="row.hovered = true" (mouseout)="row.hovered = false"></tr>
+                </table>
+                <mat-paginator [pageSizeOptions]="[5,10, 20]" showFirstLastButtons></mat-paginator>
+            </div>
+
+
+            <mat-accordion [multi]="false" *ngIf="showTablaInscripcionAsp" class="col-sm-12">
+                <mat-expansion-panel [expanded]="false">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title class="title-accordeon">
+                            <b>{{'ttl.informacionAspirantes'|translate}}</b>
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <app-tabla-informacion-aspirantes [idConvocatoria]="f.idConvocatoria.value" [estadosMostrar]="lstEstadosTablaInfo">
+                    </app-tabla-informacion-aspirantes>
+                </mat-expansion-panel>
+            </mat-accordion>
+
+        </div>
+
+        <div class="row">
+            <div class="col-sm-12 pull-right form-group">
+                <app-buttons-fotter [showBtnCancel]="true" (eventEmmitterCancel)="clean()"
+                    [labelBtnCancel]="'btn.limpiar'" style="margin-left: 5px; margin-right: 5px;"
+                    (eventEmmitterAccept)="etapaClasificacion()" [iconAccept]="'add_alert'" 
+                    [labelBtnAccept]="'btn.etapaClasificacion'" [showBtnAccept]="showBtnEtapa" [submit]="submit">
+                </app-buttons-fotter>
+            </div>
+        </div>
+
+    </mat-card-content>
+</mat-card>

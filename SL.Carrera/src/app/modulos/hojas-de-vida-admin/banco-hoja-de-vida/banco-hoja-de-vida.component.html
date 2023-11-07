@@ -1,0 +1,235 @@
+<form #formV="ngForm" [formGroup]="form">
+    <mat-accordion>
+        <mat-expansion-panel [expanded]="false">
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    {{'ttl.filtro'|translate}}
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div>
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">{{'ttl.informacionPersonal'|translate}}
+                        <hr class="barra">
+                    </div>
+                    <div class="panel-body">
+                        <div class="row mt-4">                        
+                                        
+                            <div class="col-xs-12 col-md-4 form-group">
+                                <app-input-general formControlName="edadMin" [controll]="f.edadMin"
+                                    [label]="'lbl.edadMinima'" [typeField]="'number'" [maxlength]="2" [numMin]="0"
+                                    [numMax]="60" [required]="false">
+                                </app-input-general>
+                            </div>
+
+                            <div class="col-xs-12 col-md-4 form-group">
+                                <app-input-general formControlName="edadMax" [controll]="f.edadMax"
+                                    [label]="'lbl.edadMaxima'" [typeField]="'number'" [maxlength]="2" 
+                                    [numMax]="60" [required]="false">
+                                </app-input-general>
+                            </div>
+
+                            <div class="col-xs-12 col-md-4 form-group">
+                                <app-input-select [label]="'lbl.departamento'" [lst]="lstDepartamento"
+                                    [xOption]="'departamento'" [xId]="'id'" formControlName="departamento"
+                                    [controll]="f.departamento" (eventEmmitter)="campoCiudad($event)" [required]="false">
+                                </app-input-select>
+                            </div>
+
+                            <div class="col-xs-12 col-md-4 form-group">
+                                <mat-label>{{'lbl.municipio'|translate}}</mat-label>
+                                <ng-multiselect-dropdown [placeholder]="' '" formControlName="municipio"
+                                    [data]="lstMunicipioAux" [settings]="dropMunicipio">
+                                </ng-multiselect-dropdown>
+                            </div>
+
+                            <div class="col-xs-12 col-md-4 form-group">
+                                <mat-label>{{'lbl.sexo'|translate}}</mat-label>
+                                <ng-multiselect-dropdown [placeholder]="' '" formControlName="sex" [data]="lstSex"
+                                    [settings]="dropSexo">
+                                </ng-multiselect-dropdown>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">{{'ttl.informacionAcademica'|translate}}
+                        <hr class="barra">
+                    </div>
+                    <div class="panel-body">
+                        <div class="row mt-4">
+                            <div class="col-xs-12 col-md-4 form-group">
+                                <mat-label>{{'lbl.tituloObtenido'|translate}}</mat-label>
+                                <ng-multiselect-dropdown class="cambio" [placeholder]="' '"
+                                    formControlName="titleObtain" [data]="lstTitles" [settings]="dropTitulo">
+                                </ng-multiselect-dropdown>
+                            </div>
+
+                            <div class="col-xs-12 col-md-4 form-group">
+                                <mat-label>{{'lbl.nivelEstudios'|translate}}</mat-label>
+                                <ng-multiselect-dropdown [placeholder]="' '" formControlName="educationLevel"
+                                    [data]="lstEducationLevels" [settings]="dropNivelEstudio">
+                                </ng-multiselect-dropdown>
+                            </div>
+
+                            <div class="col-xs-12 col-md-4 form-group">                                
+                                <mat-label>{{'lbl.institucion'|translate}}</mat-label>
+                                <ng-multiselect-dropdown [placeholder]="' '" formControlName="institute"
+                                    [data]="lstInstitutions" [settings]="dropInstitucion">
+                                </ng-multiselect-dropdown>
+                            </div>
+
+                            <div class="col-xs-12 col-md-6 form-group">
+                                <app-input-select [label]="'lbl.tipoEstudio'" [lst]="lstTipoEstudio"
+                                    [xOption]="'descripcion'" [xId]="'id'" formControlName="modalidadEstudio"
+                                    [controll]="f.modalidadEstudio" (eventEmmitter)='cambiarTipoEstudio($event)'
+                                    [required]="false">
+                                </app-input-select>
+                            </div>
+
+                            <div class="col-xs-12 col-md-6 form-group">
+                                <app-input-select [label]="'lbl.modalidad'" [lst]="lstTipoModalidad2"
+                                    [xOption]="'descripcion'" [xId]="'id'" formControlName="modalidad"
+                                    [controll]="f.modalidad" (eventEmmitter)='cambiarTipoNivelEstudio($event)'
+                                    [required]="false">
+                                </app-input-select>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+        
+                <div class="panel panel-default">
+                    <div class="panel-heading">{{'ttl.experienciaLaboral'|translate}}
+                        <hr class="barra">
+                    </div>
+                    <div class="panel-body">
+                        <div class="row mt-4">
+
+                            <div class="col-xs-12 col-md-6">
+                                <app-input-general formControlName="cargo" [controll]="f.cargo" [label]="'lbl.cargo'" [required]="false">
+                                </app-input-general>
+
+                            </div>
+
+                            <div class="col-xs-12 col-md-6 form-group">
+                                <app-input-general formControlName="empresa" [controll]="f.empresa"
+                                    [label]="'lbl.empresa'" [required]="false">
+                                </app-input-general>
+                            </div>
+
+                            <div class="col-xs-12 col-md-6">
+                                <app-input-select [label]="'lbl.sector'" [lst]="lstSectors"
+                                    [xOption]="'sectorExperiencia'" [xId]="'id'" formControlName="sector"
+                                    [controll]="f.sector" [required]="false">
+                                </app-input-select>
+                            </div>
+
+                            <div class="col-xs-12 col-md-3 form-group">
+                                <app-input-general formControlName="expMin" [controll]="f.expMin"
+                                    [label]="'lbl.expMinima'" [typeField]="'number'" [maxlength]="2" 
+                                    [numMax]="60" [required]="false">
+                                </app-input-general>
+                            </div>
+
+                            <div class="col-xs-12 col-md-3 form-group">
+                                <app-input-general formControlName="expdMax" [controll]="f.expdMax"
+                                    [label]="'lbl.expMaxima'" [typeField]="'number'" [maxlength]="2"
+                                    [numMax]="60" [required]="false">
+                                </app-input-general>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                
+            </div>
+        </mat-expansion-panel>
+    </mat-accordion>
+
+    <mat-accordion>
+        <mat-expansion-panel [expanded]="true">
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    {{'ttl.informacioFiltro'|translate}}
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+
+            <div class="row mt-4">
+                <div class="col-xs-12 col-md-12">
+                    <div class="row">
+                        <div class="col-sm-12 pull-right form-group">
+                            <button mat-raised-button type="submit" color="primary" class="pull-right mr-1"
+                                (click)="filtro()" title="{{'btn.filtrar'|translate}}">{{'btn.filtrar'|translate}}
+                                <mat-icon>clear_all</mat-icon></button>
+
+                            <button mat-raised-button type="button" class="pull-right mr-1" (click)="cleanForm()"
+                                title="{{'btn.limpiar'|translate}}">{{'btn.limpiar'|translate}}
+                                <mat-icon>clear_all</mat-icon></button>
+                        </div>
+                    </div>
+
+                    <div class="col-xs-12 col-md-3">
+                        <mat-form-field>
+                            <mat-label>{{'lbl.buscar'|translate}}</mat-label>
+                            <input matInput (keyup)="applyFilter($event , dataSource)"
+                                placeholder="{{'lbl.buscarPlh'|translate}}" autocomplete="off">
+                        </mat-form-field>
+                    </div>
+
+                    <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8 col-xs-12 full-width"
+                        (matSortChange)="sortData($event)">
+
+                        <ng-container matColumnDef="nombre">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.nombre'|translate}} </th>
+                            <td mat-cell *matCellDef=" let element ">{{element.nombre}}</td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="apellido">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.apellido'|translate}} </th>
+                            <td mat-cell *matCellDef=" let element ">{{element.apellido}}</td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="discapacidad">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.discapacidad'|translate}} </th>
+                            <td mat-cell *matCellDef=" let element ">
+                                {{(element.tieneDiscapacidad == 'SI' ? 'lbl.si' : 'lbl.no')| translate}}</td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="documento">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.documento'|translate}} </th>
+                            <td mat-cell *matCellDef=" let element ">{{element.numeroDocumento}}</td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="edad">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.edad'|translate}} </th>
+                            <td mat-cell *matCellDef=" let element ">{{element.edad}}</td>
+                        </ng-container>
+
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns "></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns; "
+                            [ngClass]="{hovered: row.hovered, highlighted: isSelectedTable(elementCurrent , row.id)}"
+                            (mouseover)="row.hovered = true" (mouseout)="row.hovered = false"></tr>
+                    </table>
+
+                    <mat-paginator [pageSizeOptions]="[5,10, 20]" showFirstLastButtons></mat-paginator>
+
+                    <div class="row">
+                        <div class="col-sm-12 pull-right form-group">
+                            <button mat-raised-button color="primary" type="button" class="pull-right"
+                                (click)="viewFile()" title="{{'btn.exportar'|translate}}">{{'btn.exportar'|translate}}
+                                <mat-icon>save</mat-icon>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </mat-expansion-panel>
+    </mat-accordion>
+
+
+</form>

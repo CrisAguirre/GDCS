@@ -1,0 +1,60 @@
+<h2 mat-dialog-title>{{'ttl.persmisosAcciones'|translate}}</h2>
+<div class="col-sm-12">
+    <blockquote class="blockquote">
+        <p class="mb-0">{{'lbl.vistaSeleccionada'|translate}}</p>
+        <footer class="blockquote-footer">{{'lbl.nombre'|translate}} : <cite>{{vista.nombreVista}}</cite>
+        </footer>
+        <footer class="blockquote-footer">{{'lbl.ruta'|translate}} : <cite>{{vista.nombreRuta}}</cite>
+        </footer>
+        <footer class="blockquote-footer">{{'lbl.rutaCompleta'|translate}} : <cite>{{getPathNameComplete()}}</cite>
+        </footer>
+    </blockquote>
+</div>
+<mat-dialog-content class="mat-typography ml-5 mr-5" [formGroup]="form">
+
+    <br>
+
+    <form #formV="ngForm" [formGroup]="form">
+
+        <div class="col-xs-12 offset-md-2 col-md-8">
+
+            <div class="col-xs-12 form-group">
+                <app-input-general formControlName="permisosEspeciales" [controll]="f.permisosEspeciales"
+                    [label]="'lbl.permisosEspeciales'" [placeholder]="'lbl.permisosEspeciales'" [required]="false">
+                </app-input-general>
+            </div>
+
+            <div class="col-xs-12 form-group">
+                <div class="col-xs-12">
+                    <mat-checkbox formControlName="permiteCrear" >
+                        {{'lbl.permiteCrear'|translate}}
+                    </mat-checkbox>
+                </div>
+
+                <div class="col-xs-12">
+                    <mat-checkbox formControlName="permiteLectura" >
+                        {{'lbl.permiteLectura'|translate}}
+                    </mat-checkbox>
+                </div>
+
+                <div class="col-xs-12">
+                    <mat-checkbox formControlName="permiteActualizar" >
+                        {{'lbl.permiteActualizar'|translate}}
+                    </mat-checkbox>
+                </div>
+
+                <div class="col-xs-12">
+                    <mat-checkbox formControlName="permiteEliminar" >
+                        {{'lbl.permiteEliminar'|translate}}
+                    </mat-checkbox>
+                </div>
+            </div>
+        </div>
+    </form>
+
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>{{'btn.cerrar'|translate}}</button>
+    <button mat-raised-button [mat-dialog-close]="sendResult()" cdkFocusInitial
+        color="primary">{{'btn.continuar'|translate}}</button>
+</mat-dialog-actions>

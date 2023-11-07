@@ -1,0 +1,239 @@
+<form #formV="ngForm" [formGroup]="form">
+
+    <mat-card>
+        <mat-card-header>
+            <mat-card-title>{{'ttl.crearEmpresa'|translate}}</mat-card-title>            
+        </mat-card-header>
+
+        <mat-card-content>
+
+            <div class="row">
+                <div class="col-xs-12 col-md-4 form-group">
+                    <app-input-general formControlName="company" [controll]="f.company" [label]="'lbl.nombre'"></app-input-general>
+                </div>
+
+                <div class="col-xs-12 col-md-2 form-group">
+                    <app-input-general formControlName="nit" [controll]="f.nit" [label]="'lbl.nit'"></app-input-general>
+                </div>
+
+                <div class="col-xs-12 col-md-3 form-group">
+                    <app-input-general formControlName="email" [controll]="f.email" [label]="'lbl.correo'" [required]="false"></app-input-general>
+                </div>
+
+                <div class="col-xs-12 col-md-3 form-group">
+                    <app-input-general formControlName="telephone" [controll]="f.telephone" [label]="'lbl.telefonoInstitucion'" [required]="false"></app-input-general>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-12 col-md-3 form-group">
+                    <mat-form-field appearance="{{appearanceInput}}">
+                        <mat-label>{{'lbl.pais'|translate}}</mat-label>
+                        <mat-select [formControl]="country" (selectionChange)='loadDepartments($event)' [required]="true">
+                            <mat-option *ngFor="let g of lstCountries" [value]="g.id">
+                                {{g.pais}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+
+                <div class="col-xs-12 col-md-3 form-group">
+                    <mat-form-field appearance="{{appearanceInput}}">
+                        <mat-label>{{'lbl.departamento'|translate}}</mat-label>
+                        <mat-select [formControl]="department" (selectionChange)='loadMunicipalities($event)' required="true">
+                            <mat-option *ngFor="let g of lstDepartments" [value]="g.id">
+                                {{g.departamento}}
+                            </mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="department.hasError('required')">
+                            <strong>{{'msg.campoRequerido'|translate}}</strong>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+
+                <div class="col-xs-12 col-md-3 form-group">
+                    <mat-form-field appearance="{{appearanceInput}}">
+                        <mat-label>{{'lbl.municipio'|translate}}</mat-label>
+                        <mat-select formControlName="municipality" required="true">
+                            <mat-option *ngFor="let g of lstMunicipalities" [value]="g.id">
+                                {{g.ciudad}}
+                            </mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="f.municipality.hasError('required')">
+                            <strong>{{'msg.campoRequerido'|translate}}</strong>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+
+                <div class="col-xs-12 col-md-3 form-group">
+                    <mat-form-field appearance="{{appearanceInput}}">
+                        <mat-label>{{'lbl.direccion'|translate}}</mat-label>
+                        <input matInput formControlName="address" placeholder="{{'lbl.direccion'|translate}}" autocomplete="off" type="text" [required]="false">
+                        <mat-error *ngIf="f.address.hasError('required')">
+                            <strong>{{'msg.campoRequerido'|translate}}</strong>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-12 col-md-6 form-group">
+                    <app-input-general formControlName="slogan" [controll]="f.slogan" [label]="'lbl.eslogan'" [required]="false"></app-input-general>
+                </div>
+
+                <div class="col-xs-12 col-md-3 form-group">
+                    <app-input-general formControlName="codAlterno" [controll]="f.codAlterno" [label]="'lbl.codigoAlterno'" [required]="false"></app-input-general>
+                </div>
+
+                <div class="col-xs-12 col-md-3 form-group">
+                    <div class="row">
+                        <div class="col-sm-10 pr-0">
+                            <mat-form-field appearance="{{appearanceInput}}">
+                                <mat-label>{{'lbl.logo'|translate}}</mat-label>
+                               
+                                <ngx-mat-file-input #inputLogo class="inputSoport" formControlName="logo"
+                                    valuePlaceholder="{{(!elementCurrent.logo ? 'lbl.seleccioneArchivo' :elementCurrent.nombreLogo) | translate}}"
+                                    [accept]="configFile.allowExtensions" [errorStateMatcher]="matcher" [required]="false">
+                                </ngx-mat-file-input>
+                                <button mat-icon-button matSuffix *ngIf="elementCurrent.logo || this.f.logo.value" (click)="inputLogo.clear($event); deleteFileView()">
+                                    <mat-icon>clear</mat-icon>
+                                </button>
+
+                                <mat-hint>{{'msg.archivoPermitido'|translate}} ({{configFile.allowExtensions}})
+                                </mat-hint>
+                                <mat-error *ngIf="f.logo.hasError('required')">
+                                    {{'msg.seleccioneArchivo'|translate}} ({{configFile.allowExtensions}})
+                                </mat-error>
+                                <mat-error *ngIf="f.logo.hasError('maxContentSize')">
+                                    {{'msg.tamanioArchivo'|translate}} {{f.logo?.getError('maxContentSize').maxSize | byteFormat}} ({{f.logo?.getError('maxContentSize').actualSize | byteFormat}}).
+                                </mat-error>
+                                <mat-error *ngIf="f.logo.hasError('badExtension')">
+                                    {{f.logo.errors.badExtension}} ({{configFile.allowExtensions}})
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-sm-2 p-0">
+                            <button mat-icon-button class="mt-2" type="button" color="primary"
+                                (click)="!elementCurrent.idLogo ? openDialogFile('.inputSoport') :viewFile(elementCurrent.idLogo)"
+                                title="{{'lbl.consultarDocumento'|translate}}"
+                                title="{{(!elementCurrent.idLogo ? 'lbl.cargarArchivo':'lbl.verAdjunto')|translate}}">
+                                <mat-icon>{{!elementCurrent.idLogo ? 'attach_file':'remove_red_eye'}}
+                                </mat-icon>
+                            </button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-12 col-md-3 col-sm-3 form-group pt-3">
+                    <mat-checkbox formControlName="hasReference" >
+                        {{'lbl.tieneIdReferencia'|translate}}
+                    </mat-checkbox>
+                </div>
+
+                <div class="col-xs-12 col-md-3 form-group">
+                    <app-input-select [label]="'lbl.empresaReferencia'" [lst]="lstCompanies" [xOption]="'nombreEmpresa'" [xId]="'id'" formControlName="idReference" [controll]="f.idReference"></app-input-select>
+                </div>
+            </div>
+
+            <div class="row col-sm-12 form-group subtitle pt-5">
+                <label>{{'ttl.representanteLegal'|translate}}</label>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-12 col-md-4 form-group">
+                    <app-input-general formControlName="managerName" [controll]="f.managerName" [label]="'lbl.nombresApellidos'" [required]="false"></app-input-general>
+                </div>
+
+                <div class="col-xs-12 col-md-2 form-group">
+                    <app-input-select [label]="'lbl.tipoIdentificacion'" [lst]="lstTypesIdentification" [xOption]="'tipoDocumento'" [xId]="'id'" formControlName="typeIdentification" [controll]="f.typeIdentification" [required]="false">
+                    </app-input-select>
+                </div>
+
+                <div class="col-xs-12 col-md-3 form-group">
+                    <app-input-general formControlName="identification" [controll]="f.identification" [label]="'lbl.identificacion'" [required]="false"></app-input-general>
+                </div>
+            </div>
+
+
+            <div class="row mt-4">
+                <div class="col-xs-12 col-md-12 form-group">
+                    <button mat-raised-button class="pull-right" color="primary" title="{{'btn.guardar'|translate}}" [disabled]="submit" (click)="save()">{{'btn.guardar'|translate}}<mat-icon>save</mat-icon>
+                    </button>
+                    <button mat-raised-button type="button" class="pull-right mr-1" (click)="cleanForm()" title="{{'btn.limpiar'|translate}}">{{'btn.limpiar'|translate}}
+                        <mat-icon>clear_all</mat-icon></button>
+                </div>
+            </div>
+
+            <!-- Tabla Empresas -->
+            <div class="row">
+                <div class="col-xs-12 col-md-12 form-group">
+
+                    <div class="col-xs-12 col-md-6">
+                        <mat-form-field>
+                            <mat-label>{{'lbl.buscar'|translate}}</mat-label>
+                            <input matInput (keyup)="applyFilter($event, dataSource)" placeholder="{{'lbl.buscarPlh'|translate}}" autocomplete="off">
+                        </mat-form-field>
+                    </div>
+
+                    <table mat-table #sortProfile="matSort" [dataSource]="dataSource" matSort class="mat-elevation-z8 col-xs-12 full-width">
+                        
+                        <ng-container matColumnDef="id">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.id'|translate}}</th>
+                            <td mat-cell *matCellDef=" let element " style="width: 20%;">{{element.id}}</td>
+                        </ng-container>
+                        
+                        <ng-container matColumnDef="nombre">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.nombre'|translate}}</th>
+                            <td mat-cell *matCellDef=" let element " style="width: 20%;">{{element.nombreEmpresa}}</td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="nit">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.nit'|translate}}</th>
+                            <td mat-cell *matCellDef=" let element " style="width: 15%;">{{element.nit}}</td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="correo">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.correo'|translate}}</th>
+                            <td mat-cell *matCellDef=" let element " style="width: 15%;">{{element.email}}</td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="telefono">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.telefono'|translate}}</th>
+                            <td mat-cell *matCellDef=" let element " style="width: 10%;">{{element.telefono}}</td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="municipio">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.municipio'|translate}}</th>
+                            <td mat-cell *matCellDef=" let element " style="width: 10%;">{{element.ciudad}}</td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="options">
+                            <th mat-header-cell *matHeaderCellDef style="text-align: center;">
+                                {{'lbl.acciones'|translate}}</th>
+                            <td mat-cell *matCellDef="let element" style="width: 15%;" class="text-center">
+                                <div>
+                                    <button (click)="edit(element)" type="button" title="{{'btn.editar'|translate}}" color="primary" mat-icon-button>
+                                        <mat-icon>edit</mat-icon>
+                                    </button>
+
+                                    <button (click)="delete(element)" type="button" color="warn" mat-icon-button title="{{'lbl.eliminar'|translate}}">
+                                        <mat-icon>delete</mat-icon>
+                                    </button>
+                                </div>
+                            </td>
+                        </ng-container>
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns "></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns; " [ngClass]="{hovered: row.hovered, highlighted: isSelectedTable(elementCurrent , row.id)}" (mouseover)="row.hovered = true" (mouseout)="row.hovered = false"></tr>
+                    </table>
+                    <mat-paginator #profilesPaginator [pageSizeOptions]="[5,10, 20]" showFirstLastButtons>
+                    </mat-paginator>
+                </div>
+            </div>
+
+        </mat-card-content>
+    </mat-card>
+
+</form>

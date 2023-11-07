@@ -1,0 +1,406 @@
+<mat-card>
+    <mat-card-header>
+        <mat-card-title>{{'ttl.validarDocsAspirante'| translate}}</mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+
+        <form #formV="ngForm" [formGroup]="form">
+
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-4 form-group" *ngIf="showSelectCompany">
+                    <app-input-select [label]="'lbl.empresa'" [lst]="lstCompanies" [xOption]="'nombreEmpresa'"
+                        [xId]="'id'" formControlName="idEmpresa" [controll]="f.idEmpresa" [required]="false"
+                        (eventEmmitter)="loadDataByEmpresa($event)">
+                    </app-input-select>
+                </div>
+
+                <div class="col-xs-12 col-md-4 form-group">
+                    <app-input-select [label]="'lbl.convocatoria'" [lst]="lstConvocatories"
+                        [xOption]="'nombreConvocatoria'" [xId]="'id'" formControlName="idConvocatoria"
+                        [controll]="f.idConvocatoria" (eventEmmitter)="loadDataByConvocatoria($event)"
+                        [required]="false">
+                    </app-input-select>
+                </div>
+
+                <div *ngIf="f.idConvocatoria.value" class="col-xs-12 col-md-4 form-group">
+                    <button mat-raised-button color="primary" class="pull-right" [disabled]="submit"
+                        (click)="exportarReporte()" title="{{ 'btn.nivelPerfilAspirante' | translate }}">
+                        {{ 'btn.nivelPerfilAspirante' | translate }}
+                        <mat-icon>list_alt</mat-icon>
+                    </button>
+                </div>
+            </div>
+
+        </form>
+
+
+        <div class="row">
+
+            <div class="col-xs-12 col-sm-6">
+                <app-input-search-table (eventEmmitter)="applyFilter($event , dataSource)">
+                </app-input-search-table>
+            </div>
+            <div class="col-xs-12 col-sm-6">
+                <mat-slide-toggle (change)="onToggle($event)" style="float: right;" [(ngModel)]="allPendientes"
+                    [color]="'primary'">
+                    {{ (allPendientes ? 'lbl.pendientes' :'lbl.todos' ) | translate}}
+                </mat-slide-toggle>
+            </div>
+            <div class="col-xs-12 col-md-12 form-group">
+
+                <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8 col-xs-12 full-width"
+                    (matSortChange)="sortData($event)">
+
+                    <ng-container matColumnDef="identificacion">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.identificacion'|translate}}
+                        </th>
+                        <td mat-cell *matCellDef=" let element " style="width: 15%;">
+                            {{commonService.getNumeroDocumento(element)}}
+                        </td>
+                    </ng-container>
+
+                    <!-- <ng-container matColumnDef="nombreAspirante">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                            {{'lbl.nombreAspirante'|translate}}</th>
+                        <td mat-cell *matCellDef=" let element " style="width: 20%;">{{getNameAspirante(element)}}
+                        </td>
+                    </ng-container> -->
+
+                    <ng-container matColumnDef="cargoAspirante">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                            {{'lbl.nombreCargo'|translate}}</th>
+                        <td mat-cell *matCellDef=" let element " style="width: 25%;">
+                            {{commonService.getCargoAspirante(element)}}
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="gradoCargo">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                            {{'lbl.grado'|translate}}</th>
+                        <td mat-cell *matCellDef=" let element " style="width: 10%;">
+                            {{commonService.getGradoCargo(element)}}
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="dependencia">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                            {{'lbl.tipoDependencia'|translate}}</th>
+                        <td mat-cell *matCellDef=" let element " style="width: 25%;">
+                            {{commonService.getTipoDependencia(element)}}
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="lugar">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                            {{'lbl.tipoDependenciaHija'|translate}}</th>
+                        <td mat-cell *matCellDef=" let element " style="width: 25%;">
+                            {{commonService.getDependenciaLugar(element)}}
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="estadoAspirante">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                            {{'lbl.estadoAspirante'|translate}}</th>
+                        <td mat-cell *matCellDef=" let element " style="width: 25%;">
+                            {{element.estadoAspiranteModel ? element.estadoAspiranteModel['nombreCategoria'+this.lang] :
+                            ''}}
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="verificado">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                            {{'lbl.verificado'|translate}}</th>
+                        <td mat-cell *matCellDef=" let element " style="width: 25%;">
+                            {{(element.esVerificado ? 'lbl.si': 'lbl.no' ) | translate}}
+                        </td>
+                    </ng-container>
+
+                    <!-- <ng-container matColumnDef="recalificacion">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                            {{'lbl.recalificacion'|translate}}</th>
+                        <td mat-cell *matCellDef=" let element " style="width: 25%;">
+                            {{element.estadoSolicitudRecalificacion}}
+                        </td>
+                    </ng-container> -->
+
+                    <ng-container matColumnDef="options">
+                        <th mat-header-cell *matHeaderCellDef style="text-align: center;">
+                            {{'lbl.verificaciónDocumentos'|translate}}</th>
+                        <td mat-cell *matCellDef="let element" class="mat-cell-left"
+                            style="width: 15%;text-align: center;">
+                            <div class="mat-cell-left" style="display: inline-block;">
+                                <button (click)="loadAspirante(element)" type="button"
+                                    title="{{'btn.verMasDetalles'|translate}}" color="primary" mat-icon-button>
+                                    <mat-icon>visibility</mat-icon>
+                                </button>
+                            </div>
+
+                        </td>
+                    </ng-container>
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns "></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns; "
+                        [ngClass]="{hovered: row.hovered, highlighted: isSelectedTable(elementCurrent , row.id)}"
+                        (mouseover)="row.hovered = true" (mouseout)="row.hovered = false"></tr>
+                </table>
+                <mat-paginator [pageSizeOptions]="[5,10, 20]" showFirstLastButtons></mat-paginator>
+            </div>
+
+            <div *ngIf="showBtnNotificar" class="row col-sm-12 col-md-12">
+                <div class="col-sm-12 pull-right form-group">
+                    <button mat-raised-button color="primary" class="pull-right" [disabled]="submit"
+                        (click)="enviarNotificacion()" title="{{ 'btn.comunicar' | translate }}">
+                        {{ 'btn.comunicar' | translate }}
+                        <mat-icon>add_alert</mat-icon>
+                    </button>
+                </div>
+            </div>
+
+        </div>
+
+        <div *ngIf="elementCurrent.id" class="row mt-4">
+
+            <div class="offset-sm-2 col-sm-8">
+                <mat-divider></mat-divider>
+            </div>
+
+            <div class="col-sm-12 text-center mt-4">
+                <h6>{{'lbl.verificaciónDocumentos' | translate}}</h6>
+            </div>
+
+            <div class="row col-sm-12 mt-4">
+
+                <div class="col-xs-12 col-sm-12 col-md-4 form-group">
+                    <app-input-general [formControl]="identificacion" [controll]="identificacion"
+                        [label]="'lbl.identificacion'"></app-input-general>
+                </div>
+
+                <div class="col-xs-12 col-sm-12 col-md-4 form-group">
+                    <app-input-general [formControl]="nombreAspirante" [controll]="nombreAspirante"
+                        [label]="'lbl.nombreAspirante'"></app-input-general>
+                </div>
+
+                <div class="col-xs-12 col-sm-12 col-md-4 form-group">
+                    <app-input-general [formControl]="cargoAspirante" [controll]="cargoAspirante"
+                        [label]="'lbl.nombreCargo'"></app-input-general>
+                </div>
+
+                <div class="col-sm-12 mt-4 mb-2">
+                    <h6>{{'ttl.experienciaLaboralAspiranteSeleccionado'|translate}}</h6>
+                </div>
+
+                <div class="row col-sm-12">
+                    <label class="col-xs-12 col-sm-3">{{'lbl.totalExperienciaRama'|translate}} : </label>
+                    <p class="col-xs-12 col-sm-4"><small> {{totalExperienceWork.rama.msg}}</small></p>
+                </div>
+                <div class="row col-sm-12" style="margin-top: -22px !important;">
+                    <label class="col-xs-12 col-sm-3">{{'lbl.totalExperienciaFueraRama'|translate}} : </label>
+                    <p class="col-xs-12 col-sm-4"><small> {{totalExperienceWork.fueraRama.msg}}</small></p>
+                </div>
+                <div class="row col-sm-12" style="margin-top: -22px !important;">
+                    <label class="col-xs-12 col-sm-3">{{'lbl.totalExperiencia'|translate}} : </label>
+                    <p class="col-xs-12 col-sm-4"><small> {{totalExperienceWork.total.msg}}</small></p>
+                </div>
+            </div>
+
+            <div class="row offset-sm-2 col-sm-8">
+                <mat-divider></mat-divider>
+            </div>
+
+            <!-- listado de adjuntos -->
+            <div class="row col-sm-12 mt-3">
+
+                <div class="col-sm-12 mt-4 mb-2">
+                    <h6>{{'ttl.listadoAdjuntos'|translate}}</h6>
+                </div>
+
+                <div class="col-xs-12 col-sm-6">
+                    <mat-slide-toggle (change)="onToggleAttachments($event)" style="float: left;"
+                        [(ngModel)]="allAttachmentsPending" [color]="'primary'">
+                        {{ (allAttachmentsPending ? 'lbl.pendientes' :'lbl.todos' ) | translate}}
+                    </mat-slide-toggle>
+                </div>
+
+                <div class="row col-sm-12 mt-2" *ngFor="let a of lstAdjuntos">
+                    <div class="col-sm-12 col-md-6">
+                        <div class="col-sm-12">
+                            <label *ngIf="a.nombreSeccion"
+                                class="col-sm-12 mt-3 mb-2 text-center"><b>{{a.nombreSeccion}}</b></label>
+                            <label mat-line>{{(a.nombre ? a.nombre : a.nombreLabel ) | translate}} </label>
+                            <button (click)="eventClickItem(a)" type="button" color="accent"
+                                title="{{'lbl.verSoporte'|translate}}" mat-icon-button>
+                                <mat-icon *ngIf="adjuntoSelected?.id !== a.id" style="color:red">picture_as_pdf
+                                </mat-icon>
+                                <mat-icon *ngIf="adjuntoSelected?.id === a.id" style="color:green">check_circle
+                                </mat-icon>
+                            </button>
+                            <!-- ESTA CORRECTO -->
+                            <!-- <mat-checkbox style="float: right;" [(ngModel)]="a.correcto">Correcto</mat-checkbox> -->
+                            <mat-slide-toggle style="float: right;" [(ngModel)]="a.correcto" [color]="'primary'">
+                                {{ (a.correcto ? 'lbl.correcto': 'lbl.incorrecto') | translate}}
+                            </mat-slide-toggle>
+
+                            <!-- NIVEL ESTUDIO -->
+                            <label class="col-sm-6 col-xs-12" *ngIf="a.nivelEstudio"><small>
+                                    <b>{{a.nivelEstudio}}</b></small> </label>
+
+                            <!-- ES GRADUADO -->
+                            <label class="col-sm-6 col-xs-12" *ngIf="a.esGraduado !== -1"><small><b
+                                        style="font-weight: 500;">{{'lbl.esGraduado'|translate}}</b> :
+                                    {{(a.esGraduado == 1 ? 'lbl.si' : 'lbl.no' ) | translate}}</small> </label>
+
+                            <label class="col-sm-12" *ngIf="a.intensidadHoraria !== '-1'"><small><b
+                                        style="font-weight: 500;">{{'lbl.intensidadHoraria'|translate}}</b> :
+                                    {{a.intensidadHoraria}}</small> </label>
+
+                            <!-- FECHA INGRESO Y RETIRO -->
+                            <label class="col-sm-12" *ngIf="a.fechaIngreso !== '-1'"><small><b
+                                        style="font-weight: 500;"> {{'lbl.fechaInicial'|translate}}</b> :
+                                    {{a.fechaIngreso | date:formatDateView}}</small>
+                                -
+                                <label *ngIf="a.fechaRetiro !== '-1'"><small><b
+                                            style="font-weight: 500;"> {{'lbl.fechaFinal'|translate}}</b> :
+                                        {{a.fechaRetiro | date:formatDateView}}</small> </label>
+
+                                <!-- TRABAJO ACTUAL -->
+                                <label *ngIf="a.trabajoActual !== -1"><small><b
+                                            style="font-weight: 500;"> {{'lbl.trabajoActual'|translate}}</b> :
+                                        {{(a.trabajoActual == 1 ? 'lbl.si' : 'lbl.no' ) | translate}}</small> </label>
+
+                                <br>
+                                <!-- TIPO EXPERIENCIA LABORAL -->
+                                <label *ngIf="a.tipoExperiencia !== '-1'"><small><b
+                                            style="font-weight: 500;"> {{'lbl.tipoExperiencia'|translate}}</b> :
+                                        {{a.tipoExperiencia}}</small> </label>
+
+                            </label>
+
+                            <!-- <label class="col-sm-12" *ngIf="a.fechaRetiro !== '-1'"><small><b
+                                        style="font-weight: 500;">{{'lbl.fechaFinal'|translate}}</b> :
+                                    {{a.fechaRetiro |  date:formatDateView}}</small></label> -->
+
+                            <!-- <label class="col-sm-12" *ngIf="a.trabajoActual !== -1"><small><b
+                                        style="font-weight: 500;">{{'lbl.trabajoActual'|translate}}</b> :
+                                    {{(a.trabajoActual == 1 ? 'lbl.si' : 'lbl.no' ) | translate}}</small> </label> -->
+
+                            <mat-checkbox *ngIf="a.showCbxAdicional === true" style="float:left;"
+                                [(ngModel)]="a.aplicaAdicional">{{'lbl.aplicaAdicional'| translate}}</mat-checkbox>
+
+                            <!-- APLICA ADICIONAL -->
+                            <div *ngIf="a.showCbxAdicional === true && a.aplicaAdicional === true"
+                                class="col-xs-12 form-group">
+                                <mat-form-field appearance="{{appearanceInput}}">
+                                    <mat-label>{{'lbl.modalidad'|translate}}</mat-label>
+                                    <mat-select [(ngModel)]="a.idConfigAdicional" [required]="false"
+                                        matTooltip="{{tooltip|translate}}" matTooltipPosition="above">
+                                        <mat-option>{{'lbl.seleccioneUnaOpcion' | translate}}</mat-option>
+                                        <mat-option *ngFor="let item of a.lstConfigAdicional" [value]="item['id']">
+                                            {{item['tipoAdicional'] +' '+ item['puntajeMaximo']}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+
+                            <!-- OBSEVACIONES -->
+                            <mat-form-field appearance="{{appearanceInput}}">
+                                <mat-label>{{'lbl.observaciones'|translate}}</mat-label>
+                                <textarea rows="2" matInput [(ngModel)]="a.observacion" autocomplete="off"
+                                    type="text"></textarea>
+                                <strong class="text-danger"
+                                    *ngIf="a.correcto == false && !a.observacion && seleccionoAdmitido == true"><small>{{'msg.campoRequerido'|translate}}</small></strong>
+                            </mat-form-field>
+                        </div>
+
+                        <div class="offset-md-2 col-md-8">
+                            <!-- <mat-divider></mat-divider> -->
+                        </div>
+                    </div>
+
+
+                    <div class="col-sm-12 col-md-6">
+
+                        <iframe *ngIf="a.rutaSafe" [src]="a.rutaSafe" class="frameSet" frameborder="0" width="100%"
+                            height="500"></iframe>
+
+                        <!-- <ng-template #notFoundFile>
+                            <h1>Not found File</h1> 
+                        </ng-template>  -->
+
+                        <!-- <pdf-viewer [src]="ruta" [render-text]="true"
+                    style="display: block;" [zoom]="0.5"
+                    [show-borders]="true"></pdf-viewer> -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="offset-md-2 col-md-8 mt-3">
+                <mat-divider></mat-divider>
+            </div>
+
+            <div class="row col-sm-12 mt-3">
+
+                <div class="col-sm-12 mt-4 mb-2">
+                    <h6>{{'ttl.informacionAdmitido'|translate}}</h6>
+                </div>
+
+                <div class="row col-sm-12">
+
+                    <div class="col-xs-12 col-md-6 form-group">
+                        <div class="col-xs-12 col-sm-12 col-md-12 form-group">
+                            <app-input-select [label]="'lbl.estadoAspirante'" [lst]="lstEstadosAspiranteView"
+                                [xOption]="'nombreCategoria'" [xId]="'id'" [formControl]="estadoAspiranteSelect"
+                                [controll]="estadoAspiranteSelect" [required]="true"
+                                (eventEmmitter)="loadDataByEstadoAspirante($event)">
+                            </app-input-select>
+                        </div>
+
+                        <div class="col-xs-12 col-sm-12 col-md-12 form-group" *ngIf="esNoAdmitido">
+                            <!-- <app-input-select [label]="'lbl.motivoNoAdmitido'" [lst]="lstCategoriaAdmintidoModel"
+                                [xOption]="'nombreCategoria'" [xId]="'id'" [formControl]="estadoNoAdmitidoAspirante"
+                                [controll]="estadoNoAdmitidoAspirante" [required]="true"
+                                (eventEmmitter)="loadDataByCategoria($event)">
+                            </app-input-select> -->
+
+                            <mat-label>{{'lbl.motivoNoAdmitido'|translate}}</mat-label>
+                            <ng-multiselect-dropdown [placeholder]="' '" [formControl]="estadoNoAdmitidoAspirante"
+                                [data]="lstCategoriaAdmintidoModel" [settings]="dropTitulo" [required]="true">
+                            </ng-multiselect-dropdown>
+                            <mat-error *ngIf="estadoNoAdmitidoAspirante?.hasError('required')">
+                                <strong style="font-size: 75%;">{{'msg.campoRequerido'|translate}}</strong>
+                            </mat-error>
+
+
+                            <app-input-general [formControl]="otraCategoria" [controll]="otraCategoria"
+                                *ngIf="esOtraCategoria" [label]="'lbl.otro'"></app-input-general>
+                        </div>
+                    </div>
+
+                    <div class="col-xs-12 col-md-6 form-group">
+                        <mat-form-field appearance="{{appearanceInput}}">
+                            <mat-label>{{'lbl.observaciones'|translate}}</mat-label>
+                            <textarea rows="5" matInput [formControl]="observacionesAspirante" autocomplete="off"
+                                type="text"></textarea>
+                        </mat-form-field>
+                    </div>
+                </div>
+
+                <div *ngIf="showBotonGuardar" class="row col-sm-12 col-md-12">
+                    <div class="col-sm-12 pull-right form-group">
+                        <app-buttons-fotter [showBtnAccept]="true" [submit]="submit"
+                            (eventEmmitterAccept)="saveAspirante()" [showBtnCancel]="true"
+                            (eventEmmitterCancel)="cleanForm()"></app-buttons-fotter>
+                    </div>
+                </div>
+
+                <div *ngIf="showBotonReporte" class="row col-sm-12 col-md-12">
+                    <div class="col-sm-12 pull-right form-group">
+                        <app-buttons-fotter [showBtnAccept]="true" [submit]="submit"
+                            (eventEmmitterAccept)="getReporteCV()" [iconAccept]="grading"
+                            [labelBtnAccept]="'btn.resumen'"></app-buttons-fotter>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </mat-card-content>
+</mat-card>

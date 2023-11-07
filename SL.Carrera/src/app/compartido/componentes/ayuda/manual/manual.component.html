@@ -1,0 +1,14 @@
+<form #formV="ngForm">
+    <mat-card>
+        <div class="casillas" class="col-xs-12 col-md-12 form-group">
+            <div *ngFor="let v of lstInstructivo">
+                <div  class="row casillas"> 
+                    <h5><b>{{v['nombreInstructivo' + lang]}}</b></h5>                    
+                    <button (click)="viewFile(v.idSoporte)" type="button" color="warn" mat-icon-button>
+                        <mat-icon>save_alt</mat-icon>
+                    </button>
+                </div>               
+            </div>
+        </div>
+    </mat-card>
+</form>

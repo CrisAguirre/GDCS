@@ -1,0 +1,47 @@
+<app-input-general id="inputSelect" [formControl]="controll" [controll]="controll" [label]="'lbl.despacho'"
+(onBlurInput)="onBlurInputEvent($event)" [required]="true">
+</app-input-general>
+<cdk-virtual-scroll-viewport itemSize="50" class="example-viewport opciones" id="opciones">
+    <a *cdkVirtualFor="let item of lstFilter" class="opcion" (click)="selectItem(item)">
+        <div class="contenido-opcion">
+            <h1 class="titulo">{{getOption(item)}}</h1>
+        </div>
+    </a>
+</cdk-virtual-scroll-viewport>
+
+
+
+
+<!-- <cdk-virtual-scroll-viewport itemSize="50" class="example-viewport">
+    <div *cdkVirtualFor="let item of lstFilter" class="example-item">{{item && item.despacho ? item.codigoDespacho + ' - ' + item.despacho : 'N/A'}}</div>
+</cdk-virtual-scroll-viewport> -->
+
+
+<!-- <div class="contenedor">
+    <form action="">
+        <div class="selectbox">
+            <div class="select" id="select">
+                <div class="contenido-select">
+                    <h1 class="titulo">Selecciona tu pais</h1>
+                    <p class="descripcion">Lorem ipsum dolor sit.</p>
+                </div>
+                <i class="fas fa-angle-down"></i>
+            </div>
+
+            <cdk-virtual-scroll-viewport itemSize="50" class="example-viewport opciones" id="opciones">
+                <a *cdkVirtualFor="let item of lstFilter" href="#" class="opcion">
+                    <div class="contenido-opcion">
+                        <img src="img/mexico.png" alt="">
+                        <div class="textos">
+                            <h1 class="titulo">Mexico</h1>
+                            <p class="descripcion">Lorem ipsum dolor sit.</p>
+                        </div>
+                    </div>
+                </a>
+            </cdk-virtual-scroll-viewport>
+        </div>
+
+        <input type="hidden" name="pais" id="inputSelect" value="">
+    </form>
+
+</div> -->

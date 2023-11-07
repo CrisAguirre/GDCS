@@ -1,0 +1,47 @@
+<mat-form-field appearance="{{appearanceInput}}">
+    <mat-label>{{label|translate}}{{labelTranslate|translate}}</mat-label>
+    <input matInput (blur)="onBlurInputEvent(controll.value)" [formControl]="controll" placeholder="{{placeholder|translate}}" [autocomplete]="autocomplete" numericDirective [enabled]="isNumber" [required]="required" [attr.maxlength]="maxlength" matTooltip="{{tooltip|translate}}" matTooltipPosition="above"
+        matTooltipClass="tooltip-background" onlyTextDirective [enabledOnlyText]="isOnlyText" readonly="{{readOnly}}">
+    <mat-error *ngIf="controll?.hasError('maxlength')">
+        <strong>{{'msg.campoMaxLength'|translate}} ({{controll?.errors.maxlength.requiredLength}} / {{controll?.errors.maxlength.actualLength}})</strong>
+    </mat-error>
+    <mat-error *ngIf="!controll?.hasError('required') && (controll?.hasError('numMin') || controll?.hasError('numMax'))">
+        <strong>{{'msg.rangoIncorrecto'|translate}}</strong>
+    </mat-error>
+    <mat-error *ngIf="controll?.hasError('required')">
+        <strong>{{'msg.campoRequerido'|translate}}</strong>
+    </mat-error>
+</mat-form-field>
+
+
+
+<!-- <mat-form-field appearance="{{appearanceInput}}">
+    <mat-label>{{label|translate}}</mat-label>
+    <input matInput #inputGeneral [formControl]="controll" (input)="onInput($event.target.value)" (click)="onInput($event.target.value)" (keyup)="onInput($event.target.value)" (change)="onInput($event.target.value)" [value]="value" placeholder="{{placeholder|translate}}"
+        [autocomplete]="autocomplete" [type]="type" [required]="required" [attr.maxlength]="maxlength">
+
+    <mat-error *ngIf="controll?.hasError('maxlength')">
+        <strong>{{'msg.campoMaxLength'|translate}} ({{controll?.errors.maxlength.requiredLength}} / {{controll?.errors.maxlength.actualLength}})</strong>
+    </mat-error>
+    <mat-error *ngIf="controll?.hasError('required')">
+        <strong>{{'msg.campoRequerido'|translate}}</strong>
+    </mat-error>
+
+</mat-form-field> -->
+
+<!-- <mat-error *ngIf="controll?.hasError('maxlength')">
+    <strong>{{'msg.campoMaxLength'|translate}} (controll?.errors.maxlength.requiredLength  / controll?.errors.maxlength.actualLength)</strong>
+</mat-error> -->
+<!-- {{controll.errors | json}} -->
+<!-- { "maxlength": { "requiredLength": 30, "actualLength": 40 } } -->
+<!-- <mat-error *ngIf="!controll?.valid && (controll?.dirty || form?.submited == true)"> -->
+<!-- (input)="onInput($event.target.value)" 
+    (keyup)="onInput(inputGeneral.value)" (change)="onInput(inputGeneral.value)"-->
+
+<!-- <mat-form-field appearance="{{appearanceInput}}">
+    <mat-label>{{label|translate}}</mat-label>
+    <input matInput [formControl]="controll" placeholder="{{placeholder|translate}}" [autocomplete]="autocomplete" [type]="type" [required]="required" [attr.maxlength]="maxlength">
+    <mat-error *ngIf="controll.hasError('required')">
+        <strong>{{'msg.campoRequerido'|translate}}</strong>
+    </mat-error>
+</mat-form-field> -->

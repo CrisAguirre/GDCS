@@ -1,0 +1,798 @@
+<mat-card class="mb-2">
+    <mat-card-header>
+        <mat-card-title>{{'ttl.experienciaLaboral'|translate}}</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+        <!-- <div class="row">
+            <div class="col-xs-12 col-sm-4 form-group">
+                <label>{{'lbl.totalExperiencia'|translate}} </label> <br>
+                <p> <small> {{totalExperienceWork.total.msg}}</small></p>
+            </div>
+
+            <div class="col-xs-12  col-sm-4 form-group">
+                <label>{{'lbl.totalExperienciaRama'|translate}} </label> <br>
+                <p> <small> {{totalExperienceWork.rama.msg}}</small></p>
+            </div>
+
+            <div class="col-xs-12  col-sm-4 form-group">
+                <label>{{'lbl.totalExperienciaFueraRama'|translate}} </label> <br>
+                <p> <small> {{totalExperienceWork.fueraRama.msg}}</small></p>
+            </div>
+        </div> -->
+
+
+        <div class="row">
+            <label class="col-xs-12 col-sm-2">{{'lbl.totalExperienciaRama'|translate}} : </label>
+            <p class="col-xs-12 col-sm-4"><small> {{totalExperienceWork.rama.msg}}</small></p>
+        </div>
+        <div class="row">
+            <label class="col-xs-12 col-sm-2">{{'lbl.totalExperienciaFueraRama'|translate}} : </label>
+            <p class="col-xs-12 col-sm-4"><small> {{totalExperienceWork.fueraRama.msg}}</small></p>
+        </div>
+        <div class="row">
+            <label class="col-xs-12 col-sm-2">{{'lbl.totalExperiencia'|translate}} : </label>
+            <p class="col-xs-12 col-sm-4"><small> {{totalExperienceWork.total.msg}}</small></p>
+        </div>
+    </mat-card-content>
+</mat-card>
+
+
+<mat-accordion [multi]="true">
+    <mat-expansion-panel [expanded]="true">
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+                {{'ttl.experienciaLaboralJudicial'|translate}}
+            </mat-panel-title>
+            <mat-panel-description>
+            </mat-panel-description>
+        </mat-expansion-panel-header>
+
+        <form #formV2="ngForm" [formGroup]="form2">
+            <div class="row">
+
+                <div class="col-xs-12 col-md-3 form-group pt-3">
+                    <mat-checkbox formControlName="currentWork" >
+                        {{'lbl.trabajoActual'|translate}}
+                    </mat-checkbox>
+                </div>
+
+                <div class="col-xs-12 col-md-3 form-group">
+                    <app-input-general formControlName="job" [controll]="f2.job" [label]="'lbl.cargo'"></app-input-general>
+                </div>
+
+                <div class="col-xs-12 col-md-3 form-group">
+                    <app-input-general formControlName="grade" [controll]="f2.grade" [label]="'lbl.grado'"></app-input-general>
+                </div>
+
+                <div class="col-xs-12 col-md-3 form-group">
+                    <app-input-general formControlName="corporation" [controll]="f2.corporation" [label]="'lbl.corporacionDespacho'"></app-input-general>
+                </div>
+
+                <div class="col-xs-12 col-md-3 form-group">
+                    <app-input-select [label]="'lbl.pais'" (eventEmmitter)="loadDepartments($event, 2)" [lst]="lstCountries2" [xOption]="'pais'" [xId]="'id'" formControlName="country" [controll]="f2.country"></app-input-select>
+                </div>
+
+                <div class="col-xs-12 col-md-3 form-group">
+                    <app-input-select [label]="'lbl.departamento'" (eventEmmitter)="loadMunicipalities($event, 2)" [lst]="lstDepartments2" [xOption]="'departamento'" [xId]="'id'" formControlName="department" [controll]="f2.department"></app-input-select>
+                </div>
+
+                <div class="col-xs-12 col-md-3 form-group">
+                    <app-input-select [label]="'lbl.municipio'" [lst]="lstMunicipalities2" [xOption]="'ciudad'" [xId]="'id'" formControlName="municipality" [controll]="f2.municipality"></app-input-select>
+                </div>
+
+                <div class="col-xs-12 col-md-3 form-group">
+                    <app-input-general formControlName="numberResolution" [controll]="f2.numberResolution" [label]="'lbl.resolucionNumero'" [typeField]="'number'" [required]="false"></app-input-general>
+                </div>
+
+                <div class="col-xs-12 col-md-3 form-group">
+                    <app-input-date [label]="'lbl.fechaExpedicion'" formControlName="expireDate" [controll]="f2.expireDate" [required]="false"></app-input-date>
+                </div>
+
+                <div class="col-xs-12 col-md-3 form-group">
+                    <app-input-select [label]="'lbl.calidadNombramiento'" [lst]="lstNameCualities" [xOption]="'text'" [xId]="'id'" formControlName="nameCuality" [required]="false" [controll]="f2.nameCuality"></app-input-select>
+                </div>
+
+                <div class="col-xs-12 col-md-3 form-group">
+                    <app-input-date [label]="'lbl.fechaIngreso'" [maxDate]="f2.endDate.value" [required]="true" formControlName="initDate" [controll]="f2.initDate"></app-input-date>
+                </div>
+
+                <div class="col-xs-12 col-md-3 form-group">
+                    <app-input-date [label]="'lbl.fechaRetiro'" [minDate]="f2.initDate.value" [maxDate]="now" [required]="true" formControlName="endDate" [controll]="f2.endDate"></app-input-date>
+                </div>
+
+                <div class="col-xs-12 col-md-3 form-group">
+                    <div class="row">
+                        <div class="col-sm-10 pr-0">
+                            <mat-form-field appearance="{{appearanceInput}}">
+                                <mat-label>{{'lbl.adjuntarSoporte'|translate}}</mat-label>
+                                <ngx-mat-file-input #inputFileSoport2 class="inputFileSoport2" formControlName="requiredfile" valuePlaceholder="{{(!elementCurrent2.soporte? 'lbl.seleccioneArchivo':elementCurrent2.nameSoport)|translate}}" [accept]="configFile.allowExtensions" [errorStateMatcher]="matcher" required>
+                                </ngx-mat-file-input>
+                                <button mat-icon-button matSuffix *ngIf="elementCurrent2.soporte || this.f2.requiredfile.value" (click)="inputFileSoport2.clear($event); deleteFileView(2)">
+                                    <mat-icon>clear</mat-icon>
+                                </button>
+                                <mat-hint>{{'msg.archivoPermitido'|translate}} ({{configFile.allowExtensions}})</mat-hint>
+                                <mat-error *ngIf="f2.requiredfile.hasError('required')">
+                                    {{'msg.seleccioneArchivo'|translate}} ({{configFile.allowExtensions}})
+                                </mat-error>
+                                <mat-error *ngIf="f2.requiredfile.hasError('maxContentSize')">
+                                    {{'msg.tamanioArchivo'|translate}} {{f.requiredfile?.getError('maxContentSize').maxSize | byteFormat}} ({{f.requiredfile?.getError('maxContentSize').actualSize | byteFormat}}).
+                                </mat-error>
+                                <mat-error *ngIf="f2.requiredfile.hasError('badExtension')">
+                                    {{f.requiredfile.errors.badExtension}} ({{configFile.allowExtensions}})
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-sm-2 p-0">
+
+                            <button mat-icon-button class="mt-2" type="button" color="primary" (click)="!elementCurrent2.soporte ? openDialogFile('.inputFileSoport2') :viewFile(elementCurrent2.soporte)" title="{{(!elementCurrent2.soporte ? 'lbl.cargarArchivo':'lbl.verAdjunto')|translate}}">
+                                <mat-icon>{{!elementCurrent2.soporte ? 'attach_file':'remove_red_eye'}}</mat-icon>
+                            </button>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xs-12 col-md-3 col-sm-3 form-group">
+                    <mat-checkbox formControlName="hasMoreExperienceCompany" >
+                        <span style="white-space: pre-line !important;">{{'lbl.masExperienciaEnEmpresa'|translate}}</span>
+                    </mat-checkbox>
+                </div>
+
+                <div *ngIf="showFieldSameFile2" class="col-xs-12 col-md-3 col-sm-3 form-group pt-3">
+                    <mat-checkbox formControlName="applySameFile" >
+                        {{'lbl.aplicaMismoSoporte'|translate}}
+                    </mat-checkbox>
+                </div>
+
+            </div>
+
+            <div *ngIf="showFieldSameFile2" class="row">
+                <div class="col-xs-12 col-md-12 form-group mt-4 mb-4">
+                    <ng-container *ngTemplateOutlet="formTableExperience2"></ng-container>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-12 pull-right form-group">
+                    <app-buttons-fotter [showBtnAccept]="true" [submit]="submit" (eventEmmitterAccept)="addJobDentroRama()" [showBtnCancel]="true" (eventEmmitterCancel)="cleanForm(2)"></app-buttons-fotter>
+                    <!-- <button mat-raised-button color="primary" class="pull-right" [disabled]="submit" (click)="addJobDentroRama()" title="{{'btn.guardar'|translate}}">{{'btn.guardar'|translate}}<mat-icon>save</mat-icon></button>
+                    <button mat-raised-button type="button" class="pull-right mr-1" (click)="cleanForm(2)" title="{{'btn.limpiar'|translate}}">{{'btn.limpiar'|translate}}
+                        <mat-icon>clear_all</mat-icon></button> -->
+                </div>
+            </div>
+
+
+            <div class="row">
+
+                <div class="col-xs-12 col-md-12 form-group">
+
+                    <div class="col-xs-12 col-md-3">
+                        <mat-form-field>
+                            <mat-label>{{'lbl.buscar'|translate}}</mat-label>
+                            <input matInput (keyup)="applyFilter($event , dataSource2)" placeholder="{{'lbl.buscarPlh'|translate}}" autocomplete="off">
+                        </mat-form-field>
+                    </div>
+
+                    <table mat-table matSort [dataSource]="dataSource2" #TableTwoSort="matSort" matSortActive="job" matSortDirection="asc" class="mat-elevation-z8 col-xs-12 full-width" (matSortChange)="sortData2($event)">
+
+                        <ng-container matColumnDef="job">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.cargo'|translate}}</th>
+                            <td mat-cell *matCellDef="let element"> {{element.cargo}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="grade">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.grado'|translate}}</th>
+                            <td mat-cell *matCellDef=" let element "> {{element.grado}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="corporation">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.corporacion'|translate}}</th>
+                            <td mat-cell *matCellDef=" let element "> {{element.corporacion}} </td>
+                        </ng-container>
+
+                        <!-- <ng-container matColumnDef="municipality">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.municipio'|translate}}</th>
+                            <td mat-cell *matCellDef=" let element "> {{element.municipality}} </td>
+                        </ng-container> -->
+
+                        <!-- <ng-container matColumnDef="numberResolution">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.resolucionNumero'|translate}}</th>
+                            <td mat-cell *matCellDef="let element "> {{element.resolucion}} </td>
+                        </ng-container> -->
+
+                        <!-- <ng-container matColumnDef="expireDate">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.fechaExpedicion'|translate}}</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.fechaExpedicionResolucion | date:formatDateView}} </td>
+                        </ng-container> -->                    
+
+                        <ng-container matColumnDef="initDate">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.fechaIngreso'|translate}}</th>
+                            <td mat-cell *matCellDef="let element"> {{element.fechaIngreso | date:formatDateView}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="endDate">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.fechaRetiro'|translate}}</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.esTrabajoActual == 1 ?' N/A ':(element.fechaRetiro | date:formatDateView)}}
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="currentWork">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.trabajoActual'|translate}}</th>
+                            <td mat-cell *matCellDef="let element"> {{(element.esTrabajoActual == 1 ? 'lbl.si' : 'lbl.no')| translate}}
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="soport">
+                            <th mat-header-cell *matHeaderCellDef>{{'lbl.soporte'|translate}}</th>
+                            <td mat-cell *matCellDef="let element">
+                                <button *ngIf="element.soporte" (click)="viewFile(element.soporte)" type="button" title="{{'lbl.verSoporte'|translate}}" color="warn" mat-icon-button>
+                                    <mat-icon>attach_file</mat-icon>
+                                </button> </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="options">
+                            <th mat-header-cell *matHeaderCellDef>{{'lbl.editarEliminar'|translate}}</th>
+                            <td mat-cell *matCellDef="let element">
+                                <button (click)="edit2(element)" type="button" title="{{'lbl.editar'|translate}}" color="primary" mat-icon-button>
+                                    <mat-icon>edit</mat-icon>
+                                </button>
+                                <button (click)="delete2(element)" type="button" title="{{'lbl.eliminar'|translate}}" color="warn" mat-icon-button>
+                                    <mat-icon>delete</mat-icon>
+                                </button>
+                            </td>
+                        </ng-container>
+
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns2"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns2; " [ngClass]="{hovered: row.hovered, highlighted: isSelectedTable(elementCurrent2 , row.id)}" (mouseover)="row.hovered = true" (mouseout)="row.hovered = false"></tr>
+                    </table>
+                    <mat-paginator #matPaginator2="matPaginator" [pageSizeOptions]="[5,10, 20]" showFirstLastButtons></mat-paginator>
+                </div>
+
+            </div>
+        </form>
+    </mat-expansion-panel>
+    
+    
+    <mat-expansion-panel >
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+                {{'ttl.experienciaLaboralFuera'|translate}}
+            </mat-panel-title>
+            <mat-panel-description>
+
+            </mat-panel-description>
+        </mat-expansion-panel-header>
+
+        <form #formV="ngForm" [formGroup]="form">
+
+
+            <div class="row">
+                <div class="col-xs-12 col-md-3 form-group">
+                    <!-- <mat-checkbox formControlName="currentWork" [labelPosition]="after"> -->
+                    <mat-checkbox formControlName="currentWork">
+                        {{'lbl.trabajoActual'|translate}}
+                    </mat-checkbox>
+
+                    <div>
+                        <mat-checkbox formControlName="docencia" >
+                            {{'lbl.docencia'|translate}}
+                        </mat-checkbox>
+                    </div>
+                </div>
+
+                <div class="col-xs-12 col-md-3 form-group">
+                    <app-input-general formControlName="job" [controll]="f.job" [label]="'lbl.cargo'" [placeholder]="'lbl.cargo'"></app-input-general>
+                </div>
+
+                <div class="col-xs-12 col-md-3 form-group">
+                    <app-input-general formControlName="company" [controll]="f.company" [label]="'lbl.entidadOEmpresa'"></app-input-general>
+                </div>
+
+                <div class="col-xs-12 col-md-3 form-group">
+                    <app-input-select [label]="'lbl.sector'" [lst]="lstSectors" [xOption]="'sectorExperiencia'" [xOption2]="'codSectorExperiencia'" [xId]="'id'" formControlName="sector" [controll]="f.sector"></app-input-select>
+                </div>
+
+                <div *ngIf="showCatedra" class="col-xs-12 col-md-3 form-group">
+                    <app-input-general formControlName="catedra" [controll]="f.catedra" [label]="'lbl.catedra'" [placeholder]="'lbl.catedra'"></app-input-general>
+                </div>
+
+                <div class="col-xs-12 col-md-3 form-group">
+                    <app-input-select [label]="'lbl.tipoExperienciaLaboral'" [lst]="lstTipoExperienciaLaboral" [xOption]="'tipo'" [xId]="'id'" formControlName="idTipoExperienciaLaboral" [controll]="f.idTipoExperienciaLaboral"></app-input-select>
+                </div>
+
+                <div class="col-xs-12 col-md-3 form-group">
+                    <app-input-select [label]="'lbl.pais'" (eventEmmitter)="loadDepartments($event, 1)" [lst]="lstCountries" [xOption]="'pais'" [xId]="'id'" formControlName="country" [controll]="f.country"></app-input-select>
+                </div>
+
+                <div class="col-xs-12 col-md-3 form-group">
+                    <app-input-select [label]="'lbl.departamento'" (eventEmmitter)="loadMunicipalities($event, 1)" [lst]="lstDepartments" [xOption]="'departamento'" [xId]="'id'" formControlName="department" [controll]="f.department"></app-input-select>
+                </div>
+
+                <div class="col-xs-12 col-md-3 form-group">
+                    <app-input-select [label]="'lbl.municipio'" [lst]="lstMunicipalities" [xOption]="'ciudad'" [xId]="'id'" formControlName="municipality" [controll]="f.municipality"></app-input-select>
+                </div>
+
+                <div class="col-xs-12 col-md-3 form-group">
+                    <app-input-date [label]="'lbl.fechaIngreso'" [maxDate]="f.endDate.value" [required]="true" formControlName="initDate" [controll]="f.initDate"></app-input-date>
+                </div>
+
+                <div *ngIf="showEndDate" class="col-xs-12 col-md-3 form-group">
+                    <app-input-date [label]="'lbl.fechaRetiro'" [minDate]="f.initDate.value" [maxDate]="now" [required]="true" formControlName="endDate" [controll]="f.endDate"></app-input-date>
+                </div>
+
+                <div class="col-xs-12 col-md-3 form-group">
+                    <div class="row">
+                        <div class="col-sm-10 pr-0">
+                            <mat-form-field appearance="{{appearanceInput}}">
+                                <mat-label>{{'lbl.adjuntarSoporte'|translate}}</mat-label>
+                                <ngx-mat-file-input #inputFileSoport class="inputFileSoport" formControlName="requiredfile" valuePlaceholder="{{(!elementCurrent.soporte? 'lbl.seleccioneArchivo':elementCurrent.nameSoport) | translate}}" [accept]="configFile.allowExtensions" [errorStateMatcher]="matcher" required>
+                                </ngx-mat-file-input>
+                                <button mat-icon-button matSuffix *ngIf="elementCurrent.soporte || this.f.requiredfile.value" (click)="inputFileSoport.clear($event); deleteFileView(1)">
+                                    <mat-icon>clear</mat-icon>
+                                </button>
+                                <mat-hint>{{'msg.archivoPermitido'|translate}} ({{configFile.allowExtensions}})</mat-hint>
+                                <mat-error *ngIf="f.requiredfile.hasError('required')">
+                                    {{'msg.seleccioneArchivo'|translate}} ({{configFile.allowExtensions}})
+                                </mat-error>
+                                <mat-error *ngIf="f.requiredfile.hasError('maxContentSize')">
+                                    {{'msg.tamanioArchivo'|translate}} {{f.requiredfile?.getError('maxContentSize').maxSize | byteFormat}} ({{f.requiredfile?.getError('maxContentSize').actualSize | byteFormat}}).
+                                </mat-error>
+                                <mat-error *ngIf="f.requiredfile.hasError('badExtension')">
+                                    {{f.requiredfile.errors.badExtension}} ({{configFile.allowExtensions}})
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-sm-2 p-0">
+                            <button mat-icon-button class="mt-2" type="button" color="primary" (click)="!elementCurrent.soporte ? openDialogFile('.inputFileSoport') :viewFile(elementCurrent.soporte)" title="{{(!elementCurrent.soporte ? 'lbl.cargarArchivo':'lbl.verAdjunto')|translate}}">
+                                <mat-icon>{{!elementCurrent.soporte ? 'attach_file':'remove_red_eye'}}</mat-icon>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xs-12 col-md-3 col-sm-3 form-group">
+                    <mat-checkbox formControlName="hasMoreExperienceCompany" >
+                        <span style="white-space: pre-line !important;">{{'lbl.masExperienciaEnEmpresa'|translate}}</span>
+                    </mat-checkbox>
+                </div>
+
+                <div *ngIf="showFieldSameFile" class="col-xs-12 col-md-3 col-sm-3 form-group pt-3">
+                    <mat-checkbox formControlName="applySameFile" class="example-margin" >
+                        {{'lbl.aplicaMismoSoporte'|translate}}
+                    </mat-checkbox>
+                </div>
+
+
+            </div>
+
+            <div *ngIf="showFieldSameFile" class="row">
+                <div class="col-xs-12 col-md-12 form-group mt-4 mb-4">
+                    <ng-container *ngTemplateOutlet="formTableExperience1"></ng-container>
+                </div>
+            </div>
+
+            <div class="row">
+
+                <div class="col-sm-12 pull-right form-group">
+                    <app-buttons-fotter [showBtnAccept]="true" [submit]="submit" (eventEmmitterAccept)="addJobFueraRama()" [labelBtnAccept]="'btn.guardar'" [iconAccept]="'save'" [showBtnCancel]="true" (eventEmmitterCancel)="cleanForm(1)" [labelBtnCancel]="'btn.limpiar'" [iconCancel]="'clear_all'"></app-buttons-fotter>
+                    <!-- <button mat-raised-button color="primary" class="pull-right" [disabled]="submit" (click)="addJobFueraRama()" title="{{'btn.guardar'|translate}}">{{'btn.guardar'|translate}}<mat-icon>save</mat-icon></button>
+                    <button mat-raised-button type="button" class="pull-right mr-1" (click)="cleanForm(1)" title="{{'btn.limpiar'|translate}}">{{'btn.limpiar'|translate}}
+                        <mat-icon>clear_all</mat-icon></button>  -->
+                </div>
+            </div>
+
+
+            <div class="row">
+
+                <div class="col-xs-12 col-md-12 form-group">
+
+                    <div class="col-xs-12 col-md-3">
+                        <mat-form-field>
+                            <mat-label>{{'lbl.buscar'|translate}}</mat-label>
+                            <input matInput (keyup)="applyFilter($event , dataSource)" placeholder="{{'lbl.buscarPlh'|translate}}" autocomplete="off">
+                        </mat-form-field>
+                    </div>
+
+                    <table mat-table matSort [dataSource]="dataSource" #TableOneSort="matSort" matSortActive="initDate" matSortDirection="asc" class="mat-elevation-z8 col-xs-12 full-width" (matSortChange)="sortData1($event)">
+
+                        <ng-container matColumnDef="position">
+                            <th mat-header-cell *matHeaderCellDef> No. </th>
+                            <td mat-cell *matCellDef="let element"> {{element.postition}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="job">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.cargo'|translate}}</th>
+                            <td mat-cell *matCellDef="let element"> {{element.cargo}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="company">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.entidadOEmpresa'|translate}}</th>
+                            <td mat-cell *matCellDef=" let element "> {{element.entidad}} </td>
+                        </ng-container>
+
+                        <!-- <ng-container matColumnDef="sector">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.sector'|translate}}</th>
+                            <td mat-cell *matCellDef=" let element "> {{element.sector}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="municipality">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.municipio'|translate}}</th>
+                            <td mat-cell *matCellDef=" let element "> {{element.municipality}} </td>
+                        </ng-container> -->
+
+                        <ng-container matColumnDef="initDate">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.fechaIngreso'|translate}}</th>
+                            <td mat-cell *matCellDef="let element"> {{element.fechaIngreso | date:formatDateView}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="endDate">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.fechaRetiro'|translate}}</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.esTrabajoActual == 1 ?' N/A ':(element.fechaRetiro | date:formatDateView)}}
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="currentWork">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.trabajoActual'|translate}}</th>
+                            <td mat-cell *matCellDef="let element"> {{(element.esTrabajoActual == 1 ? 'lbl.si' : 'lbl.no') | translate}}
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="soport">
+                            <th mat-header-cell *matHeaderCellDef>{{'lbl.soporte'|translate}}</th>
+                            <td mat-cell *matCellDef="let element">
+                                <button *ngIf="element.soporte" (click)="viewFile(element.soporte)" type="button" color="warn" title="{{'lbl.verSoporte'|translate}}" mat-icon-button>
+                                    <mat-icon>attach_file</mat-icon>
+                                </button> </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="options">
+                            <th mat-header-cell *matHeaderCellDef>{{'lbl.editarEliminar'|translate}}</th>
+                            <td mat-cell *matCellDef="let element">
+                                <button (click)="edit(element)" type="button" color="primary" mat-icon-button title="{{'lbl.editar'|translate}}">
+                                    <mat-icon>edit</mat-icon>
+                                </button>
+
+                                <button (click)="delete(element)" type="button" color="warn" mat-icon-button title="{{'lbl.eliminar'|translate}}">
+                                    <mat-icon>delete</mat-icon>
+                                </button>
+                            </td>
+                        </ng-container>
+
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns "></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns; " [ngClass]="{hovered: row.hovered, highlighted: isSelectedTable(elementCurrent , row.id)}" (mouseover)="row.hovered = true" (mouseout)="row.hovered = false"></tr>
+
+                    </table>
+                    <mat-paginator #matPaginator="matPaginator" [pageSizeOptions]="[5,10, 20]" showFirstLastButtons></mat-paginator>
+                </div>
+
+            </div>
+
+        </form>
+
+    </mat-expansion-panel>
+
+
+    
+</mat-accordion>
+
+<!-- Experiencias laborales fuera de la rama en la misma empresa -->
+<ng-template #formTableExperience1>
+    <mat-card>
+        <mat-card-header>
+            <mat-card-title>{{'ttl.expLaboralMismaEmpresa'| translate}}</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+
+
+            <div class="row">
+                <div class="col-sm-12 col-md-6">
+                    <p>{{'lbl.agregarExperienciaLaboral' | translate}}</p>
+                </div>
+                <div class="col-sm-12 col-md-6 pull-right form-group">
+                    <button mat-raised-button color="primary" (click)="openDialog1()" class="pull-right" title="{{'btn.agregar'|translate}}">{{'btn.agregar' | translate}}<mat-icon>add</mat-icon>
+                    </button>
+                </div>
+            </div>
+
+            <div class="col-xs-12 col-md-6">
+                <mat-form-field>
+                    <mat-label>{{'lbl.buscar'|translate}}</mat-label>
+                    <input matInput (keyup)="applyFilter($event , dataSourceEmpresa1)" placeholder="{{'lbl.buscarPlh'|translate}}" autocomplete="off">
+                </mat-form-field>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-12 col-md-12 form-group">
+                    <table mat-table [dataSource]="dataSourceEmpresa1" matSort class="mat-elevation-z8 col-xs-12 full-width">
+
+                        <ng-container matColumnDef="cargo">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.cargo'|translate}}</th>
+                            <td mat-cell *matCellDef=" let element ">{{element.cargo}}</td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="fechaIngreso">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.fechaIngreso'|translate}}</th>
+                            <td mat-cell *matCellDef=" let element ">{{element.fechaIngreso | date:formatDateView}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="fechaRetiro">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.fechaRetiro'|translate}}</th>
+                            <td mat-cell *matCellDef=" let element ">{{element.fechaRetiro | date:formatDateView}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="soporte">
+                            <th mat-header-cell *matHeaderCellDef>{{'lbl.soporte'|translate}}</th>
+                            <td mat-cell *matCellDef="let element">
+                                <button *ngIf="element.soporte" (click)="viewFile(element.soporte)" type="button" color="warn" title="{{'lbl.verSoporte'|translate}}" mat-icon-button>
+                                    <mat-icon>attach_file</mat-icon>
+                                </button> </td>
+                            <!-- <td mat-cell *matCellDef=" let element ">{{showFieldSupport ? element.soporte.files[0].name : '' }} </td> -->
+                        </ng-container>
+
+                        <ng-container matColumnDef="options">
+                            <th mat-header-cell *matHeaderCellDef>{{'lbl.eliminar'|translate}}</th>
+                            <td mat-cell *matCellDef="let element" class="mat-cell-left">
+                                <!-- <button (click)="edit2(element)" type="button" title="{{'btn.editar'|translate}}" color="primary" mat-icon-button>
+                                    <mat-icon>edit</mat-icon>
+                                </button> -->
+
+                                <button type="button" color="warn" mat-icon-button title="{{'btn.eliminar'|translate}}" (click)="deleteExperience1(element)">
+                                    <mat-icon>delete</mat-icon>
+                                </button>
+                            </td>
+                        </ng-container>
+                        <tr mat-header-row *matHeaderRowDef="displayedColumnsEmp1 "></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumnsEmp1; "></tr>
+                    </table>
+                    <mat-paginator [pageSizeOptions]="[5,10, 20]" showFirstLastButtons></mat-paginator>
+                </div>
+            </div>
+
+        </mat-card-content>
+    </mat-card>
+</ng-template>
+
+<!-- Dialogo para agregar experiencia laboral fuera de la rama -->
+<ng-template #dialogAddExperience1>
+    <h2 matDialogTitle>{{'ttl.experienciaLaboral'| translate}}</h2>
+    <form #formV3="ngForm" [formGroup]="form3">
+
+        <div class="row">
+            <div class="col-xs-12 col-md-4 form-group">
+                <mat-form-field appearance="{{appearanceInput}}">
+                    <mat-label>{{'lbl.cargo'|translate}}</mat-label>
+                    <input matInput="matInput" formControlName="jobAux" placeholder="{{'lbl.tipoCurso'|translate}}" autocomplete="off" type="text" required>
+                    <mat-error *ngIf="f3.jobAux.hasError('required')">
+                        <strong>{{'msg.campoRequerido'|translate}}</strong>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+
+            <div class="col-xs-12 col-md-4 form-group">
+                <app-input-date [label]="'lbl.fechaIngreso'" [maxDate]="f3.endDateAux.value" [required]="true" formControlName="initDateAux" [controll]="f3.initDateAux"></app-input-date>
+            </div>
+
+            <div class="col-xs-12 col-md-4 form-group">
+                <app-input-date [label]="'lbl.fechaRetiro'" [minDate]="f3.initDateAux.value" [maxDate]="now" [required]="true" formControlName="endDateAux" [controll]="f3.endDateAux"></app-input-date>
+            </div>
+        </div>
+
+        <div *ngIf="showFieldSupport" class="row">
+
+            <div class="col-xs-12 col-md-4 form-group">
+                <div class="row">
+                    <div class="col-sm-10 pr-0">
+                        <mat-form-field appearance="{{appearanceInput}}">
+                            <mat-label>{{'lbl.adjuntarSoporte'|translate}}</mat-label>
+                            <ngx-mat-file-input #inputFileSoport3 class="inputFileSoport" formControlName="idSupportAux" valuePlaceholder="{{'lbl.seleccioneArchivo' | translate}}" [accept]="configFile.allowExtensions" [errorStateMatcher]="matcher" [required]="false">
+                            </ngx-mat-file-input>
+                            <button mat-icon-button matSuffix *ngIf="this.f3.idSupportAux.value" (click)="inputFileSoport3.clear($event); deleteFileView(1)">
+                                <mat-icon>clear</mat-icon>
+                            </button>
+                            <mat-hint>{{'msg.archivoPermitido'|translate}} ({{configFile.allowExtensions}})</mat-hint>
+                            <mat-error *ngIf="f3.idSupportAux.hasError('required')">
+                                {{'msg.seleccioneArchivo'|translate}} ({{configFile.allowExtensions}})
+                            </mat-error>
+                            <mat-error *ngIf="f3.idSupportAux.hasError('maxContentSize')">
+                                {{'msg.tamanioArchivo'|translate}} {{f.idSupportAux?.getError('maxContentSize').maxSize | byteFormat}} ({{f.idSupportAux?.getError('maxContentSize').actualSize | byteFormat}}).
+                            </mat-error>
+                            <mat-error *ngIf="f3.idSupportAux.hasError('badExtension')">
+                                {{f.idSupportAux.errors.badExtension}} ({{configFile.allowExtensions}})
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-sm-2 p-0">
+                        <button mat-icon-button class="mt-2" type="button" color="primary" (click)="openDialogFile('.inputSoport')" title="{{'lbl.cargarArchivo'|translate}}">
+                            <mat-icon>attach_file</mat-icon>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-12 pull-right form-group">
+                <app-buttons-fotter [showBtnAccept]="true" [submit]="submit3" (eventEmmitterAccept)="addForm3()" [showBtnCancel]="true" (eventEmmitterCancel)="cleanForm(3)" [labelBtnCancel]="'btn.cerrar'">
+                </app-buttons-fotter>
+            </div>
+        </div>
+    </form>
+</ng-template>
+
+
+<!-- Experiencias laborales en la rama en la misma empresa -->
+<ng-template #formTableExperience2>
+    <mat-card>
+        <mat-card-header>
+            <mat-card-title>{{'ttl.expLaboralMismaEmpresa'| translate}}</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+
+
+            <div class="row">
+                <div class="col-sm-12 col-md-6">
+                    <p>{{'lbl.agregarExperienciaLaboral' | translate}}</p>
+                </div>
+                <div class="col-sm-12 col-md-6 pull-right form-group">
+                    <button mat-raised-button color="primary" (click)="openDialog2()" class="pull-right" title="{{'btn.agregar'|translate}}">{{'btn.agregar' | translate}}<mat-icon>add</mat-icon>
+                    </button>
+                </div>
+            </div>
+
+            <div class="col-xs-12 col-md-6">
+                <mat-form-field>
+                    <mat-label>{{'lbl.buscar'|translate}}</mat-label>
+                    <input matInput (keyup)="applyFilter($event , dataSourceEmpresa2)" placeholder="{{'lbl.buscarPlh'|translate}}" autocomplete="off">
+                </mat-form-field>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-12 col-md-12 form-group">
+                    <table mat-table [dataSource]="dataSourceEmpresa2" matSort class="mat-elevation-z8 col-xs-12 full-width">
+
+                        <ng-container matColumnDef="cargo">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.cargo'|translate}}</th>
+                            <td mat-cell *matCellDef=" let element ">{{element.cargo}}</td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="grado">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.grado'|translate}}</th>
+                            <td mat-cell *matCellDef=" let element ">{{element.grado}}</td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="calidadNombramiento">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header class="mat-header-cell-right">{{'lbl.calidadNombramiento'|translate}}</th>
+                            <td mat-cell *matCellDef="let element" class="mat-cell-right"> {{element.nameQuality}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="fechaIngreso">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.fechaIngreso'|translate}}</th>
+                            <td mat-cell *matCellDef=" let element ">{{element.fechaIngreso | date:formatDateView}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="fechaRetiro">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.fechaRetiro'|translate}}</th>
+                            <td mat-cell *matCellDef=" let element ">{{element.fechaRetiro | date:formatDateView}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="soporte">
+                            <th mat-header-cell *matHeaderCellDef>{{'lbl.soporte'|translate}}</th>
+                            <td mat-cell *matCellDef="let element">
+                                <button *ngIf="element.soporte" (click)="viewFile(element.soporte)" type="button" color="warn" title="{{'lbl.verSoporte'|translate}}" mat-icon-button>
+                                    <mat-icon>attach_file</mat-icon>
+                                </button> </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="options">
+                            <th mat-header-cell *matHeaderCellDef>{{'lbl.eliminar'|translate}}</th>
+                            <td mat-cell *matCellDef="let element" class="mat-cell-left">
+                                <button type="button" color="warn" mat-icon-button title="{{'btn.eliminar'|translate}}" (click)="deleteExperience2(element)">
+                                    <mat-icon>delete</mat-icon>
+                                </button>
+                            </td>
+                        </ng-container>
+                        <tr mat-header-row *matHeaderRowDef="displayedColumnsEmp2 "></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumnsEmp2; "></tr>
+                    </table>
+                    <mat-paginator [pageSizeOptions]="[5,10, 20]" showFirstLastButtons></mat-paginator>
+                </div>
+            </div>
+
+        </mat-card-content>
+    </mat-card>
+</ng-template>
+
+<!-- Dialogo para agregar experiencia laboral en la rama-->
+<ng-template #dialogAddExperience2>
+    <h2 matDialogTitle>{{'ttl.experienciaLaboral'| translate}}</h2>
+    <form #formV4="ngForm" [formGroup]="form4">
+
+        <div class="row">
+            <div class="col-xs-12 col-md-4 form-group">
+                <mat-form-field appearance="{{appearanceInput}}">
+                    <mat-label>{{'lbl.cargo'|translate}}</mat-label>
+                    <input matInput="matInput" formControlName="jobAux" placeholder="{{'lbl.tipoCurso'|translate}}" autocomplete="off" type="text" required>
+                    <mat-error *ngIf="f4.jobAux.hasError('required')">
+                        <strong>{{'msg.campoRequerido'|translate}}</strong>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+
+            <div class="col-xs-12 col-md-4 form-group">
+                <mat-form-field appearance="{{appearanceInput}}">
+                    <mat-label>{{'lbl.grado'|translate}}</mat-label>
+                    <input matInput="matInput" formControlName="gradeAux" placeholder="{{'lbl.grado'|translate}}" autocomplete="off" type="text" required>
+                    <mat-error *ngIf="f4.gradeAux.hasError('required')">
+                        <strong>{{'msg.campoRequerido'|translate}}</strong>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+
+            <div class="col-xs-12 col-md-4 form-group">
+                <app-input-general formControlName="numberResolutionAux" [controll]="f4.numberResolutionAux" [label]="'lbl.resolucionNumero'" [typeField]="'number'" [required]="false"></app-input-general>
+            </div>
+
+        </div>
+
+        <div class="row">
+            <div class="col-xs-12 col-md-4 form-group">
+                <app-input-date [label]="'lbl.fechaExpedicion'" formControlName="expireDateAux" [controll]="f4.expireDateAux" [required]="false"></app-input-date>
+            </div>
+
+            <div class="col-xs-12 col-md-4 form-group">
+                <app-input-date [label]="'lbl.fechaIngreso'" [maxDate]="f4.endDateAux.value" [required]="true" formControlName="initDateAux" [controll]="f4.initDateAux"></app-input-date>
+            </div>
+
+            <div class="col-xs-12 col-md-4 form-group">
+                <app-input-date [label]="'lbl.fechaRetiro'" [minDate]="f4.initDateAux.value" [maxDate]="now" [required]="true" formControlName="endDateAux" [controll]="f4.endDateAux"></app-input-date>
+            </div>
+        </div>
+
+        <div class="row">
+
+            <div class="col-xs-12 col-md-4 form-group">
+                <app-input-select [label]="'lbl.calidadNombramiento'" [lst]="lstNameCualities" [xOption]="'text'" [xId]="'id'" formControlName="nameCualityAux" [required]="false" [controll]="f4.nameCualityAux"></app-input-select>
+            </div>
+
+            <div *ngIf="showFieldSupport" class="col-xs-12 col-md-4 form-group">
+                <div class="row">
+                    <div class="col-sm-10 pr-0">
+                        <mat-form-field appearance="{{appearanceInput}}">
+                            <mat-label>{{'lbl.adjuntarSoporte'|translate}}</mat-label>
+                            <ngx-mat-file-input #inputFileSoport3 class="inputFileSoport" formControlName="idSupportAux" valuePlaceholder="{{'lbl.seleccioneArchivo' | translate}}" [accept]="configFile.allowExtensions" [errorStateMatcher]="matcher" [required]="false">
+                            </ngx-mat-file-input>
+                            <button mat-icon-button matSuffix *ngIf="this.f4.idSupportAux.value" (click)="inputFileSoport3.clear($event); deleteFileView(1)">
+                                <mat-icon>clear</mat-icon>
+                            </button>
+                            <mat-hint>{{'msg.archivoPermitido'|translate}} ({{configFile.allowExtensions}})</mat-hint>
+                            <mat-error *ngIf="f4.idSupportAux.hasError('required')">
+                                {{'msg.seleccioneArchivo'|translate}} ({{configFile.allowExtensions}})
+                            </mat-error>
+                            <mat-error *ngIf="f4.idSupportAux.hasError('maxContentSize')">
+                                {{'msg.tamanioArchivo'|translate}} {{f.idSupportAux?.getError('maxContentSize').maxSize | byteFormat}} ({{f.idSupportAux?.getError('maxContentSize').actualSize | byteFormat}}).
+                            </mat-error>
+                            <mat-error *ngIf="f4.idSupportAux.hasError('badExtension')">
+                                {{f.idSupportAux.errors.badExtension}} ({{configFile.allowExtensions}})
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-sm-2 p-0">
+                        <button mat-icon-button class="mt-2" type="button" color="primary" (click)="openDialogFile('.inputSoport')" title="{{'lbl.cargarArchivo'|translate}}">
+                            <mat-icon>attach_file</mat-icon>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-12 pull-right form-group">
+                <app-buttons-fotter [showBtnAccept]="true" [submit]="submit4" (eventEmmitterAccept)="addForm4()" [showBtnCancel]="true" (eventEmmitterCancel)="cleanForm(4)" [labelBtnCancel]="'btn.cerrar'">
+                </app-buttons-fotter>
+            </div>
+        </div>
+    </form>
+</ng-template>

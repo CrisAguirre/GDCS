@@ -1,0 +1,34 @@
+<mat-card>
+    <mat-card-header>
+        <mat-card-title>{{'ttl.cargarInfoArchivos'|translate}}</mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+        <div class="row">
+
+            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 form-group">
+                <app-input-select [label]="'lbl.cargueInfo'" [lst]="lstTipoInfoCargue" [xOption]="'tipoInfoName'" [xId]="'tipoInfoCargue'" [formControl]="idTipoInformacionCargue" [controll]="idTipoInformacionCargue">
+                </app-input-select>
+            </div>
+
+            <div class="col-sm-12" [ngClass]="{infoClass: currentFileType != null}">
+
+                <!-- Formulario para cargar citaciones aspirante -->
+                <app-citaciones-aspirante *ngIf="show(citacionesAspiranteFile)" [fileTypeName]="'citacionesAspirante'" (emitFormOk)="formOk($event)" (emitFormBad)="formBad($event)"></app-citaciones-aspirante>
+                <!-- Formulario para cargar resultados de pruebas -->
+                <app-cargue-resultados-pruebas *ngIf="show(resultadosPruebasFile)" [fileTypeName]="'resultadosPruebas'" (emitFormOk)="formOk($event)" (emitFormBad)="formBad($event)"></app-cargue-resultados-pruebas>
+                <!-- Formulario para cargar resultados del curso de formación -->
+                <app-cargar-resultados-curso-formacion *ngIf="show(resultadosCursoFormacionFile)" [fileTypeName]="'resultadosCursoFormacion'"></app-cargar-resultados-curso-formacion>
+                <!-- Formulario para cargar vacantes -->
+                <app-vacantes *ngIf="show(vacantesFile)" [fileTypeName]="'vacantes'" (emitFormOk)="formOk($event)" (emitFormBad)="formBad($event)"></app-vacantes>
+                <!-- Formulario para cargar info escalafon -->
+                <app-cargar-info-escalafon *ngIf="show(escalafonFile)" [fileTypeName]="'escalafon'" (emitFormOk)="formOk($event)" (emitFormBad)="formBad($event)"></app-cargar-info-escalafon>
+                <!-- Formulario para cargar info despacho -->
+                <app-cargar-info-despachos *ngIf="show(despachoFile)" [fileTypeName]="'despacho'" (emitFormOk)="formOk($event)" (emitFormBad)="formBad($event)"></app-cargar-info-despachos>
+            </div>
+
+        </div>
+
+
+    </mat-card-content>
+</mat-card>

@@ -1,0 +1,706 @@
+<form [formGroup]="form">
+
+    <mat-accordion>
+        <mat-expansion-panel [expanded]="true">
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    {{'ttl.resumenHojaVida'|translate}}
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+
+            <div class="row">
+
+                <div class="col-sm-12 form-group subtitle mt-5">
+                    <div class="alert alert-subtitle" role="alert">
+                        {{'ttl.informacionPersonal'|translate}}
+                    </div>
+                </div>
+
+                <div class="col-xs-12 col-md-3 form-group">
+                    <mat-form-field appearance="{{appearanceInput}}">
+                        <mat-label>{{'lbl.primerNombre'|translate}}</mat-label>
+                        <input matInput formControlName="firtsName" type="text" readonly>
+                    </mat-form-field>
+                </div>
+
+                <div class="col-xs-12 col-md-3 form-group">
+                    <mat-form-field appearance="{{appearanceInput}}">
+                        <mat-label>{{'lbl.segundoNombre'|translate}}</mat-label>
+                        <input matInput formControlName="secondName" type="text" readonly>
+                    </mat-form-field>
+                </div>
+
+                <div class="col-xs-12 col-md-3 form-group">
+                    <mat-form-field appearance="{{appearanceInput}}">
+                        <mat-label>{{'lbl.primerApellido'|translate}}</mat-label>
+                        <input matInput formControlName="firtsLastname" type="text" readonly>
+                    </mat-form-field>
+                </div>
+
+                <div class="col-xs-12 col-md-3 form-group">
+                    <mat-form-field appearance="{{appearanceInput}}">
+                        <mat-label>{{'lbl.segundoApellido'|translate}}</mat-label>
+                        <input matInput formControlName="secondLastname" type="text" readonly>
+                    </mat-form-field>
+                </div>
+
+            </div>
+
+            <div class="row">
+                <div class="col-xs-12 col-md-3 form-group">
+                    <mat-form-field appearance="{{appearanceInput}}">
+                        <mat-label>{{'lbl.sexo'|translate}}</mat-label>
+                        <input matInput formControlName="sex" type="text" readonly>
+                    </mat-form-field>
+                </div>
+
+                <div class="col-xs-12 col-md-3 form-group">
+                    <mat-form-field appearance="{{appearanceInput}}">
+                        <mat-label>{{'lbl.genero'|translate}}</mat-label>
+                        <input matInput formControlName="gender" type="text" readonly>
+                    </mat-form-field>
+                </div>
+
+                <div class="col-xs-12 col-md-3 form-group">
+                    <mat-form-field appearance="{{appearanceInput}}">
+                        <mat-label>{{'lbl.grupoSanguineo'|translate}}</mat-label>
+                        <input matInput formControlName="bloodType" type="text" readonly>
+                    </mat-form-field>
+                </div>
+
+                <div class="col-xs-12 col-md-3 form-group">
+                    <mat-form-field appearance="{{appearanceInput}}">
+                        <mat-label>{{'lbl.estadoCivil'|translate}}</mat-label>
+                        <input matInput formControlName="maritalStatus" type="text" readonly>
+                    </mat-form-field>
+                </div>
+
+            </div>
+
+            <div class="row">
+
+                <div class="col-sm-12 form-group subtitle mt-5">
+                    <label>{{'ttl.contactoCorrespondencia'|translate}}</label>
+                </div>
+
+                <div class="col-xs-12 col-md-3 form-group">
+                    <mat-form-field appearance="{{appearanceInput}}">
+                        <mat-label>{{'lbl.pais'|translate}}</mat-label>
+                        <input matInput formControlName="country" type="text" readonly>
+                    </mat-form-field>
+                </div>
+
+                <div class="col-xs-12 col-md-3 form-group">
+                    <mat-form-field appearance="{{appearanceInput}}">
+                        <mat-label>{{'lbl.departamento'|translate}}</mat-label>
+                        <input matInput formControlName="department" type="text" readonly>
+                    </mat-form-field>
+                </div>
+
+                <div class="col-xs-12 col-md-3 form-group">
+                    <mat-form-field appearance="{{appearanceInput}}">
+                        <mat-label>{{'lbl.municipio'|translate}}</mat-label>
+                        <input matInput formControlName="municipality" type="text" readonly>
+                    </mat-form-field>
+                </div>
+
+                <div class="col-xs-12 col-md-3 form-group">
+                    <mat-form-field appearance="{{appearanceInput}}">
+                        <mat-label>{{'lbl.direccion'|translate}}</mat-label>
+                        <input matInput formControlName="address" type="text" readonly>
+                    </mat-form-field>
+                </div>
+
+
+
+                <div class="col-xs-12 col-md-3 form-group">
+                    <mat-form-field appearance="{{appearanceInput}}">
+                        <mat-label>{{'lbl.celular'|translate}}</mat-label>
+                        <input matInput formControlName="celphone" type="text" readonly>
+                    </mat-form-field>
+                </div>
+
+                <div class="col-xs-12 col-md-3 form-group">
+                    <mat-form-field appearance="{{appearanceInput}}">
+                        <mat-label>{{'lbl.correo'|translate}}</mat-label>
+                        <input matInput formControlName="email" type="text" readonly>
+                    </mat-form-field>
+                </div>
+
+
+
+                <div class="col-sm-12 form-group subtitle">
+                    <label>{{'ttl.lugarFechaNacimiento'|translate}}</label>
+                </div>
+
+                <div class="col-xs-12 col-md-3 form-group">
+                    <mat-form-field class="example-full-width" appearance="{{appearanceInput}}">
+                        <mat-label>{{'lbl.fechaNacimiento'|translate}}</mat-label>
+                        <input matInput formControlName="birthdate" type="text" readonly>
+                    </mat-form-field>
+                </div>
+
+                <div class="col-xs-12 col-md-3 form-group">
+                    <mat-form-field appearance="{{appearanceInput}}">
+                        <mat-label>{{'lbl.pais'|translate}}</mat-label>
+                        <input matInput formControlName="countryBirthdate" type="text" readonly>
+                    </mat-form-field>
+                </div>
+
+                <div class="col-xs-12 col-md-3 form-group">
+                    <mat-form-field appearance="{{appearanceInput}}">
+                        <mat-label>{{'lbl.departamento'|translate}}</mat-label>
+                        <input matInput formControlName="departmentBirthdate" type="text" readonly>
+                    </mat-form-field>
+                </div>
+
+                <div class="col-xs-12 col-md-3 form-group">
+                    <mat-form-field appearance="{{appearanceInput}}">
+                        <mat-label>{{'lbl.municipio'|translate}}</mat-label>
+                        <input matInput formControlName="municipalityBirthdate" type="text" readonly>
+                    </mat-form-field>
+                </div>
+
+                <div class="col-xs-12 col-md-3 form-group">
+                    <mat-form-field appearance="{{appearanceInput}}">
+                        <mat-label>{{'lbl.nacionalidad'|translate}}</mat-label>
+                        <input matInput formControlName="nacionality" type="text" readonly>
+                    </mat-form-field>
+                </div>
+
+
+                <div class="col-sx-12 col-md-12 form-group">
+                    <label>{{'lbl.tieneDiscapacidad'|translate}}</label> <br>
+                    <mat-radio-group aria-label="Clase" formControlName="tieneDiscapacidad" readonly>
+                        <mat-radio-button *ngFor="let g of lstYesNot" labelPosition="after" [value]="g.id" class="mr-1" style="font-size: 12px;" [required]="false">{{g.valor}}</mat-radio-button>
+                    </mat-radio-group>
+                </div>
+
+                <div class="col-xs-12 col-md-3 form-group">
+                    <mat-form-field appearance="{{appearanceInput}}">
+                        <mat-label>{{'lbl.tipoDiscapacidad'|translate}}</mat-label>
+                        <input matInput formControlName="idTipoDiscapacidad" type="text" readonly>
+                    </mat-form-field>
+                </div>
+
+                <div class="col-xs-12 col-md-3 form-group">
+                    <mat-form-field appearance="{{appearanceInput}}">
+                        <mat-label>{{'lbl.porcentajeDiscapacidad'|translate}}</mat-label>
+                        <input matInput formControlName="porcentajeDiscapacidad" type="text" readonly>
+                    </mat-form-field>
+                </div>
+
+                <div class="col-xs-12 col-md-3 form-group">
+                    <mat-form-field appearance="{{appearanceInput}}">
+                        <mat-label>{{'lbl.otro'|translate}}</mat-label>
+                        <input matInput formControlName="discapacidad" type="text" readonly>
+                    </mat-form-field>
+                </div>
+
+                <div class="col-sm-12 form-group subtitle">
+                    <label>{{'ttl.documentoIdentidadExpedicion'|translate}}</label>
+                </div>
+
+
+                <div class="col-xs-12 col-md-3 form-group">
+                    <mat-form-field appearance="{{appearanceInput}}">
+                        <mat-label>{{'lbl.tipoIdentificacion'|translate}}</mat-label>
+                        <input matInput formControlName="typeIdentification" type="text" readonly>
+                    </mat-form-field>
+                </div>
+
+                <div class="col-xs-12 col-md-3 form-group">
+                    <mat-form-field class="example-full-width" appearance="{{appearanceInput}}">
+                        <mat-label>{{'lbl.fechaExpedicion'|translate}}</mat-label>
+                        <input matInput formControlName="dateExpided" type="text" readonly>
+                    </mat-form-field>
+                </div>
+
+                <div class="col-xs-12 col-md-3 form-group">
+                    <mat-form-field appearance="{{appearanceInput}}">
+                        <mat-label>{{'lbl.identificacion'|translate}}</mat-label>
+                        <input matInput formControlName="identification" type="text" readonly>
+                    </mat-form-field>
+                </div>
+
+
+                <div class="col-xs-12 col-md-3 form-group">
+                    <div class="row">
+                        <div class="col-sm-10 pr-0">
+                            <mat-form-field appearance="{{appearanceInput}}">
+                                <mat-label>{{'lbl.documentoIdentidad'|translate}}</mat-label>
+                                <input matInput formControlName="fileIdentification" type="text" readonly>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-sm-2 p-0">
+                            <button mat-icon-button class="mt-2" type="button" color="primary" [disabled]="!dataPersonal.detailFileIdentification" (click)="viewFile(dataPersonal.detailFileIdentification.id)" title="{{'lbl.verAdjunto'| translate }}">
+                                <mat-icon>remove_red_eye </mat-icon>
+                            </button>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="col-xs-12 col-md-3 form-group">
+                    <mat-form-field appearance="{{appearanceInput}}">
+                        <mat-label>{{'lbl.pais'|translate}}</mat-label>
+                        <input matInput formControlName="countryExpideDocument" type="text" readonly>
+                    </mat-form-field>
+                </div>
+
+                <div class="col-xs-12 col-md-3 form-group">
+                    <mat-form-field appearance="{{appearanceInput}}">
+                        <mat-label>{{'lbl.departamento'|translate}}</mat-label>
+                        <input matInput formControlName="departmentExpideDocument" type="text" readonly>
+                    </mat-form-field>
+                </div>
+
+                <div class="col-xs-12 col-md-3 form-group">
+                    <mat-form-field appearance="{{appearanceInput}}">
+                        <mat-label>{{'lbl.municipio'|translate}}</mat-label>
+                        <input matInput formControlName="municipalityExpideDocument" type="text" readonly>
+                    </mat-form-field>
+                </div>
+
+
+
+                <div class="col-sm-12 form-group subtitle">
+                    <label>{{'lbl.libretaMilitar'|translate}}</label>
+                </div>
+
+
+                <div class="col-sx-12 col-md-3 form-group">
+                    <mat-form-field appearance="{{appearanceInput}}">
+                        <mat-label>{{'lbl.clase'|translate}}</mat-label>
+                        <input matInput formControlName="classMilitarCard" type="text" readonly>
+                    </mat-form-field>
+                </div>
+
+                <div class="col-xs-12 col-md-3 form-group">
+                    <mat-form-field appearance="{{appearanceInput}}">
+                        <mat-label>{{'lbl.numero'|translate}}</mat-label>
+                        <input matInput formControlName="numberMilitaryCard" type="text" readonly>
+                    </mat-form-field>
+                </div>
+
+                <div class="col-xs-12 col-md-3 form-group">
+                    <mat-form-field appearance="{{appearanceInput}}">
+                        <mat-label>{{'lbl.distrito'|translate}}</mat-label>
+                        <input matInput formControlName="distric" type="text" readonly>
+                    </mat-form-field>
+                </div>
+
+                <div class="col-xs-12 col-md-3 form-group">
+                    <div class="row">
+                        <div class="col-sm-10 pr-0">
+                            <mat-form-field appearance="{{appearanceInput}}">
+                                <mat-label>{{'lbl.libretaMilitar'|translate}}</mat-label>
+                                <input matInput formControlName="fileMilitaryCard" type="text" readonly>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-sm-2 p-0">
+                            <button mat-icon-button class="mt-2" type="button" color="primary" [disabled]="!dataPersonal.detailFileMilitarydCard" (click)="viewFile(dataPersonal.detailFileMilitarydCard.id)" title="{{'lbl.verAdjunto'| translate }}">
+                                <mat-icon>remove_red_eye </mat-icon>
+                            </button>
+                        </div>
+
+                    </div>
+                </div>
+
+
+                <div class="col-sm-12 form-group subtitle">
+                    <label>{{'ttl.emergencia'|translate}}</label>
+                </div>
+
+                <div class="col-xs-12 col-md-3 form-group">
+                    <mat-form-field appearance="{{appearanceInput}}">
+                        <mat-label>{{'lbl.parentesco'|translate}}</mat-label>
+                        <input matInput formControlName="relationshipEmergencyContact" type="text" readonly>
+                    </mat-form-field>
+                </div>
+
+                <div class="col-xs-12 col-md-3 form-group">
+                    <mat-form-field appearance="{{appearanceInput}}">
+                        <mat-label>{{'lbl.nombre'|translate}}</mat-label>
+                        <input matInput formControlName="nameEmergency" type="text" readonly>
+                    </mat-form-field>
+                </div>
+
+                <div class="col-xs-12 col-md-3 form-group">
+                    <mat-form-field appearance="{{appearanceInput}}">
+                        <mat-label>{{'lbl.direccion'|translate}}</mat-label>
+                        <input matInput formControlName="addressEmergency" type="text" readonly>
+                    </mat-form-field>
+                </div>
+
+                <div class="col-xs-12 col-md-3 form-group">
+                    <mat-form-field appearance="{{appearanceInput}}">
+                        <mat-label>{{'lbl.celular'|translate}}</mat-label>
+                        <input matInput formControlName="celEmergency" type="text" readonly>
+                    </mat-form-field>
+                </div>
+
+
+                <div class="col-sm-12 form-group subtitle mt-5">
+                    <div class="alert alert-subtitle" role="alert">
+                        {{'ttl.informacionAcademica'|translate}}
+                    </div>
+                </div>
+
+                <div class="col-xs-12 col-md-12 form-group">
+
+                    <table mat-table matSort [dataSource]="dataSourceAcademicInformation" #TableThreeSort="matSort" matSortDirection="asc" (matSortChange)="sortData($event)" class="mat-elevation-z8 col-xs-12 full-width">
+
+                        <ng-container matColumnDef="areaKnowledge">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.areaConocimiento'|translate}}</th>
+                            <td mat-cell *matCellDef=" let element " style="width: 16%;"> {{element.areaKnowledge}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="educationLevel">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.nivelEstudios'|translate}}</th>
+                            <td mat-cell *matCellDef=" let element " style="width: 16%;"> {{element.educationLevel}} </td>
+                        </ng-container>
+
+                        <!-- <ng-container matColumnDef="grade">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.grado'|translate}}</th>
+                        <td mat-cell *matCellDef="let element "> {{element.grade}} </td>
+                    </ng-container> -->
+
+                        <!-- <ng-container matColumnDef="approvedSemesters">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.semestresGradosAprobados'|translate}}</th>
+                        <td mat-cell *matCellDef="let element" style="text-align: center;"> {{element.numSemestresAprobados}} </td>
+                    </ng-container> -->
+
+                        <ng-container matColumnDef="graduate">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.graduado'|translate}}</th>
+                            <td mat-cell *matCellDef="let element" style="width: 7%;">{{(element.esGraduado == 0 ? 'lbl.no' : 'lbl.si') | translate}}</td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="titleObtain">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.tituloObtenido'|translate}}</th>
+                            <td mat-cell *matCellDef="let element" style="width: 17%;"> {{element.tipoTituloObtenido}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="institute">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.institucion'|translate}}</th>
+                            <td mat-cell *matCellDef="let element" style="width: 23%;"> {{element.institution}} </td>
+                        </ng-container>
+
+                        <!-- <ng-container matColumnDef="gradeDate">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.fechaGrado'|translate}}</th>
+                        <td mat-cell *matCellDef="let element"> {{element.fechaGrado | date:formatDateView}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="anio">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.anio'|translate}}</th>
+                        <td mat-cell *matCellDef="let element"> {{element.anio}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="hours">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.numeroHoras'|translate}}</th>
+                        <td mat-cell *matCellDef="let element"> {{element.horas}} </td>
+                    </ng-container> -->
+
+                        <ng-container matColumnDef="numberCardProfesional">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header class="mat-header-cell-right">{{'lbl.numeroTarjetaProfesional'|translate}}</th>
+                            <td mat-cell *matCellDef="let element" class="mat-cell-right" style="width: 14%;"> {{element.tarjetaProfesional}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="soport">
+                            <th mat-header-cell *matHeaderCellDef>{{'lbl.soporte'|translate}}</th>
+                            <td mat-cell *matCellDef="let element">
+                                <button *ngIf="element.soporte" (click)="viewFile(element.soporte)" type="button" color="warn" title="{{'lbl.verSoporte'|translate}}" mat-icon-button>
+                                <mat-icon>attach_file</mat-icon>
+                            </button> </td>
+                        </ng-container>
+
+                        <tr mat-header-row *matHeaderRowDef="displayedColumnsAcademicInformation "></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumnsAcademicInformation; "></tr>
+                    </table>
+                    <mat-paginator #matPaginator3 [pageSizeOptions]="[5,10, 20]" showFirstLastButtons></mat-paginator>
+                </div>
+
+
+                <div class="col-sm-12 form-group subtitle mt-5">
+                    <div class="alert alert-subtitle" role="alert">
+                        {{'ttl.experienciaLaboralFuera'|translate}}
+                    </div>
+                </div>
+
+                <div class="col-xs-12 col-md-12 form-group">
+
+                    <table mat-table matSort [dataSource]="dataSourceWorkExperience" #TableFourSort="matSort" matSortActive="initDate" (matSortChange)="sortData1($event)" matSortDirection="asc" class="mat-elevation-z8 col-xs-12 full-width">
+
+                        <ng-container matColumnDef="job">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.cargo'|translate}}</th>
+                            <td mat-cell *matCellDef="let element"> {{element.cargo}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="company">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.entidadOEmpresa'|translate}}</th>
+                            <td mat-cell *matCellDef=" let element "> {{element.entidad}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="sector">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.sector'|translate}}</th>
+                            <td mat-cell *matCellDef=" let element "> {{element.sector}} </td>
+                        </ng-container>
+
+                        <!-- <ng-container matColumnDef="municipality">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.municipio'|translate}}</th>
+                        <td mat-cell *matCellDef=" let element "> {{element.municipality}} </td>
+                    </ng-container> -->
+
+                        <ng-container matColumnDef="initDate">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.fechaIngreso'|translate}}</th>
+                            <td mat-cell *matCellDef="let element"> {{element.fechaIngreso | date:formatDateView}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="endDate">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.fechaRetiro'|translate}}</th>
+                            <!-- <td mat-cell *matCellDef="let element"> {{element.fechaRetiro | date:formatDateView}} </td> -->
+                            <td mat-cell *matCellDef="let element">
+                                {{element.esTrabajoActual == 1 ?' Trabajo Actual':(element.fechaRetiro | date:formatDateView)}}
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="soport">
+                            <th mat-header-cell *matHeaderCellDef>{{'lbl.soporte'|translate}}</th>
+                            <td mat-cell *matCellDef="let element">
+                                <button *ngIf="element.soporte" (click)="viewFile(element.soporte)" type="button" color="warn" title="{{'lbl.verSoporte'|translate}}" mat-icon-button>
+                                <mat-icon>attach_file</mat-icon>
+                            </button> </td>
+                        </ng-container>
+
+
+                        <tr mat-header-row *matHeaderRowDef="displayedColumnsWorkExperience"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumnsWorkExperience; "></tr>
+                    </table>
+                    <mat-paginator #matPaginator4 [pageSizeOptions]="[5,10, 20]" showFirstLastButtons></mat-paginator>
+                </div>
+
+
+
+
+                <div class="col-sm-12 form-group subtitle mt-5">
+                    <div class="alert alert-subtitle" role="alert">
+                        {{'ttl.experienciaLaboralJudicial'|translate}}
+                    </div>
+                </div>
+
+                <div class="col-xs-12 col-md-12 form-group">
+
+                    <table mat-table matSort [dataSource]="dataSourceWorkExperienceRama" #TableFiveSort="matSort" matSortActive="initDate" (matSortChange)="sortData2($event)" matSortDirection="asc" class="mat-elevation-z8 col-xs-12 full-width">
+
+                        <ng-container matColumnDef="job">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.cargo'|translate}}</th>
+                            <td mat-cell *matCellDef="let element"> {{element.cargo}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="grade">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.grado'|translate}}</th>
+                            <td mat-cell *matCellDef=" let element "> {{element.grado}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="corporation">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.corporacion'|translate}}</th>
+                            <td mat-cell *matCellDef=" let element "> {{element.corporacion}} </td>
+                        </ng-container>
+
+                        <!-- <ng-container matColumnDef="municipality">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.municipio'|translate}}</th>
+                        <td mat-cell *matCellDef=" let element "> {{element.municipality}} </td>
+                    </ng-container> -->
+
+
+
+                        <ng-container matColumnDef="expireDate">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.fechaExpedicion'|translate}}</th>
+                            <td mat-cell *matCellDef="let element">{{element.fechaExpedicionResolucion | date:formatDateView}} </td>
+                        </ng-container>
+
+                        <!-- <ng-container matColumnDef="nameQuality">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.calidadNombramiento'|translate}}</th>
+                        <td mat-cell *matCellDef="let element" class="mat-cell-right"> {{element.nameQuality}} </td>
+                    </ng-container> -->
+
+                        <ng-container matColumnDef="initDate">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.fechaIngreso'|translate}}</th>
+                            <td mat-cell *matCellDef="let element"> {{element.fechaIngreso | date:formatDateView}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="endDate">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.fechaRetiro'|translate}}</th>
+                            <!-- <td mat-cell *matCellDef="let element"> {{element.fechaRetiro | date:formatDateView}} </td> -->
+                            <td mat-cell *matCellDef="let element">
+                                {{element.esTrabajoActual == 1 ?' Trabajo Actual':(element.fechaRetiro | date:formatDateView)}}
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="numberResolution">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header class="mat-header-cell-right">{{'lbl.resolucionNumero'|translate}}</th>
+                            <td mat-cell *matCellDef="let element" class="mat-cell-right"> {{element.resolucion}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="soport">
+                            <th mat-header-cell *matHeaderCellDef>{{'lbl.soporte'|translate}}</th>
+                            <td mat-cell *matCellDef="let element">
+                                <button *ngIf="element.soporte" (click)="viewFile(element.soporte)" type="button" color="warn" title="{{'lbl.verSoporte'|translate}}" mat-icon-button>
+                                <mat-icon>attach_file</mat-icon>
+                            </button> </td>
+                        </ng-container>
+
+
+                        <tr mat-header-row *matHeaderRowDef="displayedColumnsWorkExperienceRama"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumnsWorkExperienceRama; "></tr>
+                    </table>
+                    <mat-paginator #matPaginator5 [pageSizeOptions]="[5,10, 20]" showFirstLastButtons></mat-paginator>
+                </div>
+
+
+                <div class="col-sm-12 form-group subtitle mt-5">
+                    <div class="alert alert-subtitle" role="alert">
+                        {{'ttl.informacionFamiliar'|translate}}
+                    </div>
+                </div>
+
+                <div class="col-xs-12 col-md-12 form-group">
+
+                    <table mat-table matSort [dataSource]="dataSourceInformationFamily" #TableOneSort="matSort" (matSortChange)="sortData3($event)" matSortDirection="asc" class="mat-elevation-z8 col-xs-12 full-width">
+
+                        <ng-container matColumnDef="firtsName">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.primerNombre'|translate}}</th>
+                            <td mat-cell *matCellDef=" let element "> {{element.primerNombre}} </td>
+                        </ng-container>
+
+                        <!-- <ng-container matColumnDef="secondName">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.segundoNombre'|translate}}</th>
+                            <td mat-cell *matCellDef=" let element "> {{element.segundoNombre}} </td>
+                        </ng-container> -->
+
+                        <ng-container matColumnDef="firtsLastname">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.primerApellido'|translate}}
+                            </th>
+                            <td mat-cell *matCellDef="let element "> {{element.primerApellido}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="secondLastname">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.segundoApellido'|translate}}
+                            </th>
+                            <td mat-cell *matCellDef="let element"> {{element.segundoApellido}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="birthdate">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.fechaNacimiento'|translate}}
+                            </th>
+                            <td mat-cell *matCellDef="let element"> {{element.fechaNacimiento | date:formatDateView}}
+                            </td>
+                        </ng-container>
+
+                        <!-- <ng-container matColumnDef="sex">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.sexo'|translate}}</th>
+                            <td mat-cell *matCellDef="let element"> {{element.sex}} </td>
+                        </ng-container> -->
+
+                        <ng-container matColumnDef="relationship">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.parentesco'|translate}}</th>
+                            <td mat-cell *matCellDef="let element"> {{element.relationship}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="dependsEconomically">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                {{'lbl.dependeEconomicamente'|translate}}</th>
+                            <td mat-cell *matCellDef=" let element">
+                                {{(element.dependeEconomicamente == 0 ? 'lbl.no' : 'lbl.si') | translate}}</td>
+                        </ng-container>
+
+                        <tr mat-header-row *matHeaderRowDef="displayedColumnsInformationFamily"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumnsInformationFamily;"></tr>
+                    </table>
+                    <mat-paginator #matPaginator1 [pageSizeOptions]="[5,10, 20]" showFirstLastButtons></mat-paginator>
+                </div>
+
+
+
+                <div class="col-sm-12 form-group subtitle mt-5">
+                    <div class="alert alert-subtitle" role="alert">
+                        {{'ttl.actividadesPersonales'|translate}}
+                    </div>
+                </div>
+
+                <div class="col-xs-12 col-md-12 form-group">
+
+                    <table mat-table matSort [dataSource]="dataSourcePersonalActivities" #TableTwoSort="matSort" (matSortChange)="sortData4($event)" matSortDirection="asc" class="mat-elevation-z8 col-xs-12">
+
+                        <ng-container matColumnDef="activity">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 150px;">
+                                {{'lbl.actividad'|translate}}</th>
+                            <td mat-cell *matCellDef=" let element "> {{element.activity}}</td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="frecuently">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 150px;">
+                                {{'lbl.frecuencia'|translate}}</th>
+                            <td mat-cell *matCellDef=" let element "> {{element.frecuently}}</td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="observaciones">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.observaciones'|translate}}</th>
+                            <td mat-cell *matCellDef=" let element "> {{ element.observacion }} </td>
+                        </ng-container>
+
+                        <tr mat-header-row *matHeaderRowDef="displayedColumnsPersonalActivities"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumnsPersonalActivities;"></tr>
+                    </table>
+                    <mat-paginator #matPaginator2 [pageSizeOptions]="[5,10, 20]" showFirstLastButtons></mat-paginator>
+                </div>
+
+                <!-- <div class="col-xs-12 col-md-6 form-group">
+                    <mat-form-field appearance="{{appearanceInput}}">
+                        <mat-label>{{'lbl.observaciones'|translate}}</mat-label>
+                        <textarea rows="5" matInput [formControl]="observationPersonalActivities" type="text" readonly></textarea>
+                    </mat-form-field>
+                </div> -->
+
+            </div>
+
+
+            <div class="col-sm-12 form-group subtitle mt-5">
+                <div class="alert alert-subtitle" role="alert">
+                    {{'ttl.anexos'|translate}}
+                </div>
+            </div>
+
+            <div class="col-xs-12 col-md-12 form-group">
+
+                <table mat-table matSort [dataSource]="dataSourceAnnexed" #TableSixSort="matSort" (matSortChange)="sortData5($event)" class="mat-elevation-z8 col-xs-12 full-width">
+
+                    <ng-container matColumnDef="typeFile">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.tipoArchivo'|translate}}</th>
+                        <td mat-cell *matCellDef="let element"> {{element.nameTypeFile}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="otherFile">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.otro'|translate}}</th>
+                        <td mat-cell *matCellDef="let element"> {{element.otroArchivo}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="soport">
+                        <th mat-header-cell *matHeaderCellDef>{{'lbl.soporte'|translate}}</th>
+                        <td mat-cell *matCellDef="let element">
+                            <button *ngIf="element.id" (click)="viewFile(element.idSoporte)" type="button" color="warn" title="{{'lbl.verSoporte'|translate}}" mat-icon-button>
+                                <mat-icon>attach_file</mat-icon>
+                            </button> </td>
+                    </ng-container>
+
+
+                    <tr mat-header-row *matHeaderRowDef="displayedColumnsAnnexed"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumnsAnnexed; "></tr>
+                </table>
+                <mat-paginator #matPaginator6 [pageSizeOptions]="[5,10, 20]" showFirstLastButtons></mat-paginator>
+            </div>
+
+            
+        </mat-expansion-panel>
+    </mat-accordion>
+</form>

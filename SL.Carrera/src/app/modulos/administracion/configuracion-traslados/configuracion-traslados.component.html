@@ -1,0 +1,44 @@
+<app-progress-bar [show]="showProgressBar"></app-progress-bar>
+
+<mat-card>
+
+    <mat-tab-group>
+
+        <mat-tab *ngIf="showTab('tipoTraslado')" label="{{'ttl.tipoTraslados'|translate}}">
+            <ng-container matTabContent="matTabContent" *ngTemplateOutlet="tipoTraslado"></ng-container>
+        </mat-tab>
+
+        <mat-tab *ngIf="showTab('tipoDocumentoTraslado')" label="{{'ttl.tipoDocumentoTraslado'|translate}}">
+            <ng-container matTabContent="matTabContent" *ngTemplateOutlet="tipoDocumentoTraslado"></ng-container>
+        </mat-tab>
+
+        <mat-tab *ngIf="showTab('soporteTraslado')" label="{{'ttl.soporteTraslado'|translate}}">
+            <ng-container matTabContent="matTabContent" *ngTemplateOutlet="soporteTraslado"></ng-container>
+        </mat-tab>
+
+        <!-- <mat-tab *ngIf="showTab('configuracionTraslados')" label="{{'ttl.configuracionTraslados'|translate}}">
+            <ng-container matTabContent="matTabContent" *ngTemplateOutlet="configuracionTraslados"></ng-container>
+        </mat-tab> -->
+
+    </mat-tab-group>
+
+    <ng-template #tipoTraslado>
+        <app-tipo-traslado [path]="'tipoTraslado'" (messageEvent)="receiveMessage($event)">
+        </app-tipo-traslado>
+    </ng-template>
+
+    <ng-template #tipoDocumentoTraslado>
+        <app-tipo-documento-traslado [path]="'tipoDocumentoTraslado'" (messageEvent)="receiveMessage($event)">
+        </app-tipo-documento-traslado>
+    </ng-template> 
+    
+    <ng-template #soporteTraslado>
+        <app-soporte-traslado [path]="'soporteTraslado'" (messageEvent)="receiveMessage($event)">
+        </app-soporte-traslado>
+    </ng-template>
+
+    <!-- <ng-template #configuracionTraslados>
+        <app-configuracion-traslado [path]="'configuracionTraslados'" (messageEvent)="receiveMessage($event)">
+        </app-configuracion-traslado>
+    </ng-template> -->
+</mat-card>

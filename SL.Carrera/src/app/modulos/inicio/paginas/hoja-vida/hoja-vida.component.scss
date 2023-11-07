@@ -1,0 +1,28 @@
+    .progressBarColor33 {
+        background-color: #F44336 !important;
+    }
+    
+    .progressBarColor66 {
+        background-color: #FB8C00 !important;
+    }
+    
+    .progressBarColor100 {
+        background-color: #009900 !important;
+    }
+    
+    .progressBarColor0 {
+        // background-color: #94949400 !important;//no funciona en edge
+        background-color: rgba(148, 148, 148, 0) !important;
+        color: gray;
+        font-weight: bold;
+    }
+    
+    // ::ng-deep.mat-tab-label,
+    //  ::ng-deep.mat-tab-label-active {
+    //     min-width: 0!important;
+    //     padding: 3px!important;
+    //     margin: 3px!important;
+    // }
+    .mat-tab-header-pagination-controls-enabled .mat-tab-header-pagination {
+        display: flex;
+    }

@@ -1,0 +1,364 @@
+<form #formV="ngForm" [formGroup]="form">
+    <mat-card>
+        <mat-card-header>
+            <mat-card-title>{{'ttl.resultadosPruebas'|translate}}</mat-card-title>
+        </mat-card-header>
+
+        <mat-card-content>
+
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 form-group" *ngIf="showSelectCompany">
+                    <app-input-select [label]="'lbl.empresa'" [lst]="lstCompanies" [xOption]="'nombreEmpresa'" [xId]="'id'" formControlName="idEmpresa" [controll]="f.idEmpresa" [required]="false" (eventEmmitter)="loadDataByEmpresa($event)">
+                    </app-input-select>
+                </div>
+
+                <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 form-group">
+                    <app-input-select [label]="'lbl.convocatoria'" [lst]="lstConvocatories" [xOption]="'nombreConvocatoria'" [xId]="'id'" formControlName="idConvocatoria" [controll]="f.idConvocatoria" (eventEmmitter)="loadDataByConvocatoria($event)">
+                    </app-input-select>
+                </div>
+            </div>
+
+            <div class="row">
+
+                <div class="col-xs-12 col-sm-6">
+                    <app-input-search-table (eventEmmitter)="applyFilter($event , dataSourceAspirantes)"></app-input-search-table>
+                </div>
+
+                <div class="col-xs-12 col-md-12 form-group">
+
+                    <table mat-table [dataSource]="dataSourceAspirantes" #matSort2="matSort" matSort class="mat-elevation-z8 col-xs-12 full-width" (matSortChange)="sortData($event)">
+
+                        <ng-container matColumnDef="identificacion">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.identificacion'|translate}}</th>
+                            <td mat-cell *matCellDef=" let element " style="width: 15%;">{{getNumeroDocumento(element)}}</td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="nombreAspirante">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.nombreAspirante'|translate}}</th>
+                            <td mat-cell *matCellDef=" let element " style="width: 18%;">{{getNameAspirante(element)}}</td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="cargoAspirante">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                {{'lbl.nombreCargo'|translate}}</th>
+                            <td mat-cell *matCellDef=" let element " style="width: 25%;">{{getCargoAspirante(element)}}
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="gradoCargo">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                {{'lbl.grado'|translate}}</th>
+                            <td mat-cell *matCellDef=" let element " style="width: 8%;">{{getGradoCargo(element)}}
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="estadoAspirante">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.estadoAspirante'|translate}}</th>
+                            <td mat-cell *matCellDef=" let element " style="width: 15%;">{{element.estadoAspiranteModel['nombreCategoria'+this.lang]}}</td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="ingresarResultado">
+                            <th mat-header-cell *matHeaderCellDef style="text-align: center;">{{'lbl.ingresarResultados'|translate}}</th>
+                            <td mat-cell *matCellDef="let element" style="width: 10%;">
+                                <div *ngIf="verifyActions(element); let btnStates">
+                                    <button *ngIf="btnStates.btnAddResult" (click)="loadResultadoPruebas(element, true)" type="button" title="{{'btn.ingresarResultado'|translate}}" color="primary" mat-icon-button>
+                                        <mat-icon>add_task</mat-icon>
+                                    </button>
+                                </div>
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="verResultados">
+                            <th mat-header-cell *matHeaderCellDef style="text-align: center;">{{'lbl.verResultados'|translate}}</th>
+                            <td mat-cell *matCellDef="let element" class="text-center" style="width: 20%;">
+                                <button (click)="loadResultadoPruebas(element, false)" type="button" title="{{'btn.verResultadoPruebas'|translate}}" color="primary" mat-icon-button>
+                                    <mat-icon>visibility</mat-icon>
+                                </button>
+                            </td>
+                        </ng-container>
+                        <tr mat-header-row *matHeaderRowDef="displayedColumnsAspirantes "></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumnsAspirantes; " [ngClass]="{hovered: row.hovered, highlighted: isSelectedTable(elementCurrent , row.id)}" (mouseover)="row.hovered = true" (mouseout)="row.hovered = false"></tr>
+                    </table>
+                    <mat-paginator #matPaginator2 [pageSizeOptions]="[5,10, 20]" showFirstLastButtons></mat-paginator>
+                </div>
+            </div>
+
+
+            <!-- <div *ngIf="elementCurrent.id" class="row mt-4"> -->
+            <div class="row mt-4">
+
+                <div class="offset-sm-2 col-sm-8">
+                    <mat-divider></mat-divider>
+                </div>
+
+                <div class="col-sm-12 text-center mt-4">
+                    <h6>{{'ttl.resultadosPruebas' | translate}}</h6>
+                </div>
+
+                <!-- Datos del aspirante -->
+                <div class="row col-sm-12 mt-4">
+
+                    <div class="col-xs-12 col-sm-12 col-md-4 form-group">
+                        <app-input-general [formControl]="identificacion" [controll]="identificacion" [label]="'lbl.identificacion'"></app-input-general>
+                    </div>
+
+                    <div class="col-xs-12 col-sm-12 col-md-4 form-group">
+                        <app-input-general [formControl]="nombreAspirante" [controll]="nombreAspirante" [label]="'lbl.nombreAspirante'"></app-input-general>
+                    </div>
+
+                    <div class="col-xs-12 col-sm-12 col-md-4 form-group">
+                        <app-input-general [formControl]="cargoAspirante" [controll]="cargoAspirante" [label]="'lbl.nombreCargo'"></app-input-general>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-3 form-group">
+                    <app-input-general formControlName="numRegistro" [controll]="f.numRegistro" [label]="'lbl.numeroRegistro'" [required]="false"></app-input-general>
+                </div>
+
+                <div class="col-xs-12 col-sm-12 col-md-3 form-group">
+                    <app-input-select [label]="'lbl.tipoPrueba'" [lst]="lstPruebasByConvocatoria" [xOption]="'tipoPrueba'" [xId]="'id'" formControlName="idTipoPrueba" [controll]="f.idTipoPrueba">
+                    </app-input-select>
+                </div>
+
+                <div class="col-xs-12 col-sm-12 col-md-3 form-group">
+                    <app-input-general formControlName="resultadoFinal" [controll]="f.resultadoFinal" [label]="'lbl.resultadoFinal'" (keypress)="validateNumber($event)"></app-input-general>
+                </div>
+            </div>
+
+            <!-- <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-3 form-group">
+                    <app-input-select [label]="'lbl.tipoPrueba'" [lst]="lstPruebasByConvocatoria" [xOption]="'tipoPrueba'" [xId]="'id'" formControlName="idTipoPrueba" [controll]="f.idTipoPrueba">
+                    </app-input-select>
+                </div>
+
+                <div class="col-xs-12 col-sm-12 col-md-3 form-group">
+                    <app-input-general formControlName="pruebaActitud" [controll]="f.pruebaActitud" [label]="'lbl.pruebaActitud'" [required]="false"></app-input-general>
+                </div>
+
+                <div class="col-xs-12 col-sm-12 col-md-3 form-group">
+                    <app-input-general formControlName="pruebaConocimientos" [controll]="f.pruebaConocimientos" [label]="'lbl.pruebaConocimientos'" [required]="false"></app-input-general>
+                </div>
+
+                <div class="col-xs-12 col-sm-12 col-md-3 form-group">
+                    <app-input-general formControlName="pruebaConocimientosEsp" [controll]="f.pruebaConocimientosEsp" [label]="'lbl.pruebaConocimientosEsp'" [required]="false"></app-input-general>
+                </div> 
+            </div> -->
+
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-3 form-group">
+                    <app-input-general formControlName="puntajeDirecto" [controll]="f.puntajeDirecto" [label]="'lbl.puntajeDirecto'" [required]="false" (keypress)="validateNumber($event)"></app-input-general>
+                </div>
+
+                <div class="col-xs-12 col-sm-12 col-md-3 form-group">
+                    <app-input-general formControlName="media" [controll]="f.media" [label]="'lbl.media'" [required]="false" (keypress)="validateNumber($event)"></app-input-general>
+                </div>
+
+                <div class="col-xs-12 col-sm-12 col-md-3 form-group">
+                    <app-input-general formControlName="desviacion" [controll]="f.desviacion" [label]="'lbl.desviacion'" [required]="false" (keypress)="validateNumber($event)"></app-input-general>
+                </div>
+
+                <div class="col-xs-12 col-sm-12 col-md-3 form-group">
+                    <app-input-general formControlName="z" [controll]="f.z" [label]="'lbl.z'" [required]="false" (keypress)="validateNumber($event)"></app-input-general>
+                </div>
+            </div>
+
+            <div class="row">
+
+                <div class="col-xs-12 col-sm-12 col-md-3 form-group">
+                    <app-input-general formControlName="mayor_0_5" [controll]="f.mayor_0_5" [label]="'lbl.mayor_0_5'" [required]="false" (keypress)="validateNumber($event)"></app-input-general>
+                </div>
+
+                <div class="col-xs-12 col-sm-12 col-md-3 form-group">
+                    <app-input-general formControlName="apruebaMayor_0_5" [controll]="f.apruebaMayor_0_5" [label]="'lbl.aprueba'" [required]="false" [typeField]="'number'" [maxlength]="1" [numMin]="0" [numMax]="1"></app-input-general>
+                </div>
+
+
+                <div class="col-xs-12 col-sm-12 col-md-3 form-group">
+                    <app-input-general formControlName="mayor_1" [controll]="f.mayor_1" [label]="'lbl.mayor_1'" [required]="false" (keypress)="validateNumber($event)"></app-input-general>
+                </div>
+
+                <div class="col-xs-12 col-sm-12 col-md-3 form-group">
+                    <app-input-general formControlName="apruebaMayor_1" [controll]="f.apruebaMayor_1" [label]="'lbl.aprueba'" [required]="false" [typeField]="'number'" [maxlength]="1" [numMin]="0" [numMax]="1"></app-input-general>
+                </div>
+
+                <div class="col-xs-12 col-sm-12 col-md-3 form-group">
+                    <app-input-general formControlName="mayor_1_5" [controll]="f.mayor_1_5" [label]="'lbl.mayor_1_5'" [required]="false" (keypress)="validateNumber($event)"></app-input-general>
+                </div>
+
+                <div class="col-xs-12 col-sm-12 col-md-3 form-group">
+                    <app-input-general formControlName="apruebaMayor_1_5" [controll]="f.apruebaMayor_1_5" [label]="'lbl.aprueba'" [required]="false" [typeField]="'number'" [maxlength]="1" [numMin]="0" [numMax]="1"></app-input-general>
+                </div>
+
+                <div class="col-xs-12 col-sm-12 col-md-3 form-group">
+                    <app-input-general formControlName="mayor_2" [controll]="f.mayor_2" [label]="'lbl.mayor_2'" [required]="false" (keypress)="validateNumber($event)"></app-input-general>
+                </div>
+
+                <div class="col-xs-12 col-sm-12 col-md-3 form-group">
+                    <app-input-general formControlName="apruebaMayor_2" [controll]="f.apruebaMayor_2" [label]="'lbl.aprueba'" [required]="false" [typeField]="'number'" [maxlength]="1" [numMin]="0" [numMax]="1"></app-input-general>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-12 col-md-12 form-group">
+
+                    <button mat-raised-button class="pull-right" color="primary" title="{{'btn.guardar'|translate}}" [disabled]="submit" (click)="saveResultadosPruebas()">{{'btn.guardar'|translate}}<mat-icon>save
+                        </mat-icon>
+                    </button>
+                    <button mat-raised-button type="button" class="pull-right mr-1" (click)="cleanForm()" title="{{'btn.limpiar'|translate}}">{{'btn.limpiar'|translate}}
+                        <mat-icon>clear_all</mat-icon>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Tabla de resultado de las pruebas -->
+            <div class="row">
+                <div class="col-xs-12 col-md-6">
+                    <app-input-search-table (eventEmmitter)="applyFilter($event , dataSource)">
+                    </app-input-search-table>
+                </div>
+
+                <div class="row col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <div class="col-xs-12 col-md-12 form-group">
+                        <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8 col-xs-12 full-width" (matSortChange)="sortData($event)">
+
+                            <ng-container matColumnDef="tipoPrueba">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.tipoPrueba'|translate}}</th>
+                                <td mat-cell *matCellDef=" let element ">{{element.tipoPrueba}}</td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="resultado">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.resultadoFinal'|translate}}</th>
+                                <td mat-cell *matCellDef=" let element ">{{element.resultadoFinal}}</td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="options">
+                                <th mat-header-cell *matHeaderCellDef style="text-align: center;">
+                                    {{'lbl.acciones'|translate}}</th>
+                                <td mat-cell *matCellDef="let element" style="width: 15%;">
+
+                                    <button (click)="showDetailResult(element)" type="button" title="{{'btn.verMasDetalles'|translate}}" color="primary" mat-icon-button>
+                                        <mat-icon>visibility</mat-icon>
+                                    </button>
+
+                                    <button *ngIf="activeOptionsButton" (click)="editResultadoPruebas(element)" type="button" title="{{'btn.editar'|translate}}" color="primary" mat-icon-button>
+                                        <mat-icon>edit</mat-icon>
+                                    </button>
+
+                                    <button *ngIf="activeOptionsButton" type="button" color="warn" mat-icon-button title="{{'btn.eliminar'|translate}}" (click)="deleteResultadoPruebas(element)">
+                                        <mat-icon>delete</mat-icon>
+                                    </button>
+
+                                </td>
+                            </ng-container>
+                            <tr mat-header-row *matHeaderRowDef="displayedColumns "></tr>
+                            <tr mat-row *matRowDef="let row; columns: displayedColumns; " [ngClass]="{hovered: row.hovered, highlighted: isSelectedTable(aspiranteCurrent , row.id)}" (mouseover)="row.hovered = true" (mouseout)="row.hovered = false"></tr>
+                        </table>
+                        <mat-paginator #matPaginator1 [pageSizeOptions]="[5,10, 20]" showFirstLastButtons></mat-paginator>
+                    </div>
+                </div>
+            </div>
+        </mat-card-content>
+    </mat-card>
+</form>
+
+<ng-template #dialogInfo>
+    <h2 matDialogTitle>{{'ttl.detalleResultado'| translate}}</h2>
+    <form #formV2="ngForm" [formGroup]="form2">
+
+        <div class="row">
+
+            <div class="col-xs-12 col-sm-12 col-md-4 form-group">
+                <app-input-general [formControl]="identificacion" [controll]="identificacion" [label]="'lbl.identificacion'"></app-input-general>
+            </div>
+
+            <div class="col-xs-12 col-sm-12 col-md-4 form-group">
+                <app-input-general [formControl]="nombreAspirante" [controll]="nombreAspirante" [label]="'lbl.nombreAspirante'"></app-input-general>
+            </div>
+
+            <div class="col-xs-12 col-sm-12 col-md-4 form-group">
+                <app-input-general [formControl]="cargoAspirante" [controll]="cargoAspirante" [label]="'lbl.nombreCargo'"></app-input-general>
+            </div>
+
+        </div>
+
+
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-4 form-group">
+                <app-input-general formControlName="numRegistro" [controll]="f2.numRegistro" [label]="'lbl.numeroRegistro'" [required]="false"></app-input-general>
+            </div>
+
+            <div class="col-xs-12 col-sm-12 col-md-5 form-group">
+                <app-input-select [label]="'lbl.tipoPrueba'" [lst]="lstPruebasByConvocatoria" [xOption]="'tipoPrueba'" [xId]="'id'" formControlName="idTipoPrueba" [controll]="f2.idTipoPrueba">
+                </app-input-select>
+            </div>
+
+            <div class="col-xs-12 col-sm-12 col-md-3 form-group">
+                <app-input-general formControlName="resultadoFinal" [controll]="f2.resultadoFinal" [label]="'lbl.resultadoFinal'" (keypress)="validateNumber($event)"></app-input-general>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-3 form-group">
+                <app-input-general formControlName="puntajeDirecto" [controll]="f2.puntajeDirecto" [label]="'lbl.puntajeDirecto'" [required]="false" (keypress)="validateNumber($event)"></app-input-general>
+            </div>
+
+            <div class="col-xs-12 col-sm-12 col-md-3 form-group">
+                <app-input-general formControlName="media" [controll]="f2.media" [label]="'lbl.media'" [required]="false" (keypress)="validateNumber($event)"></app-input-general>
+            </div>
+
+            <div class="col-xs-12 col-sm-12 col-md-3 form-group">
+                <app-input-general formControlName="desviacion" [controll]="f2.desviacion" [label]="'lbl.desviacion'" [required]="false" (keypress)="validateNumber($event)"></app-input-general>
+            </div>
+
+            <div class="col-xs-12 col-sm-12 col-md-3 form-group">
+                <app-input-general formControlName="z" [controll]="f2.z" [label]="'lbl.z'" [required]="false" (keypress)="validateNumber($event)"></app-input-general>
+            </div>
+        </div>
+
+        <div class="row">
+
+            <div class="col-xs-12 col-sm-12 col-md-3 form-group">
+                <app-input-general formControlName="mayor_0_5" [controll]="f2.mayor_0_5" [label]="'lbl.mayor_0_5'" [required]="false" (keypress)="validateNumber($event)"></app-input-general>
+            </div>
+
+            <div class="col-xs-12 col-sm-12 col-md-3 form-group">
+                <app-input-general formControlName="apruebaMayor_0_5" [controll]="f2.apruebaMayor_0_5" [label]="'lbl.aprueba'" [required]="false" [typeField]="'number'" [maxlength]="1" [numMin]="0" [numMax]="1"></app-input-general>
+            </div>
+
+
+            <div class="col-xs-12 col-sm-12 col-md-3 form-group">
+                <app-input-general formControlName="mayor_1" [controll]="f2.mayor_1" [label]="'lbl.mayor_1'" [required]="false" (keypress)="validateNumber($event)"></app-input-general>
+            </div>
+
+            <div class="col-xs-12 col-sm-12 col-md-3 form-group">
+                <app-input-general formControlName="apruebaMayor_1" [controll]="f2.apruebaMayor_1" [label]="'lbl.aprueba'" [required]="false" [typeField]="'number'" [maxlength]="1" [numMin]="0" [numMax]="1"></app-input-general>
+            </div>
+
+            <div class="col-xs-12 col-sm-12 col-md-3 form-group">
+                <app-input-general formControlName="mayor_1_5" [controll]="f2.mayor_1_5" [label]="'lbl.mayor_1_5'" [required]="false" (keypress)="validateNumber($event)"></app-input-general>
+            </div>
+
+            <div class="col-xs-12 col-sm-12 col-md-3 form-group">
+                <app-input-general formControlName="apruebaMayor_1_5" [controll]="f2.apruebaMayor_1_5" [label]="'lbl.aprueba'" [required]="false" [typeField]="'number'" [maxlength]="1" [numMin]="0" [numMax]="1"></app-input-general>
+            </div>
+
+            <div class="col-xs-12 col-sm-12 col-md-3 form-group">
+                <app-input-general formControlName="mayor_2" [controll]="f2.mayor_2" [label]="'lbl.mayor_2'" [required]="false" (keypress)="validateNumber($event)"></app-input-general>
+            </div>
+
+            <div class="col-xs-12 col-sm-12 col-md-3 form-group">
+                <app-input-general formControlName="apruebaMayor_2" [controll]="f2.apruebaMayor_2" [label]="'lbl.aprueba'" [required]="false" [typeField]="'number'" [maxlength]="1" [numMin]="0" [numMax]="1"></app-input-general>
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class="col-sm-12 pull-right form-group">
+                <app-buttons-fotter [showBtnCancel]="true" (eventEmmitterCancel)="closeDialogInfo()" [labelBtnCancel]="'btn.cerrar'" [iconCancel]="'close'"></app-buttons-fotter>
+            </div>
+        </div>
+    </form>
+</ng-template>

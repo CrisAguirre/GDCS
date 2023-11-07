@@ -1,0 +1,365 @@
+<form #formV="ngForm" [formGroup]="form">
+    <div class="col-sm-12  col-md-12 col-lg-12">
+        <mat-card>
+            <mat-card-header>
+                <mat-card-title>{{'ttl.registrosVacantes'|translate}}</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+
+                <div class="panel panel-default">
+                    <div class="panel-body">
+
+                        <div class="row mt-4" *ngIf="showSelectCompany">
+                            <div class="col-xs-12 col-sm-12 col-md-4 form-group" *ngIf="showSelectCompany">
+                                <!-- <app-input-select [label]="'lbl.empresa'" [lst]="lstEmpresa" [xOption]="'nombreEmpresa'"
+                                    [xId]="'id'" formControlName="idEmpresa" [controll]="f.idEmpresa" [required]="false"
+                                    (eventEmmitter)="loadEmpresa($event)">
+                                </app-input-select> -->
+
+                                <app-input-select [label]="'lbl.empresa'" [lst]="lstEmpresa" [xOption]="'nombreEmpresa'" [xId]="'id'" [formControl]="idEmpresa" [controll]="idEmpresa" [required]="false" (eventEmmitter)="loadEmpresa($event)"></app-input-select>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-xs-12 col-md-12 form-group">
+                                <app-input-select [label]="'lbl.convocatoria'" [lst]="lstConvocatoriaAux" [xOption]="'nombreConvocatoria'" [xId]="'id'" [formControl]="idConvocatoria" [controll]="idConvocatoria" (eventEmmitter)="loadDataByConvocatoria($event)" (eventEmmitter)="loadCargo($event)">
+                                </app-input-select>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">{{'ttl.informacionDespacho'|translate}}
+                        <hr class="barra">
+                    </div>
+                    <div class="panel-body">
+
+                        <div *ngIf="activateForm !== 5" class="row">
+                            <div class="col-xs-10 col-md-10 form-group">
+                                <app-input-general formControlName="despacho" [controll]="f.despacho" [label]="'lbl.despacho'"></app-input-general>
+                            </div>
+            
+                            <div class="col-xs-2 col-sm-2 col-md-2 mt-lg-n1 form-group">
+                                <button mat-raised-button class="pull-left" color="primary" (click)="buscarDespacho()" type="button" title="{{'btn.buscar'|translate}}">{{'btn.buscar' | translate}}
+                                    <mat-icon>search</mat-icon>
+                                </button>
+                            </div>
+                        </div>
+
+
+
+                        <div class="row">
+
+                            <!-- <div class="col-xs-12 col-md-6 form-group">
+                                <mat-form-field appearance="{{appearanceInput}}">
+                                    <mat-label>{{'lbl.codigoDespacho'|translate}}</mat-label>
+                                    <input matInput formControlName="CodDespacho" placeholder="{{'lbl.codigoDespacho'|translate}}" autocomplete="off" type="tel" (blur)="getInfoDespacho()" digitOnly required>
+                                    <mat-error *ngIf="f.CodDespacho.hasError('required')">
+                                        <strong>{{'msg.campoRequerido'|translate}}</strong>
+                                    </mat-error>
+                                </mat-form-field>
+                            </div> -->
+
+                            <!-- <div class="col-xs-12 col-md-6 form-group">
+                                <app-input-general formControlName="CodDespacho" [controll]="f.CodDespacho" [label]="'lbl.codigoDespacho'">
+                                </app-input-general>
+                            </div> -->
+
+                            <!-- <div class="col-xs-12 col-md-6 form-group">
+                                <app-input-general formControlName="despacho" [controll]="f.despacho" [label]="'lbl.despachoFirma'">
+                                </app-input-general>
+                            </div> -->
+
+                            <div class="col-xs-12 col-md-6 form-group">
+                                <app-input-general formControlName="numOrdenDespacho" [typeField]="'number'" [controll]="f.numOrdenDespacho" [label]="'lbl.numeroOrdenDespacho'">
+                                </app-input-general>
+                            </div>
+
+                            <div class="col-xs-12 col-md-6 form-group">
+                                <app-input-select [label]="'lbl.pais'" (eventEmmitter)="campoDepartamento($event)" [lst]="lstPais" [xOption]="'pais'" [xId]="'id'" formControlName="pais" [controll]="f.pais"></app-input-select>
+                            </div>
+
+                            <div class="col-xs-12 col-md-6 form-group">
+                                <app-input-select [label]="'lbl.departamento'" [lst]="lstDepartamento" [xOption]="'departamento'" [xId]="'id'" formControlName="idDepartamento" [controll]="f.idDepartamento" (eventEmmitter)="campoCiudad($event)">
+                                </app-input-select>
+                            </div>
+
+                            <div class="col-xs-12 col-md-6 form-group">
+                                <app-input-select [label]="'lbl.municipio'" [lst]="lstMunicipioAux" [xOption]="'ciudad'" [xId]="'id'" formControlName="idMunicipio" [controll]="f.idMunicipio">
+                                </app-input-select>
+                            </div>
+
+                            <div class="col-xs-12 col-md-6 form-group">
+                                <app-input-general formControlName="distrito" [controll]="f.distrito" [label]="'lbl.distrito'">
+                                </app-input-general>
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">{{'ttl.servidor'|translate}}
+                        <hr class="barra">
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-xs-12 col-md-12 form-group">
+                                <app-input-general formControlName="vacanteFuncionario" [controll]="f.vacanteFuncionario" [label]="'lbl.vacanteVN'">
+                                </app-input-general>
+                            </div>
+
+                            <div class="col-xs-12 col-md-4 form-group">
+                                <app-input-general formControlName="cedulaFuncionario" [controll]="f.cedulaFuncionario" [label]="'lbl.documento'">
+                                </app-input-general>
+                            </div>
+
+                            <div class="col-xs-12 col-md-4 form-group">
+                                <app-input-date [label]="'lbl.fechaVacante'" formControlName="fechaVacante" [controll]="f.fechaVacante"></app-input-date>
+                            </div>
+
+                            <!-- <div *ngIf="lstCargoHumano.length > 0" class="col-xs-12 col-md-4 form-group">
+                                <app-input-select [label]="'lbl.cargo'" [lst]="lstCargoHumano"
+                                    [xOption]="'cargo'" [xId]="'id'" formControlName="perfilCargo"
+                                    [controll]="f.perfilCargo">
+                                </app-input-select>
+                            </div>
+
+                            <div *ngIf="lstCargos.length > 0 && lstCargoHumano.length == 0"  class="col-xs-12 col-md-4 form-group">
+                                <app-input-select [label]="'lbl.cargo'" [lst]="lstCargos"
+                                    [xOption]="'cargo'" [xId]="'id'" formControlName="perfilCargoAux"
+                                    [controll]="f.perfilCargo">
+                                </app-input-select>
+                            </div> -->
+
+                            <div *ngIf="showCantidadVacantes" class="col-xs-12 col-md-4 form-group">
+                                <app-input-general formControlName="cantidadVacantes" [controll]="f.cantidadVacantes" [label]="'lbl.cantidadVacantes'" >
+                                </app-input-general>
+                            </div>
+
+                            <div class="col-xs-12 col-md-12 form-group">
+                                <app-input-select [label]="'lbl.cargo'" [lst]="lstCargos" [xOption]="'cargo'" [xId]="'id'" formControlName="perfilCargo" [controll]="f.perfilCargo">
+                                </app-input-select>
+                            </div>
+
+                            
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">{{'ttl.situacionActualVacante'|translate}}
+                        <hr class="barra">
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-xs-12 col-md-12 form-group">
+                                <mat-radio-group formControlName="situacionActualVacante" class="example-radio-group" required>
+                                    <mat-radio-button class="example-radio-button" *ngFor="let r of vacante" [value]="r.datos">
+                                        {{r['vacante' + lang]}}
+                                    </mat-radio-button>
+                                    <mat-error *ngIf="f.situacionActualVacante.hasError('required') && f.situacionActualVacante.touched">
+                                        <strong style="font-size: 11px;">{{'msg.campoRequerido'|translate}}</strong>
+                                    </mat-error>
+                                </mat-radio-group>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">{{'ttl.vacanteDirigida'|translate}}
+                        <hr class="barra">
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-xs-12 col-md-12 form-group">
+                                <mat-radio-group formControlName="tipoVacante" class="example-radio-group" required>
+                                    <mat-radio-button class="example-radio-button" *ngFor="let r of tipoVacante" [value]="r.id">
+                                        {{r['vacante' + lang]}}
+                                    </mat-radio-button>
+                                    <mat-error *ngIf="f.situacionActualVacante.hasError('required') && f.situacionActualVacante.touched">
+                                        <strong style="font-size: 11px;">{{'msg.campoRequerido'|translate}}</strong>
+                                    </mat-error>
+                                </mat-radio-group>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">{{'ttl.observaciones'|translate}}
+                        <hr class="barra">
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-xs-12 col-md-12 form-group">
+                                <mat-form-field appearance="{{appearanceInput}}">
+                                    <mat-label>{{'lbl.observaciones'|translate}}</mat-label>
+                                    <textarea rows="3" matInput formControlName="observaciones" placeholder="{{'lbl.observacionesPlh'|translate}}"></textarea>
+                                </mat-form-field>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-12 pull-right form-group">
+                                <button mat-raised-button color="primary" class="pull-right" [disabled]="submit" (click)="addVacantes()" title="{{'btn.guardar'|translate}}">{{'btn.guardar'|translate}}<mat-icon>save
+                                    </mat-icon>
+                                </button>
+                                <button mat-raised-button type="button" class="pull-right mr-1" (click)="cleanForm()" title="{{'btn.limpiar'|translate}}">{{'btn.limpiar'|translate}}
+                                    <mat-icon>clear_all</mat-icon>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="row mt-4">
+                            <div class="col-xs-12 col-md-12">
+                                <div class="col-xs-12 col-md-6">
+                                    <mat-form-field>
+                                        <mat-label>{{'lbl.buscar'|translate}}</mat-label>
+                                        <input matInput (keyup)="applyFilter($event , dataSource)" placeholder="{{'lbl.buscarPlh'|translate}}" autocomplete="off">
+                                    </mat-form-field>
+                                </div>
+                                <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8 col-xs-12 full-width" (matSortChange)="sortData($event)">
+
+                                    <ng-container matColumnDef="cargo">
+                                        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                            {{'lbl.cargo'|translate}}
+                                        </th>
+                                        <td mat-cell *matCellDef=" let element " style="width: 20%">
+                                            {{element.detallePerfil.cargoHumanoModel ? element.detallePerfil.cargoHumanoModel.cargo : element.detallePerfil.cargoModel.cargo}}</td>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="codDespacho">
+                                        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                            {{'lbl.codigoDespacho'|translate}}
+                                        </th>
+                                        <td mat-cell *matCellDef=" let element " style="width: 20%">
+                                            {{element.codigoDespacho}}</td>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="despacho">
+                                        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                            {{'lbl.despachoFirma'|translate}}
+                                        </th>
+                                        <td mat-cell *matCellDef=" let element ">{{element.despacho}}</td>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="distrito">
+                                        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                            {{'lbl.distrito'|translate}}
+                                        </th>
+                                        <td mat-cell *matCellDef=" let element ">{{element.distrito}}</td>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="municipio">
+                                        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                            {{'lbl.municipio'|translate}}
+                                        </th>
+                                        <td mat-cell *matCellDef=" let element ">{{element.nombreMunicipio}}</td>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="fecha">
+                                        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                            {{'lbl.fechaVacante'|translate}}
+                                        </th>
+                                        <td mat-cell *matCellDef=" let element ">
+                                            {{element.fechaVacante | date:formatDateView}}</td>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="estado">
+                                        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                            {{'lbl.estado'|translate}}
+                                        </th>
+                                        <td mat-cell *matCellDef=" let element ">
+                                            {{element.situacionActualVacante}}</td>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="options">
+                                        <th mat-header-cell *matHeaderCellDef>{{'lbl.editarEliminar'|translate}}</th>
+                                        <td mat-cell *matCellDef="let element">
+                                            <button (click)="edit(element)" type="button" title="{{'btn.editar'|translate}}" color="primary" mat-icon-button aria-label=" Example icon-button with a heart icon ">
+                                                <mat-icon>edit</mat-icon>
+                                            </button>
+
+                                            <button type="button" color="warn" mat-icon-button title="{{'btn.eliminar'|translate}}" (click)="delete(element)">
+                                                <mat-icon>delete</mat-icon>
+                                            </button>
+
+                                        </td>
+                                    </ng-container>
+
+                                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                                    <tr mat-row *matRowDef="let row; columns: displayedColumns; " [ngClass]="{hovered: row.hovered, highlighted: isSelectedTable(elementCurrent , row.id)}" (mouseover)="row.hovered = true" (mouseout)="row.hovered = false"></tr>
+                                </table>
+                                <mat-paginator [pageSizeOptions]="[5,10, 20]" showFirstLastButtons></mat-paginator>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </mat-card-content>
+        </mat-card>
+    </div>
+</form>
+
+<!-- Dialog Despachos -->
+<ng-template #dialogInfo>
+    <h2 matDialogTitle>{{'ttl.despachos'| translate}}</h2>
+
+    <div class="row mt-4">
+        <div class="col-xs-12 col-md-12">
+            <div class="col-xs-12 col-md-6">
+                <app-input-search-table (eventEmmitter)="applyFilter($event , dataSourceDialog)">
+                </app-input-search-table>
+            </div>
+            <table mat-table [dataSource]="dataSourceDialog" class="mat-elevation-z8 col-xs-12 full-width" matSort
+                (matSortChange)="sortData($event)">
+
+                <ng-container matColumnDef="codigoDespacho">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                        {{'lbl.codigoDespacho'|translate}}</th>
+                    <td mat-cell *matCellDef=" let element ">{{element.codigoDespacho}}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="despacho">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                        {{'lbl.despacho'|translate}}</th>
+                    <td mat-cell *matCellDef=" let element ">{{element.despacho}}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="sede">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                        {{'lbl.sede'|translate}}</th>
+                    <td mat-cell *matCellDef=" let element ">{{element.sede}}</td>
+                </ng-container>                        
+
+                <ng-container matColumnDef="options">
+                    <th mat-header-cell *matHeaderCellDef>{{'lbl.seleccionar'|translate}}</th>
+                    <td mat-cell *matCellDef="let element">
+                        <button (click)="selectDespacho(element)" mat-icon-button color="primary" type="button" title="{{'btn.seleccionar'|translate}}">
+                            <mat-icon>radio_button_unchecked</mat-icon>
+                        </button>
+                    </td>
+                </ng-container>
+                <tr mat-header-row *matHeaderRowDef="displayedColumnsDialog"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumnsDialog; "
+                    ></tr>
+            </table>
+            <mat-paginator #paginatorDialog="matPaginator" [pageSizeOptions]="[5,10, 20]" showFirstLastButtons>
+            </mat-paginator>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-12 pull-right form-group">
+            <app-buttons-fotter [showBtnCancel]="true" (eventEmmitterCancel)="closeDialogInfo()"
+                [labelBtnCancel]="'btn.cerrar'" [iconCancel]="'close'"></app-buttons-fotter>
+        </div>
+    </div>
+</ng-template>

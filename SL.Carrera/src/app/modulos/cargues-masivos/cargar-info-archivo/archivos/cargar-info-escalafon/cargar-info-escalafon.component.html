@@ -1,0 +1,185 @@
+<form #formV="ngForm" [formGroup]="form">
+    <div class="col-sm-12  col-md-12 col-lg-12">
+        <mat-card>
+            <mat-card-header>
+                <mat-card-title>{{'ttl.cargarInfoEscalafon'|translate}}</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+                <div class="row">
+                    <div class="col-xs-12 col-md-6 form-group">
+                        <div class="row">
+                            <div class="col-sm-11 pr-0">
+                                <mat-form-field appearance="{{appearanceInput}}">
+                                    <mat-label>{{'lbl.cargarArchivo'|translate}}</mat-label>
+                                    <ngx-mat-file-input #inputSoport class="inputSoport"
+                                        formControlName="idArchivoCargue"
+                                        valuePlaceholder="{{'lbl.seleccioneArchivo'| translate}}"
+                                        [accept]="configFile.allowExtensions" (change)="loadInfoFile($event)"
+                                        [errorStateMatcher]="matcher">
+                                    </ngx-mat-file-input>
+                                    <button mat-icon-button matSuffix *ngIf="this.f.idArchivoCargue.value"
+                                        (click)="inputSoport.clear($event); deleteFile()">
+                                        <mat-icon>clear</mat-icon>
+                                    </button>
+                                    <mat-hint>{{'msg.archivoPermitido'|translate}} ({{configFile.allowExtensions}})
+                                    </mat-hint>
+                                    <mat-error *ngIf="f.idArchivoCargue.hasError('required')">
+                                        {{'msg.seleccioneArchivo'|translate}} ({{configFile.allowExtensions}})
+                                    </mat-error>
+                                    <mat-error *ngIf="f.idArchivoCargue.hasError('maxContentSize')">
+                                        {{'msg.tamanioArchivo'|translate}}
+                                        {{f.idArchivoCargue?.getError('maxContentSize').maxSize | byteFormat}}
+                                        ({{f.idArchivoCargue?.getError('maxContentSize').actualSize | byteFormat}}).
+                                    </mat-error>
+                                    <mat-error *ngIf="f.idArchivoCargue.hasError('badExtension')">
+                                        {{f.idArchivoCargue.errors.badExtension}} ({{configFile.allowExtensions}})
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-sm-1 p-0">
+                                <button mat-icon-button class="mt-2" type="button" color="primary"
+                                    (click)="openDialogFile('.inputSoport')" title="{{'lbl.cargarArchivo'|translate}}">
+                                    <mat-icon>attach_file</mat-icon>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-12 pull-right form-group">
+                        <button *ngIf="showButtonExport" mat-raised-button class="pull-left mr-1" color="primary"
+                            (click)="exporter.exportTable('xlsx', { fileName: 'No_Procesados' })"
+                            title="{{'btn.exportarExcel'|translate}}">
+                            {{'btn.exportarExcel'|translate}} <i class="fa fa-file-excel-o"></i></button>
+                        <button *ngIf="showButtonExport" mat-raised-button class="pull-left mr-1" color="primary"
+                            (click)="exporter.exportTable('txt', { fileName: 'No_Procesados' })"
+                            title="{{'btn.exportarPlano'|translate}}">
+                            {{'btn.exportarPlano'|translate}} <i class="fa fa-file-text-o"></i></button>
+                        <app-buttons-fotter [labelBtnAccept]="'btn.cargar'" [showBtnAccept]="true" [submit]="submit"
+                            (eventEmmitterAccept)="saveInfoFile()" [showBtnCancel]="true"
+                            (eventEmmitterCancel)="clean()"></app-buttons-fotter>
+                    </div>
+                </div>
+
+
+                <div class="row mt-4">
+                    <div class="col-xs-12 col-md-12 form-group">
+                        <mat-table matTableExporter [dataSource]="dataSource" matSort class="mat-elevation-z8 col-xs-12 full-width"
+                            (matSortChange)="sortData($event)" #exporter="matTableExporter">
+
+                            <ng-container matColumnDef="numDocumento">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.documento'|translate}}
+                                </th>
+                                <td mat-cell *matCellDef=" let element ">{{element.numDocumento}}</td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="nombreCompleto">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                    {{'lbl.apellidosNombres'|translate}}
+                                </th>
+                                <td mat-cell *matCellDef=" let element ">{{element.nombreCompleto}}</td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="idSeccional">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.seccional'|translate}}
+                                </th>
+                                <td mat-cell *matCellDef=" let element ">{{element.idSeccional}}</td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="novedad">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.novedad'|translate}}
+                                </th>
+                                <td mat-cell *matCellDef=" let element ">{{element.novedad}}</td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="resolucion">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.resolucion'|translate}}
+                                </th>
+                                <td mat-cell *matCellDef=" let element ">{{element.resolucion}}</td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="fechaResolucion">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                    {{'lbl.fechaResolucion'|translate}}
+                                </th>
+                                <td mat-cell *matCellDef=" let element ">{{getFechaResolucionAnioMesDia(element)}}</td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="codigoAlternoPerfil">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.cargo'|translate}}
+                                </th>
+                                <td mat-cell *matCellDef=" let element ">{{element.codigoAlternoPerfil}}</td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="despacho">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.despacho'|translate}}
+                                </th>
+                                <td mat-cell *matCellDef=" let element ">{{element.despacho}}</td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="orden">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.orden'|translate}}
+                                </th>
+                                <td mat-cell *matCellDef=" let element ">{{element.orden}}</td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="sede">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.sede'|translate}}
+                                </th>
+                                <td mat-cell *matCellDef=" let element ">{{element.sede}}</td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="fechaPosesion">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.fechaPosesion'|translate}}
+                                </th>
+                                <td mat-cell *matCellDef=" let element ">{{getFechaPosesionAnioMesDia(element)}}</td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="fechaRetiro">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.fechaRetiro'|translate}}
+                                </th>
+                                <td mat-cell *matCellDef=" let element ">{{getFechaRetiroAnioMesDia(element)}}</td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="radicadoSigobius">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                    {{'lbl.radicadoSigobius'|translate}}
+                                </th>
+                                <td mat-cell *matCellDef=" let element ">{{element.radicadoSigobius}}</td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="fechaRadicadoSigobius">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                    {{'lbl.fechaRadicadoSigobius'|translate}}
+                                </th>
+                                <td mat-cell *matCellDef=" let element ">{{getFechaRadicadoAnioMesDia(element)}}</td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="fechaGrabacion">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.fechaGrabacion'|translate}}
+                                </th>
+                                <td mat-cell *matCellDef=" let element ">{{getFechaGrabacionAnioMesDia(element)}}</td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="error">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.error'|translate}}
+                                </th>
+                                <td mat-cell *matCellDef=" let element ">{{element.msgError}}</td>
+                            </ng-container>
+
+                            <tr mat-header-row *matHeaderRowDef="displayedColumns "></tr>
+                            <tr mat-row *matRowDef="let row; columns: displayedColumns; "
+                                [ngClass]="{hovered: row.hovered, highlighted: isSelectedTable(elementCurrent , row.id)}"
+                                (mouseover)="row.hovered = true" (mouseout)="row.hovered = false"></tr>
+                        </mat-table >
+
+                        <mat-paginator #matPaginator [pageSizeOptions]="[5,10, 20]" showFirstLastButtons>
+                        </mat-paginator>
+
+                    </div>
+                </div>
+            </mat-card-content>
+        </mat-card>
+    </div>
+</form>

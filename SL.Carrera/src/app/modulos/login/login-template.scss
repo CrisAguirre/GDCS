@@ -1,0 +1,237 @@
+html,
+.body-fake {
+    /*height: 100%;*/
+    margin: 0;
+    padding: 0;
+}
+
+.body-fake {
+    background-image: url("../../../assets/imagenes/fondo.png");
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    min-height: 100vh;
+    font-family: "Roboto", sans-serif;
+}
+
+.app-header {
+    justify-content: space-between;
+    background: #fcfcfc;
+    // background: #006880;
+    /*position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 2;*/
+    /*box-shadow: 0 3px 5px -1px rgba(0, 0, 0, 0.2), 0 6px 10px 0 rgba(0, 0, 0, 0.14), 0 1px 18px 0 rgba(0, 0, 0, 0.12);*/
+}
+
+.app-header[_ngcontent-ruw-c0] .mat-form-field-appearance-legacy .mat-form-field-underline {
+    display: none!important;
+}
+
+.login-wrapper {
+    height: 100%;
+}
+
+.positronx {
+    text-decoration: none;
+    color: #ffffff;
+}
+
+.box {
+    // height: 86.5vh;
+    height: 84.5vh;
+    /* position: inherit;
+    top: 0; */
+    opacity: 1;
+    float: left;
+    padding: 85px;
+    width: 100%;
+    background: #fff;
+    border-radius: 0;
+    transform: scale(1);
+    -webkit-transform: scale(1);
+    -ms-transform: scale(1);
+    z-index: 5;
+    max-width: 45%;
+    box-shadow: none;
+}
+
+.box.back {
+    transform: scale(0.95);
+    -webkit-transform: scale(0.95);
+    -ms-transform: scale(0.95);
+    top: -20px;
+    opacity: 0.8;
+    z-index: -1;
+}
+
+.box:before {
+    display: none;
+    content: "";
+    width: 100%;
+    height: 30px;
+    border-radius: 10px;
+    position: absolute;
+    top: -10px;
+    background: rgba(255, 255, 255, 0.6);
+    left: 0;
+    transform: scale(0.95);
+    -webkit-transform: scale(0.95);
+    -ms-transform: scale(0.95);
+    z-index: -1;
+}
+
+.login-wrapper .login-form {
+    min-width: 100%;
+    max-width: 300px;
+    width: 100%;
+}
+
+.login-full-width {
+    margin-bottom: 20px;
+}
+
+.login-wrapper .login-full-width,
+.login-wrapper .btn-block {
+    width: 100%;
+}
+
+.login-wrapper mat-card-header {
+    text-align: center;
+    width: 100%;
+    display: block;
+    font-weight: 700;
+    margin-bottom: 30px;
+}
+
+.login-wrapper mat-card-header mat-card-title {
+    font-size: 30px;
+    margin: 0;
+}
+
+.login-wrapper .mat-card {
+    //padding: 40px 70px 50px;
+}
+
+.login-wrapper .mat-stroked-button {
+    border: none;
+    line-height: 45px;
+    background: #ff9600;
+    // color: #fff;
+    color: #000;
+    margin-top: 30px;
+    font-weight: 100;
+}
+
+.login-wrapper .mat-stroked-button:hover {
+    background: #006880;
+}
+
+.copyright.pull-right {
+    background: #000!important;
+}
+
+.mt-2 .mat-button-base {
+    color: #666;
+    font-size: 12px;
+}
+
+.mt-2 .mat-button-base:hover {
+    color: #ff9600;
+}
+
+.login-wrapper .mat-form-field-appearance-legacy .mat-form-field-infix {
+    padding: 0.8375em 0;
+}
+
+.centrar {
+    /*display: flex;
+    justify-content: center;
+    align-items: center;*/
+}
+
+.active {
+    color: rgb(0, 104, 128) !important;
+    // color: rgb(255, 255, 255) !important;
+}
+
+.lnk-login {
+    // color: rgb(167, 167, 167);
+    color: rgb(0, 0, 0);
+}
+
+.footer {
+    background: #ff0000!important;
+}
+
+@media (max-width: 1024px) {
+    .box {
+        max-width: 55%;
+    }
+}
+
+@media (max-width: 800px) {
+    .box {
+        max-width: 100%;
+    }
+}
+
+@media (max-width: 500px) {
+    .box {
+        padding: 100px 80px;
+    }
+}
+
+@media (max-width: 320px) {
+    .body-fake {
+        background: #fff;
+    }
+    .app-header {
+        height: 80px;
+    }
+    .app-header div {
+        width: 90%;
+        float: left;
+        position: absolute;
+        top: 10px;
+        text-align: center;
+    }
+    .app-header .nav-tool-items {
+        width: 90%;
+        display: block;
+        clear: both;
+        float: left;
+        position: absolute;
+        top: 30px;
+    }
+    .app-header .nav-tool-items .lnk-login {
+        padding: 0 10px;
+    }
+    .box {
+        padding: 50px 20px;
+    }
+}
+
+//Estilo para politicas de privacidad y cookie en el area de register.
+.mat-text-link {
+    text-decoration: none;
+    background-color: transparent;
+    border: 0;
+    color: #0073b1;
+}
+
+.mat-text-link:hover {
+    text-decoration: underline;
+    font-weight: 600;
+    background-color: transparent;
+    border: 0;
+    cursor: pointer;
+    color: #055681;
+}
+
+.mat-text-center {
+    text-align: center;
+}
+

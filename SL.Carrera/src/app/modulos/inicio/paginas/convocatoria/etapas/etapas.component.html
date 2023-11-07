@@ -1,0 +1,357 @@
+<mat-card>
+    <mat-card-header>
+        <mat-card-title>{{'ttl.etapas'|translate}}</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+        <form #formV="ngForm" [formGroup]="form">
+
+            <div class="row mt-4" *ngIf="showSelectCompany">
+                <div class="col-xs-12 col-md-4 form-group">
+                    <!-- <mat-form-field appearance="{{appearanceInput}}">
+                        <mat-label>{{'lbl.empresa'|translate}}</mat-label>
+                        <mat-select [formControl]="company" (selectionChange)='loadEtapasByEmpresa($event)'>
+                            <mat-option *ngFor="let g of lstCompanies" [value]="g.id">
+                                {{g.nombreEmpresa}}
+                            </mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="company.hasError('required')">
+                            <strong>{{'msg.campoRequerido'|translate}}</strong>
+                        </mat-error>
+                    </mat-form-field> -->
+                    <app-input-select [label]="'lbl.empresa'" [lst]="lstCompanies" [xOption]="'nombreEmpresa'"
+                        [xId]="'id'" [formControl]="company" [required]="false"
+                        (eventEmmitter)="loadEtapasByEmpresa($event)">
+                    </app-input-select>
+                </div>
+            </div>
+
+
+            <div class="row">
+
+                <div class="col-xs-12 col-md-4 form-group">
+                    <app-input-select [label]="'lbl.convocatoria'"
+                        [lst]="lstConvocatories" [xOption]="'nombreConvocatoria'" [xId]="'id'"
+                        formControlName="idConvocatoria" [controll]="f.idConvocatoria" (eventEmmitter)="loadDataByConvocatoria($event)"></app-input-select>
+                </div>
+
+                <div class="col-xs-12 col-md-4 form-group">
+                    <app-input-select (eventEmmitter)="eventCalification($event)" [label]="'lbl.tipoCalificacion'"
+                        [lst]="lstQualification" [xOption]="'tipoCalificacion'" [xId]="'id'"
+                        formControlName="idTipoCalificacion" [controll]="f.idTipoCalificacion"></app-input-select>
+                </div>
+
+                <div *ngIf="isSimple != undefined" class="col-xs-12 col-md-4 form-group">
+                    <app-input-select [label]="'lbl.etapa'" [lst]="lstStages" [xOption]="'tipoEtapa'" [xId]="'id'"
+                        formControlName="idTipoEtapa" [controll]="f.idTipoEtapa">
+                    </app-input-select>
+                </div>
+
+                <div *ngIf="isSimple == true && f.idTipoEtapa.value && idEtapaClasificacion != f.idTipoEtapa.value"
+                    class="col-xs-12 col-md-4 form-group">
+                    <app-input-select (eventEmmitter)="loadDataByFase($event)" [label]="'lbl.tipoFase'"
+                        [lst]="lstTipoFases" [xOption]="'nombreFase'" [xId]="'id'" formControlName="idTipoFase"
+                        [controll]="f.idTipoFase" ></app-input-select>
+                </div>
+
+                <div *ngIf="isSimple == false"
+                    class="col-xs-12 col-md-4 form-group">
+                    <app-input-select (eventEmmitter)="loadDataByFaseDialog($event)" [label]="'lbl.tipoFase'"
+                        [lst]="lstTipoFases" [xOption]="'nombreFase'" [xId]="'id'" formControlName="idTipoFase"
+                        [controll]="f.idTipoFase"></app-input-select>
+                </div>
+
+                <div *ngIf="isSimple == true" class="col-xs-12 col-md-4 form-group">
+                    <app-input-select [label]="'lbl.prueba'" [lst]="lstTest" [xOption]="'tipoPrueba'" [xId]="'id'"
+                        formControlName="idTipoPrueba" [controll]="f.idTipoPrueba"></app-input-select>
+                </div>
+
+                <div *ngIf="isSimple != undefined" class="col-xs-12 col-md-4 form-group">
+                    <app-input-general formControlName="valorMinimo" [controll]="f.valorMinimo"
+                        [label]="'lbl.valorMinimo'" [typeField]="'number'" [autocomplete]="off"></app-input-general>
+                </div>
+
+                <div *ngIf="isSimple != undefined" class="col-xs-12 col-md-4 form-group">
+                    <app-input-general formControlName="valorMaximo" [controll]="f.valorMaximo"
+                        [label]="'lbl.valorMaximo'" [typeField]="'number'" [autocomplete]="off"></app-input-general>
+                </div>
+
+                <div *ngIf="isSimple != undefined && f.puntajeMinimo.enabled" class="col-xs-12 col-md-4 form-group">
+                    <app-input-general formControlName="puntajeMinimo" [controll]="f.puntajeMinimo"
+                        [label]="'lbl.puntajeMinimo'" [typeField]="'number'" [numMin]="f.valorMinimo.value"
+                        [numMax]="f.valorMaximo.value"></app-input-general>
+                </div>
+
+                <div *ngIf="isSimple == false && f.idTipoEtapa.value && idEtapaClasificacion != f.idTipoEtapa.value"
+                    class="col-xs-12 col-md-12 form-group mb-4">
+                    <ng-container *ngTemplateOutlet="formTable"></ng-container>
+                </div>
+
+            </div>
+
+            <div class="row">
+                <div class="col-sm-12 pull-right form-group">
+                    <app-buttons-fotter [showBtnAccept]="true" [submit]="submit" (eventEmmitterAccept)="addEtapa()"
+                        [showBtnCancel]="true" (eventEmmitterCancel)="cleanForm()"></app-buttons-fotter>
+                </div>
+            </div>
+
+            <div class="col-xs-12 col-md-6">
+                <mat-form-field>
+                    <mat-label>{{'lbl.buscar'|translate}}</mat-label>
+                    <input matInput (keyup)="applyFilter($event , dataSource)"
+                        placeholder="{{'lbl.buscarPlh'|translate}}" autocomplete="off">
+                </mat-form-field>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-12 col-md-12 form-group">
+                    <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8 col-xs-12 full-width"
+                        (matSortChange)="sortData($event)">
+
+                        <ng-container matColumnDef="idConvocatoria">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.convocatoria'|translate}}
+                            </th>
+                            <td mat-cell *matCellDef=" let element ">{{element.nombreConvocatoria}}
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="idTipoCalificacion">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.tipoCalificacion'|translate}}
+                            </th>
+                            <td mat-cell *matCellDef=" let element " style="width: 12%;">{{element.tipoCalificacion}}
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="idTipoEtapa">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header class="w100">
+                                {{'lbl.tipoEtapa'|translate}}</th>
+                            <td mat-cell *matCellDef=" let element " style="width: 12%;">{{element.tipoEtapa}}</td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="idTipoFase">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.tipoFase'|translate}}</th>
+                            <td mat-cell *matCellDef=" let element ">
+                                {{element.tipoFase ? element.tipoFase['nombreFase'+lang] : ''}}
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="idTipoPrueba">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header class="w100">
+                                {{'lbl.tipoPrueba'|translate}}</th>
+                            <td mat-cell *matCellDef=" let element ">{{element.tipoPrueba}}</td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="puntajeMinimo">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header class="mat-header-cell-right">
+                                {{'lbl.puntajeMinimo'|translate}}</th>
+                            <td mat-cell *matCellDef=" let element " class="mat-cell-right" style="width: 9%;">
+                                {{element.puntajeMaximo == 0 ? '' : element.puntajeMaximo}}</td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="options">
+                            <th mat-header-cell *matHeaderCellDef style="text-align: center;">
+                                {{'lbl.acciones'|translate}}</th>
+                            <td mat-cell *matCellDef="let element" class="mat-cell-left" style="width: 15%;">
+                                <div *ngIf="element.mostrarBtns" class="mat-cell-left" style="display: inline-block;">
+                                    <button (click)="edit(element)" type="button" title="{{'btn.editar'|translate}}"
+                                        color="primary" mat-icon-button>
+                                        <mat-icon>edit</mat-icon>
+                                    </button>
+
+                                    <button type="button" color="warn" mat-icon-button
+                                        title="{{'btn.eliminar'|translate}}" (click)="delete(element)">
+                                        <mat-icon>delete</mat-icon>
+                                    </button>
+                                </div>
+                                <button
+                                    *ngIf="element.idTipoCalificacion != idTypeSimple.id && element.idTipoEtapa != idEtapaClasificacion"
+                                    type="button" mat-icon-button title="{{'btn.verMasDetalles'|translate}}"
+                                    (click)="seeCombinationsStages(element)">
+                                    <mat-icon>remove_red_eye</mat-icon>
+                                </button>
+                            </td>
+                        </ng-container>
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns "></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns; "
+                            [ngClass]="{hovered: row.hovered, highlighted: isSelectedTable(elementCurrent , row.id)}"
+                            (mouseover)="row.hovered = true" (mouseout)="row.hovered = false"></tr>
+                    </table>
+                    <mat-paginator [pageSizeOptions]="[5,10, 20]" showFirstLastButtons></mat-paginator>
+                </div>
+            </div>
+        </form>
+    </mat-card-content>
+</mat-card>
+
+
+<!-- Contenedor de las etapas combinadas -->
+<ng-template #formTable>
+    <mat-card>
+        <mat-card-header>
+            <mat-card-title>{{'ttl.combinacionEtapa'| translate}}</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+
+
+            <div class="row">
+
+                <div class="col-sm-12 col-md-6">
+                    <p>{{'lbl.mensajeCombinacionEtapas' | translate}}</p>
+                </div>
+                <div class="col-sm-12 col-md-6 pull-right form-group">
+                    <button mat-raised-button color="primary" (click)="openDialog()" class="pull-right"
+                        title="{{'btn.agregar'|translate}}">{{'btn.agregar' | translate}}<mat-icon>add</mat-icon>
+                    </button>
+                </div>
+            </div>
+
+            <div class="col-xs-12 col-md-6">
+                <mat-form-field>
+                    <mat-label>{{'lbl.buscar'|translate}}</mat-label>
+                    <input matInput (keyup)="applyFilter($event , dataSource2)"
+                        placeholder="{{'lbl.buscarPlh'|translate}}" autocomplete="off">
+                </mat-form-field>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-12 col-md-12 form-group">
+                    <table mat-table [dataSource]="dataSource2" matSort class="mat-elevation-z8 col-xs-12 full-width">
+
+                        <ng-container matColumnDef="idTipoPrueba">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.tipoPrueba'|translate}}</th>
+                            <td mat-cell *matCellDef=" let element " style="width: 20%;">{{element.nombreTipoPrueba}}</td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="valorMinimo">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header class="mat-header-cell-right">
+                                {{'lbl.valorMinimo'|translate}}</th>
+                            <td mat-cell *matCellDef=" let element " style="width: 20%;" class="mat-cell-right">{{element.valorMinimo}}</td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="valorMaximo">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header class="mat-header-cell-right">
+                                {{'lbl.valorMaximo'|translate}}</th>
+                            <td mat-cell *matCellDef=" let element " style="width: 20%;" class="mat-cell-right">{{element.valorMaximo}}</td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="options">
+                            <th mat-header-cell *matHeaderCellDef>{{'lbl.editarEliminar'|translate}}</th>
+                            <td mat-cell *matCellDef="let element" style="width: 12%;" class="mat-cell-left">
+                                <button (click)="edit2(element)" type="button" title="{{'btn.editar'|translate}}"
+                                    color="primary" mat-icon-button>
+                                    <mat-icon>edit</mat-icon>
+                                </button>
+
+                                <button type="button" color="warn" mat-icon-button title="{{'btn.eliminar'|translate}}"
+                                    (click)="delete2(element)">
+                                    <mat-icon>delete</mat-icon>
+                                </button>
+                            </td>
+                        </ng-container>
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns2 "></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns2; "></tr>
+                    </table>
+                    <!-- <mat-paginator [pageSizeOptions]="[5,10, 20]" showFirstLastButtons></mat-paginator> -->
+                    <mat-paginator #paginatorDialog2="matPaginator" [pageSizeOptions]="[5,10, 20]" showFirstLastButtons>
+                    </mat-paginator>
+                </div>
+            </div>
+
+        </mat-card-content>
+    </mat-card>
+</ng-template>
+
+
+<!-- Dialogo para agregar una prueba -->
+<ng-template #dialogReference>
+    <h2 matDialogTitle>{{'ttl.combinacionEtapa'| translate}}</h2>
+    <form #formV2="ngForm" [formGroup]="form2">
+        <div class="row">
+
+            <div class="col-sm-12 form-group">
+                <p>{{'lbl.rango'|translate}} {{f.valorMinimo.value}} - {{f.valorMaximo.value}}</p>
+            </div>
+
+            <div class="col-xs-12 col-md-6 form-group">
+                <app-input-select [label]="'lbl.prueba'" [lst]="lstTipoPruebaDialog" [xOption]="'tipoPrueba'" [xId]="'id'"
+                    formControlName="idTipoPrueba" [controll]="f2.idTipoPrueba"></app-input-select>
+            </div>
+
+            <div class="col-xs-12 col-md-6 form-group">
+                <app-input-general formControlName="valorMinimo" [controll]="f2.valorMinimo" [label]="'lbl.valorMinimo'"
+                    [typeField]="'number'" [numMin]="f.valorMinimo.value" [numMax]="f.valorMaximo.value">
+                </app-input-general>
+            </div>
+
+            <div class="col-xs-12 col-md-6 form-group">
+                <app-input-general formControlName="valorMaximo" [controll]="f2.valorMaximo" [label]="'lbl.valorMaximo'"
+                    [typeField]="'number'" [numMin]="f.valorMinimo.value" [numMax]="f.valorMaximo.value">
+                </app-input-general>
+            </div>
+
+        </div>
+        <!-- <div class="row">
+            <div class="col-sm-12 pull-right form-group">
+                <button mat-raised-button color="primary" (click)="addForm2()" class="pull-right" title="{{'btn.guardar'|translate}}">{{'btn.guardar'|translate}}
+            <mat-icon>save</mat-icon>
+        </button>
+                <button mat-raised-button type="button" class="pull-right mr-1" matDialogClose="no" title="{{'btn.cerrar'|translate}}">{{'btn.cerrar'|translate}}
+            <mat-icon>clear_all</mat-icon>
+        </button>
+            </div>
+        </div> -->
+
+        <div class="row">
+            <div class="col-sm-12 pull-right form-group">
+                <app-buttons-fotter [showBtnAccept]="true" [submit]="submit" (eventEmmitterAccept)="addForm2()"
+                    [showBtnCancel]="true" (eventEmmitterCancel)="cleanForm2()" [labelBtnCancel]="'btn.cerrar'">
+                </app-buttons-fotter>
+            </div>
+        </div>
+    </form>
+</ng-template>
+
+
+<ng-template #dialogInfo>
+    <h2 matDialogTitle>{{'ttl.combinacionEtapa'| translate}}</h2>
+    <div class="row">
+        <div class="col-xs-12 col-md-12 form-group">
+            <table mat-table [dataSource]="dataSourceInfo" matSort class="mat-elevation-z8 col-xs-12 full-width">
+
+                <ng-container matColumnDef="idTipoPrueba">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.tipoPrueba'|translate}}</th>
+                    <td mat-cell *matCellDef=" let element ">{{element.nombreTipoPrueba}}</td>
+                </ng-container>
+
+                <!-- <ng-container matColumnDef="idTipoSubEtapa">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.tipoSubEtapa'|translate}}</th>
+                    <td mat-cell *matCellDef=" let element ">{{element.nombreTipoSubEtapa}}</td>
+                </ng-container> -->
+
+                <ng-container matColumnDef="valorMinimo">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header class="mat-header-cell-right">
+                        {{'lbl.valorMinimo'|translate}}</th>
+                    <td mat-cell *matCellDef=" let element " class="mat-cell-right">{{element.valorMinimo}}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="valorMaximo">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header class="mat-header-cell-right">
+                        {{'lbl.valorMaximo'|translate}}</th>
+                    <td mat-cell *matCellDef=" let element " class="mat-cell-right">{{element.valorMaximo}}</td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumnsInfo "></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumnsInfo; "></tr>
+            </table>
+            <!-- <mat-paginator [pageSizeOptions]="[5,10, 20]" showFirstLastButtons></mat-paginator> -->
+            <mat-paginator #paginatorDialog3="matPaginator" [pageSizeOptions]="[5,10, 20]" showFirstLastButtons>
+            </mat-paginator>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12 pull-right form-group">
+            <app-buttons-fotter [showBtnCancel]="true" (eventEmmitterCancel)="closeDialogInfo()"
+                [labelBtnCancel]="'btn.cerrar'" [iconCancel]="'close'"></app-buttons-fotter>
+        </div>
+    </div>
+</ng-template>

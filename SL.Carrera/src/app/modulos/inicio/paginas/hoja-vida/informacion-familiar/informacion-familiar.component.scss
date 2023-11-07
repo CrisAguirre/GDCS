@@ -1,0 +1,14 @@
+.mat-cell {
+    padding: 8px 8px 8px 0;
+    // padding-left: 4px !important;
+}
+
+.mat-row {
+    height: auto;
+}
+
+td.mat-cell,
+td.mat-footer-cell,
+th.mat-header-cell {
+    text-align: left;
+}

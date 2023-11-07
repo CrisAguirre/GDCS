@@ -1,0 +1,52 @@
+<!-- <form #formV="ngForm" [formGroup]="form"> -->
+<div class="col-sm-12 offset-md-1 col-md-10 offset-lg-2 col-lg-8">
+
+    <div class="row mt-3">
+        <div class="col-sm-12 pull-right form-group">
+            <button mat-raised-button color="primary" class="pull-right" [disabled]="submit" (click)="syncCargos()"
+                title="{{'btn.sincronizar'|translate}}">{{'btn.sincronizar'|translate}}<mat-icon>
+                    sync</mat-icon>
+            </button>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-xs-12 col-md-12">
+
+            <app-input-search-table (eventEmmitter)="applyFilter($event , dataSource)">
+            </app-input-search-table>
+
+            <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8 col-xs-12 full-width"
+                (matSortChange)="sortData($event)">
+
+                <ng-container matColumnDef="codigoCargo">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.codigoCargo'|translate}}</th>
+                    <td mat-cell *matCellDef=" let element " style="width: 20%;">
+                        {{element.codCargoGlobal}}
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="cargo">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.cargo'|translate}}</th>
+                    <td mat-cell *matCellDef=" let element " style="width: 60%;">
+                        {{element.cargoGlobal}}
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="nivelJerarquico">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.nivelJerarquico'|translate}}</th>
+                    <td mat-cell *matCellDef=" let element ">
+                        {{element.cargoNivel}}
+                    </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns "></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns; "
+                    [ngClass]="{hovered: row.hovered, highlighted: isSelectedTable(elementCurrent , row.id)}"
+                    (mouseover)="row.hovered = true" (mouseout)="row.hovered = false"></tr>
+            </table>
+            <mat-paginator [pageSizeOptions]="[5,10, 20]" showFirstLastButtons></mat-paginator>
+        </div>
+    </div>
+</div>
+<!-- </form> -->

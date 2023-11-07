@@ -1,0 +1,155 @@
+<form #formV="ngForm" [formGroup]="form">
+    <div class="col-sm-12  col-md-12 col-lg-12">
+        <mat-card>
+            <mat-card-header>
+                <mat-card-title>{{'ttl.requisitosConvocatoria'|translate}}</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+
+
+                <div class="row">
+                    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-4 form-group" *ngIf="showSelectCompany">
+                        <app-input-select [label]="'lbl.empresa'" [lst]="lstCompanies" [xOption]="'nombreEmpresa'"
+                            [xId]="'id'" formControlName="idEmpresa" [controll]="f.idEmpresa" [required]="true"
+                            (eventEmmitter)="loadDataByEmpresa($event)">
+                        </app-input-select>
+                    </div>
+                </div>
+
+                <div class="row">
+
+                    <div class="col-xs-12 col-md-4 form-group">
+                        <app-input-select [label]="'lbl.convocatoria'" [lst]="lstConvocatories"
+                            [xOption]="'nombreConvocatoria'" [xId]="'id'" formControlName="idConvocatoria"
+                            [controll]="f.idConvocatoria" (eventEmmitter)="loadDataByConvocatoria($event)">
+                        </app-input-select>
+                    </div>
+
+                    <div class="col-xs-12 col-md-4 form-group">
+                        <app-input-select [label]="'lbl.nacionalidad'" [lst]="lstNacionalidades" [xOption]="'valor'"
+                            [xId]="'id'" formControlName="nacionalidad" [controll]="f.nacionalidad" [required]="false">
+                        </app-input-select>
+                    </div>
+
+                    <div class="col-xs-12 col-md-4 form-group" style="margin-top: -18px;">
+                        <mat-label>{{'lbl.tituloObtenido'|translate}}</mat-label>
+                        <ng-multiselect-dropdown [placeholder]="' '" formControlName="idTitulosAcademicos"
+                            [data]="lstTituloObtenido" [settings]="dropTitulo">
+                        </ng-multiselect-dropdown>
+                    </div>
+
+
+                    <div class="col-xs-12 col-md-4 form-group">
+                        <app-input-general formControlName="edadMin" [controll]="f.edadMin" [label]="'lbl.edadMinima'"
+                            [typeField]="'number'" [required]="false"></app-input-general>
+                    </div>
+
+                    <div class="col-xs-12 col-md-4 form-group">
+                        <app-input-general formControlName="edadMax" [controll]="f.edadMax" [label]="'lbl.edadMaxima'"
+                            [typeField]="'number'" [required]="false"></app-input-general>
+                    </div>
+
+                    <div class="col-xs-12 col-md-4 form-group">
+                        <app-input-general formControlName="experienciaAnios" [controll]="f.experienciaAnios"
+                            [label]="'lbl.aniosExperiencia'" [typeField]="'number'" [required]="false">
+                        </app-input-general>
+                    </div>
+
+                    <div class="col-xs-12 col-md-4 form-group">
+                        <app-input-general formControlName="experienciaMeses" [controll]="f.experienciaMeses"
+                            [label]="'lbl.mesesExperiencia'" [typeField]="'number'" [required]="false">
+                        </app-input-general>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-12 pull-right form-group">
+                        <app-buttons-fotter [showBtnAccept]="true" [submit]="submit" (eventEmmitterAccept)="add()"
+                            [showBtnCancel]="true" (eventEmmitterCancel)="cleanForm()"></app-buttons-fotter>
+                    </div>
+                </div>
+
+                <div class="row">
+
+                    <div class="col-xs-12 col-sm-6">
+                        <app-input-search-table (eventEmmitter)="applyFilter($event , dataSource)">
+                        </app-input-search-table>
+                    </div>
+                    <div class="col-xs-12 col-md-12 form-group">
+
+                        <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8 col-xs-12 full-width"
+                            (matSortChange)="sortData($event)">
+
+                            <ng-container matColumnDef="idConvocatoria">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.convocatoria'|translate}}
+                                </th>
+                                <td mat-cell *matCellDef=" let element " style="width: 20%;">
+                                    {{element.convocatoria.nombreConvocatoria}}
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="nacionalidad">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                    {{'lbl.nacionalidad'|translate}}</th>
+                                <td mat-cell *matCellDef=" let element " style="width: 15%;">{{element.nacionalidad}}
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="experiencia">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                    {{'lbl.tiempoExperiencia'|translate}}</th>
+                                <td mat-cell *matCellDef=" let element " style="width: 15%;">
+                                    {{element.experienciaAnios > 0 ? element.experienciaAnios : ''}}
+                                    {{(element.experienciaAnios == 0 ? '' : element.experienciaAnios > 1 ? 'lbl.anios' : 'lbl.anio')| translate}}
+                                    {{element.experienciaMeses > 0 ? element.experienciaMeses : ''}}
+                                    {{(element.experienciaMeses == 0 ? '' : element.experienciaMeses > 1 ? 'lbl.meses' : 'lbl.mes') | translate}}
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="edadMax">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                    {{'lbl.edad'|translate}}</th>
+                                <td mat-cell *matCellDef=" let element " style="width: 15%;">{{getEdad(element)}}
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="idTitulosAcademicos">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                    {{'lbl.tituloAcademico'|translate}}</th>
+                                <td mat-cell *matCellDef=" let element " style="width: 20%;">
+                                    <span *ngFor="let t of element.lstTituloAcademicos">
+                                        * {{t['titulo'+lang]}}
+                                    </span>
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="options">
+                                <th mat-header-cell *matHeaderCellDef style="text-align: center;">
+                                    {{'lbl.acciones'|translate}}</th>
+                                <td mat-cell *matCellDef="let element" class="mat-cell-left" style="width: 25%;">
+                                    <div class="mat-cell-left" style="display: inline-block;">
+                                        <button (click)="edit(element)" type="button" title="{{'btn.editar'|translate}}"
+                                            color="primary" mat-icon-button>
+                                            <mat-icon>edit</mat-icon>
+                                        </button>
+
+                                        <button type="button" color="warn" mat-icon-button
+                                            title="{{'btn.eliminar'|translate}}" (click)="delete(element)">
+                                            <mat-icon>delete</mat-icon>
+                                        </button>
+                                    </div>
+
+                                </td>
+                            </ng-container>
+                            <tr mat-header-row *matHeaderRowDef="displayedColumns "></tr>
+                            <tr mat-row *matRowDef="let row; columns: displayedColumns; "
+                                [ngClass]="{hovered: row.hovered, highlighted: isSelectedTable(elementCurrent , row.id)}"
+                                (mouseover)="row.hovered = true" (mouseout)="row.hovered = false"></tr>
+                        </table>
+                        <mat-paginator [pageSizeOptions]="[5,10, 20]" showFirstLastButtons></mat-paginator>
+                    </div>
+                </div>
+            </mat-card-content>
+        </mat-card>
+    </div>
+</form>

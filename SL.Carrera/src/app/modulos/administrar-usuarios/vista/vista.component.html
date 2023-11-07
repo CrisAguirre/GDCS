@@ -1,0 +1,120 @@
+<mat-card>
+    <mat-card-header>
+        <mat-card-title>{{'ttl.vista'|translate}}</mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+
+        <!-- <div class="row">
+            <div class="col-sm-12 pull-right form-group">
+                <button type="button" color="primary" mat-icon-button title="{{'btn.agregar'|translate}}" (click)="openDialog(1, $event)">
+                    <mat-icon>add</mat-icon>
+                </button>
+            </div>
+        </div> -->
+        <div class="col-sm-12 col-md-6 col-lg-6">
+            <div class="row">
+                <div class="col-sm-12 pull-right form-group">
+                    <button mat-raised-button color="primary" class="pull-right" (click)="openDialog(3)" title="{{'btn.agregar'|translate}}">{{'btn.agregar'|translate}}<mat-icon>
+                            add</mat-icon>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xs-12 col-md-12 form-group">
+            <mat-tree [dataSource]="nestedDataSource" [treeControl]="nestedTreeControl" class="example-tree mat-tree-position">
+
+                <!-- Without Children -->
+                <mat-tree-node *matTreeNodeDef="let node" matTreeNodeToggle matTreeNodePadding>
+                    <li class="mat-tree-node">
+                        <div class="col-md-5 col-sm-4 col-xs-4">
+                            <button mat-icon-button disabled></button>
+                            {{node.nombreVista}}
+                        </div>
+                        <div class="col-md-4 col-sm-4 col-xs-4">
+                            <button type="button" color="primary" mat-icon-button title="{{'btn.agregar'|translate}}" (click)="openDialog(1, node)">
+                                <mat-icon>add</mat-icon>
+                            </button>
+                            <button type="button" color="primary" mat-icon-button title="{{'btn.editar'|translate}}" (click)="openDialog(2, node)">
+                                <mat-icon>edit</mat-icon>
+                            </button>
+                            <button type="button" color="warn" mat-icon-button title="{{'btn.eliminar'|translate}}" (click)="deleteVista(node)">
+                                <mat-icon>delete</mat-icon>
+                            </button>
+                        </div>
+                    </li>
+                </mat-tree-node>
+
+                <!-- With Children -->
+                <mat-nested-tree-node *matTreeNodeDef="let node; when: hasNestedChild">
+                    <li>
+                        <div class="mat-tree-node">
+                            <div class="col-md-5 col-sm-4 col-xs-4">
+                                <button mat-icon-button matTreeNodeToggle [attr.aria-label]="'toggle ' + node.nombreVista">
+                                    <mat-icon class="mat-icon-rtl-mirror">
+                                        {{nestedTreeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+                                    </mat-icon>
+                                </button>
+                                <label>{{node.nombreVista}}</label>
+                            </div>
+                            <div class="col-md-4 col-sm-4 col-xs-4">
+                                <button type="button" color="primary" mat-icon-button title="{{'btn.agregar'|translate}}" (click)="openDialog(1, node)">
+                                    <mat-icon>add</mat-icon>
+                                </button>
+                                <button type="button" color="primary" mat-icon-button title="{{'btn.editar'|translate}}" (click)="openDialog(2, node)">
+                                    <mat-icon>edit</mat-icon>
+                                </button>
+                                <!-- <button type="button" color="warn" mat-icon-button title="{{'btn.eliminar'|translate}}" (click)="deleteVista(node)">
+                    <mat-icon>delete</mat-icon>
+                  </button> -->
+                            </div>
+                        </div>
+                        <ul [class.example-tree-invisible]="!nestedTreeControl.isExpanded(node)">
+                            <ng-container matTreeNodeOutlet></ng-container>
+                        </ul>
+                    </li>
+                </mat-nested-tree-node>
+            </mat-tree>
+        </div>
+    </mat-card-content>
+</mat-card>
+
+
+<ng-template #addNodeDialog>
+    <h2 matDialogTitle>{{title| translate}}</h2>
+    <form #formV="ngForm" [formGroup]="form">
+
+        <div class="row">
+
+            <div class="col-xs-12 col-md-6 form-group">
+                <mat-form-field appearance="{{appearanceInput}}">
+                    <mat-label>{{'lbl.nombreVista'|translate}}</mat-label>
+                    <input matInput="matInput" formControlName="nombreVista" placeholder="{{'lbl.nombreVista'|translate}}" autocomplete="off" type="text" required>
+                    <mat-error *ngIf="f.nombreVista.hasError('required')">
+                        <strong>{{'msg.campoRequerido'|translate}}</strong>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+
+            <div class="col-xs-12 col-md-6 form-group">
+                <mat-form-field appearance="{{appearanceInput}}">
+                    <mat-label>{{'lbl.nombreRuta'|translate}}</mat-label>
+                    <input matInput="matInput" formControlName="nombreRuta" placeholder="{{'lbl.nombreRuta'|translate}}" autocomplete="off" type="text" required>
+                    <mat-error *ngIf="f.nombreRuta.hasError('required')">
+                        <strong>{{'msg.campoRequerido'|translate}}</strong>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+
+        </div>
+
+        <div class="row">
+            <div class="col-sm-12 pull-right form-group">
+                <app-buttons-fotter [showBtnAccept]="true" [submit]="submit" (eventEmmitterAccept)="saveDialog()" [showBtnCancel]="true" (eventEmmitterCancel)="cleanForm()" [labelBtnCancel]="'btn.cerrar'">
+                </app-buttons-fotter>
+            </div>
+        </div>
+
+    </form>
+</ng-template>

@@ -1,0 +1,54 @@
+.mat-row {
+  &:hover {
+    cursor: pointer;
+    background-color: rgba(0, 0, 0, .1);
+  }
+}
+
+.progressBarColor33 {
+  background-color: #F44336 !important;
+}
+
+.progressBarColor66 {
+  background-color: #FB8C00 !important;
+}
+
+.progressBarColor100 {
+  background-color: #009900 !important;
+}
+
+.progressBarColor0 {
+  // gris
+  // background-color: #94949400 !important;//no funciona en edge
+  background-color: rgba(148, 148, 148, 0) !important;
+  color: gray;
+  font-weight: bold;
+}
+
+.progressBarColor25 {
+  // rojo
+  background-color: #F44336 !important;
+}
+
+.progressBarColor50 {
+  // naranja
+  background-color: #FB8C00 !important;
+}
+
+.progressBarColor75 {
+  // amarillo
+  //  #ebde26 !important FFF423
+  // background-color: #EEE429 !important;
+  // background-color: #ECE509 !important;
+  // background-color: #E1DA0E !important;
+  // background-color: #EFEF11 !important;
+  // background-color: #FFF633 !important;
+  // background-color: #FBE127 !important;
+  background-color: #F9DC08 !important;
+  // background-color: #FCF639 !important;
+}
+
+.progressBarColor100 {
+  background-color: #009900 !important;
+}
+

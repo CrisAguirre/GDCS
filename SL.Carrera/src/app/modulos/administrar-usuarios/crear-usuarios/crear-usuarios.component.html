@@ -1,0 +1,152 @@
+<form #formV="ngForm" [formGroup]="form">
+    <mat-card>
+        <mat-card-header>
+            <mat-card-title>{{'ttl.crearUsuariosAdmin'|translate}}</mat-card-title>
+        </mat-card-header>
+
+        <mat-card-content>
+            <div class="row mt-4">
+                <div class="col-xs-12 col-md-4 form-group">
+                    <mat-form-field appearance="{{appearanceInput}}">
+                        <mat-label>{{'lbl.correo'|translate}}</mat-label>
+                        <input autocomplete="off" formControlName="email" matInput placeholder="{{'lbl.correoEjemplo'|translate}}" (keydown)="noSpace($event)">
+                        <!-- <mat-icon matSuffix>mail</mat-icon> -->
+                        <mat-error *ngIf="f.email.errors?.pattern && !f.email.hasError('required')">
+                            {{'msg.ingreseCorreo'|translate}}
+                        </mat-error>
+                        <mat-error *ngIf="f.email.hasError('required')">
+                            {{'msg.campoRequerido'|translate}}
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+
+                <!-- <div class="col-xs-12 col-md-3 form-group">
+                    <mat-form-field appearance="{{appearanceInput}}">
+                        <mat-label>{{'lbl.contrasenia'|translate}}</mat-label>
+                        <input [type]="revealPassword ? 'password' : 'text'" autocomplete="off" formControlName="passw1"
+                            matInput placeholder="{{'lbl.contrasenia'|translate}}" (keydown)="noSpace($event)">
+                        <mat-icon matSuffix (click)="revealPassword = !revealPassword" >
+                            {{revealPassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+                        <mat-error *ngIf="f.passw1.hasError('required')">
+                            {{'msg.campoContraseniaRequerido'|translate}}
+                        </mat-error>
+                        <mat-error class="error-password"
+                            *ngIf="f.passw1.errors?.pattern && !f.passw1.hasError('required')">
+                            {{msgErrorPassword}}
+                        </mat-error>
+                    </mat-form-field>
+                </div> -->
+
+                <!-- <div class="col-xs-12 col-md-3 form-group">
+                    <app-input-select [label]="'lbl.estadoUsuario'" formControlName="stateUser" [controll]="f.stateUser" [lst]="lstStatesUser" [xOption]="'name'" [xId]="'id'" [required]="false">
+                    </app-input-select>
+                </div> -->
+                
+
+                <!-- <div class="col-xs-12 col-md-4 form-group">
+                    <app-input-general formControlName="email" [controll]="f.email" [label]="'lbl.correo'" [placeholder]="'lbl.correo'"></app-input-general>
+                </div> -->
+            <!-- </div>
+
+            <div class="row"> -->
+                <div *ngIf="showSelectCompany" class="col-xs-12 col-md-3 form-group">
+                    <mat-form-field appearance="{{appearanceInput}}">
+                        <mat-label>{{'lbl.empresa'|translate}}</mat-label>
+                        <mat-select formControlName="idEmpresa" (selectionChange)='loadRoles($event)' required="false">
+                            <mat-option *ngFor="let g of lstEmpresas" [value]="g.id">
+                                {{g.nombreEmpresa}}
+                            </mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="f.idEmpresa.hasError('required')">
+                            <strong>{{'msg.campoRequerido'|translate}}</strong>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+
+                <div class="col-xs-12 col-md-3 form-group">
+                    <app-input-select [label]="'lbl.rol'" formControlName="idRolEmpresa" [controll]="f.idRolEmpresa" [lst]="lstRolUsuarioPorEmpresa" [xOption]="'rol'" [xId]="'id'" [required]="false">
+                    </app-input-select>
+                </div>
+            </div>
+
+            <div class="row mt-4">
+                <div class="col-xs-12 col-md-12 form-group">
+                    <button mat-raised-button class="pull-right" color="primary" title="{{'btn.guardar'|translate}}" [disabled]="submit" (click)="save2()">{{'btn.guardar'|translate}}<mat-icon>save</mat-icon>
+                    </button>
+                    <button mat-raised-button type="button" class="pull-right mr-1" (click)="cleanForm()" title="{{'btn.limpiar'|translate}}">{{'btn.limpiar'|translate}}
+                        <mat-icon>clear_all</mat-icon></button>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-12 col-md-12 form-group">
+
+                    <div class="col-xs-12 col-md-6">
+                        <mat-form-field>
+                            <mat-label>{{'lbl.buscar'|translate}}</mat-label>
+                            <input matInput (keyup)="applyFilter($event, dataSource)" placeholder="{{'lbl.buscarPlh'|translate}}" autocomplete="off">
+                        </mat-form-field>
+                    </div>
+                    <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8 col-xs-12 full-width" (matSortChange)="sortData($event)">
+
+                        <ng-container matColumnDef="email">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.correo'|translate}}</th>
+                            <td mat-cell *matCellDef=" let element ">{{element.email}}</td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="estado">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.estadoUsuario'|translate}}</th>
+                            <td mat-cell *matCellDef=" let element ">{{element.stateUser}}</td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="empresa">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.empresa'|translate}}</th>
+                            <td mat-cell *matCellDef=" let element ">{{element.nombreEmpresa}}</td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="rol">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.rol'|translate}}</th>
+                            <td mat-cell *matCellDef=" let element ">{{element.rol}}</td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="options">
+                            <th mat-header-cell *matHeaderCellDef style="text-align: center;">
+                                {{'lbl.acciones'|translate}}</th>
+                            <td mat-cell *matCellDef="let element" style="width: 15%;" class="text-center">
+                                <div *ngIf="verifyActions(element); let btnStates">
+
+                                    <button *ngIf="btnStates.btnEdit" (click)="edit(element)" type="button"
+                                        title="{{'btn.editar'|translate}}" color="primary" mat-icon-button>
+                                        <mat-icon>edit</mat-icon>
+                                    </button>
+
+                                    <button *ngIf="btnStates.btnActive" type="button" color="warn" mat-icon-button
+                                        title="{{'btn.activar'|translate}}"
+                                        (click)="activarUsuario(element, null)">
+                                        <mat-icon>done</mat-icon>
+                                    </button>
+
+                                    <button *ngIf="btnStates.btnInactive" type="button" color="warn" mat-icon-button
+                                        title="{{'btn.inactivar'|translate}}"
+                                        (click)="desactivarUsuario(element, null)">
+                                        <mat-icon>block</mat-icon>
+                                    </button>
+
+                                    <button type="button" color="warn" mat-icon-button
+                                        title="{{'btn.eliminar'|translate}}"
+                                        (click)="deletePermisosUsuarioRolEmpresa(element)">
+                                        <mat-icon>delete</mat-icon>
+                                    </button>
+                                </div>
+                            </td>
+                        </ng-container>
+
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns "></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns; " [ngClass]="{hovered: row.hovered, highlighted: isSelectedTableCustom(elementCurrent.usuarioRol, 'id', row.usuarioRol.id)}" (mouseover)="row.hovered = true" (mouseout)="row.hovered = false"></tr>
+                    </table>
+                    <mat-paginator [pageSizeOptions]="[5,10, 20]" showFirstLastButtons></mat-paginator>
+                </div>
+            </div>
+        </mat-card-content>
+    </mat-card>
+</form>

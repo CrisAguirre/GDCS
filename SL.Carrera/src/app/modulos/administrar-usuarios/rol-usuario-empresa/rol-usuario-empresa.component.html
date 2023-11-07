@@ -1,0 +1,75 @@
+<form #formV="ngForm" [formGroup]="form">
+    <mat-card>
+        <mat-card-header>
+            <mat-card-title>{{'ttl.crearRolUsuarioEmpresa'|translate}}</mat-card-title>
+        </mat-card-header>
+
+        <mat-card-content>
+
+            <div class="row mt-4">
+                <div class="col-xs-12 col-md-4 form-group">
+                    <app-input-general formControlName="rol" [controll]="f.rol" [label]="'lbl.rol'" [placeholder]="'lbl.rol'"></app-input-general>
+                </div>
+
+                <div class="col-xs-12 col-md-6 form-group">
+                    <app-input-select [label]="'lbl.empresa'" formControlName="idEmpresa" [controll]="f.idEmpresa" [lst]="lstEmpresas" [xOption]="'nombreEmpresa'" [xId]="'id'" [required]="false">
+                    </app-input-select>
+                </div>
+
+            </div>
+
+            <div class="row mt-4">
+                <div class="col-xs-12 col-md-12 form-group">
+                    <button mat-raised-button class="pull-right" color="primary" title="{{'btn.guardar'|translate}}" [disabled]="submit" (click)="save()">{{'btn.guardar'|translate}}<mat-icon>save</mat-icon>
+                    </button>
+                    <button mat-raised-button type="button" class="pull-right mr-1" (click)="cleanForm()" title="{{'btn.limpiar'|translate}}">{{'btn.limpiar'|translate}}
+                        <mat-icon>clear_all</mat-icon></button>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-12 col-md-12 form-group">
+
+                    <div class="col-xs-12 col-md-6">
+                        <mat-form-field>
+                            <mat-label>{{'lbl.buscar'|translate}}</mat-label>
+                            <input matInput (keyup)="applyFilter($event, dataSource)" placeholder="{{'lbl.buscarPlh'|translate}}" autocomplete="off">
+                        </mat-form-field>
+                    </div>
+                    <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8 col-xs-12 full-width" (matSortChange)="sortData($event)">
+
+                        <ng-container matColumnDef="rol">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.rol'|translate}}</th>
+                            <td mat-cell *matCellDef=" let element ">{{element.rol}}</td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="empresa">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.empresa'|translate}}</th>
+                            <td mat-cell *matCellDef=" let element ">{{element.empresa}}</td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="options">
+                            <th mat-header-cell *matHeaderCellDef>{{'lbl.editarEliminar'|translate}}</th>
+                            <td mat-cell *matCellDef="let element">
+                                <button *ngIf="element.id !== 1 && element.id !== 2" (click)="edit(element)" type="button" title="{{'btn.editar'|translate}}" color="primary" mat-icon-button aria-label=" Example icon-button with a heart icon ">
+                                    <mat-icon>edit</mat-icon>
+                                </button>
+
+                                <button *ngIf="element.id !== 1 && element.id !== 2" type="button" color="warn" mat-icon-button title="{{'btn.eliminar'|translate}}" (click)="delete(element)">
+                                    <mat-icon>delete</mat-icon>
+                                </button>
+                            </td>
+                        </ng-container>
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns "></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns; " [ngClass]="{hovered: row.hovered, highlighted: isSelectedTable(elementCurrent , row.id)}" (mouseover)="row.hovered = true" (mouseout)="row.hovered = false"></tr>
+                    </table>
+                    <mat-paginator [pageSizeOptions]="[5,10, 20]" showFirstLastButtons></mat-paginator>
+                </div>
+            </div>
+
+            
+        </mat-card-content>
+    </mat-card>
+
+
+</form>

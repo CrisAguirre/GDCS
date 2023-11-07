@@ -1,0 +1,28 @@
+<form #formV="ngForm" [formGroup]="form">
+    <div class="row">
+
+        <div *ngIf="showSelectCompany" class="col-xs-12 col-md-6 form-group">
+            <app-input-select [label]="'lbl.empresa'" [lst]="lstEmpresa" [xOption]="'nombreEmpresa'" [xId]="'id'"
+                [formControl]="company" [controll]="company" (eventEmmitter)='loadConvocatoriasByEmpresa($event)'>
+            </app-input-select>
+        </div>
+
+        <div class="col-xs-12 col-md-6 form-group">
+            <app-input-select [label]="'lbl.convocatoria'" [lst]="lstConvocatoria" [xOption]="'nombreConvocatoria'"
+                [xId]="'id'" formControlName="idConvocatoria" [controll]="f.idConvocatoria"
+                (eventEmmitter)="eventConvocatoria($event)">
+            </app-input-select>
+        </div>
+
+        <div class="col-xs-12 col-md-6 col-lg-4 form-group">
+            <app-input-date [label]="'lbl.fechaInicioVigencia'" formControlName="fechaInicio"
+                [controll]="f.fechaInicio" [required]="true" [maxDate]="f.fechaFin.value"></app-input-date>
+        </div>
+
+        <div class="col-xs-12 col-md-6 col-lg-4 form-group">
+            <app-input-date [label]="'lbl.fechaVencimientoVigencia'" formControlName="fechaFin"
+                [controll]="f.fechaFin" [required]="true" [minDate]="f.fechaInicio.value"></app-input-date>
+        </div>
+
+    </div>
+</form>

@@ -1,0 +1,148 @@
+<!-- <div class="logo">
+    <a href="/" class="simple-text">
+        <div class="logo-img">
+            <img src="./assets/imagenes/angular2-logo-red.png" />
+        </div>
+        {{'APP.nombre'|translate}}
+    </a>
+</div>
+<div class="sidebar-wrapper">
+    <div *ngIf="isMobileMenu()">
+        <form class="navbar-form">
+            <span class="bmd-form-group">
+        <div class="input-group no-border">
+          <input type="text" value="" class="form-control" placeholder="Search...">
+          <button mat-raised-button type="submit" class="btn btn-white btn-round btn-just-icon">
+            <i class="material-icons">search</i>
+            <div class="ripple-container"></div>
+          </button>
+        </div>
+      </span>
+        </form>
+        <ul class="nav navbar-nav nav-mobile-menu">
+            <li class="nav-item">
+                <a class="nav-link" href="javascript:void(0)">
+                    <i class="material-icons">dashboard</i>
+                    <p>
+                        <span class="d-lg-none d-md-block">Stats</span>
+                    </p>
+                </a>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link" href="javascript:void(0)" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="material-icons">notifications</i>
+                    <span class="notification">5</span>
+                    <p>
+                        <span class="d-lg-none d-md-block">Some Actions</span>
+                    </p>
+                </a>
+                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
+                    <a class="dropdown-item" href="#">Mike John responded to your email</a>
+                    <a class="dropdown-item" href="#">You have 5 new tasks</a>
+                    <a class="dropdown-item" href="#">You're now friend with Andrew</a>
+                    <a class="dropdown-item" href="#">Another Notification</a>
+                    <a class="dropdown-item" href="#">Another One</a>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="javascript:void(0)">
+                    <i class="material-icons">person</i>
+                    <p>
+                        <span class="d-lg-none d-md-block">Account</span>
+                    </p>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <ul class="nav">
+        <li routerLinkActive="active" *ngFor="let menuItem of menuItems" class="{{menuItem.class}} nav-item">
+            <a class="nav-link" [routerLink]="[menuItem.path]">
+                <i class="material-icons">{{menuItem.icon}}</i>
+                <p>{{ menuItem.title | translate}}</p>
+            </a>
+        </li>
+
+        <li class="nav-item mt-4">
+            <app-traduction class="traduction-class-sidebar"></app-traduction>
+        </li>
+    </ul>
+</div> -->
+
+
+
+<div class="sidebar-header">
+    <a href="/">
+        <h3>{{'APP.nombre'|translate}}</h3>
+        <strong>{{'APP.nombreCorto'|translate}}</strong>
+    </a>
+</div>
+
+<ul class="list-unstyled components">
+    <li routerLinkActive="active" *ngFor="let menuItem of menuItems" class="nav-item">
+
+        <a *ngIf="menuItem.childs" href="#{{menuItem.path}}" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle" (click)="changeMainContent(menuItem)">
+            <!-- <i class="fa {{menuItem.icon}}"></i> <span>Convocatoria</span> -->
+            <i class="fa {{menuItem.icon}}"></i>{{ menuItem.title | translate}}
+        </a>
+        <ul *ngIf="menuItem.childs" class="collapse list-unstyled" id="{{menuItem.path}}">
+            <li *ngFor="let childItem of menuItem.childs">
+                <a class="nav-link" (click)="clickItem(menuItem)" [routerLink]="[menuItem.path,childItem.path]">
+                    <i class="fa {{childItem.icon}}"></i>{{ childItem.title | translate}}
+                    <!-- <i class="material-icons">{{childItem.icon}}</i>{{ childItem.title | translate}} -->
+                </a>
+            </li>
+        </ul>
+
+        <a *ngIf="!menuItem.childs" class="nav-link" (click)="clickItem(menuItem)" [routerLink]="[menuItem.path]">
+            <!-- <i class="material-icons">{{menuItem.icon}}</i>{{ menuItem.title | translate}} -->
+            <i class="fa {{menuItem.icon}}"></i>{{ menuItem.title | translate}}
+        </a>
+    </li>
+
+</ul>
+
+
+<ul class="list-unstyled">
+
+    <li class="nav-item mt-2">
+        <app-traduction class="traduction-class-sidebar"></app-traduction>
+    </li>
+
+    <li routerLinkActive="active" *ngFor="let menuItem of menuItemsCuenta" class="nav-item">
+        <a *ngIf="menuItem.childs" href="#{{menuItem.path}}-id" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle" (click)="changeMainContent(menuItem)">
+            <i class="fa {{menuItem.icon}}"></i>{{ menuItem.title | translate}}
+        </a>
+        <ul *ngIf="menuItem.childs" class="collapse list-unstyled" id="{{menuItem.path}}-id">
+            <li *ngFor="let childItem of menuItem.childs">
+                <a class="nav-link" (click)="clickItem(menuItem)" [routerLink]="[menuItem.path,childItem.path]">
+                    <i class="fa {{childItem.icon}}"></i>{{ childItem.title | translate}}
+                </a>
+            </li>
+        </ul>
+        <a *ngIf="!menuItem.childs" class="nav-link" (click)="clickItem(menuItem)" [routerLink]="[menuItem.path]">
+            <i class="fa {{menuItem.icon}}"></i>{{ menuItem.title | translate}}
+        </a>
+    </li>
+
+    <li routerLinkActive="active" *ngFor="let menuItem of menuItemsAyuda" class="nav-item">
+        <a *ngIf="menuItem.childs" href="#{{menuItem.path}}-id" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle" (click)="changeMainContent(menuItem)">
+            <i class="fa {{menuItem.icon}}"></i>{{ menuItem.title | translate}}
+        </a>
+        <ul *ngIf="menuItem.childs" class="collapse list-unstyled" id="{{menuItem.path}}-id">
+            <li *ngFor="let childItem of menuItem.childs">
+                <a class="nav-link" (click)="clickItem(menuItem)" [routerLink]="[menuItem.path,childItem.path]">
+                    <i class="fa {{childItem.icon}}"></i>{{ childItem.title | translate}}
+                </a>
+            </li>
+        </ul>
+        <a *ngIf="!menuItem.childs" class="nav-link" (click)="clickItem(menuItem)" [routerLink]="[menuItem.path]">
+            <i class="fa {{menuItem.icon}}"></i>{{ menuItem.title | translate}}
+        </a>
+    </li>
+
+    <li class="active" class="nav-item">
+        <a class="nav-link" (click)="logout($event)" href="#">
+            <i class="material-icons">exit_to_app</i>{{'lbl.cerrarSesion'|translate}}
+        </a>
+    </li>
+</ul>

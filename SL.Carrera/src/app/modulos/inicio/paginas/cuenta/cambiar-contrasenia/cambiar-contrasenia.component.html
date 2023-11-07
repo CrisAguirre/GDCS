@@ -1,0 +1,68 @@
+<div class="col-xs-12 col-sm-12 offset-md-2 col-md-8 offset-lg-3 col-lg-6">
+    <mat-card>
+        <mat-card-header>
+            <i class="material-icons">verified_user</i>
+            <mat-card-title>{{'ttl.cambiarContrasenia' | translate}}</mat-card-title>
+            <mat-card-subtitle>{{'comp.errorPassword' | translate}}</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+            <form [formGroup]="form">
+                <div class="row full-width col-xs-12 col-sm-12 col-md-12 offset-lg-1 col-lg-10">
+                    <div class="col-xs-12 col-sm-12 mt-3">
+                        <mat-form-field>
+                            <input [type]="revealPassword ? 'password' : 'text'" autocomplete="off" formControlName="passwordCurrent" matInput placeholder="{{'lbl.contrasenaActual' | translate}}" (keydown)="noSpace($event)" required>
+                            <mat-icon matSuffix (click)="revealPassword = !revealPassword" class="hover-hand">
+                                {{revealPassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+                            <mat-error *ngIf="f.passwordCurrent.hasError('required')">
+                                <strong>{{'msg.campoRequerido'|translate}}</strong>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div class="col-xs-12 col-sm-12 mt-3">
+                        <mat-form-field>
+                            <input [type]="revealPassword ? 'password' : 'text'" autocomplete="off" formControlName="passw1" matInput placeholder="{{'lbl.contrasenanueva' | translate}}" (keydown)="noSpace($event)" required>
+                            <mat-icon matSuffix (click)="revealPassword = !revealPassword" class="hover-hand">
+                                {{revealPassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+                            <mat-error *ngIf="f.passw1.hasError('required')">
+                                <strong>{{'msg.campoRequerido'|translate}}</strong>
+                            </mat-error>
+                            <mat-error *ngIf="f.passw1.errors?.pattern && !f.passw1.hasError('required')" style="margin-bottom: 10px;">
+                                <strong>{{msgErrorPassword}}</strong>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+
+                    <div class="col-xs-12 col-sm-12 mt-4">
+                        <mat-form-field>
+                            <input [type]="revealPassword ? 'password' : 'text'" autocomplete="off" formControlName="passw2" matInput placeholder="{{'lbl.repitaContrasena' | translate}}" (keydown)="noSpace($event)" required>
+                            <mat-icon matSuffix (click)="revealPassword = !revealPassword" class="hover-hand">
+                                {{revealPassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+                            <mat-hint>{{validatePasswords()}}</mat-hint>
+                            <mat-error *ngIf="f.passw2.hasError('required')">
+                                <strong>{{'msg.campoRequerido'|translate}}</strong>
+                            </mat-error>
+                            <mat-error *ngIf="f.passw2.errors?.pattern && !f.passw2.hasError('required')">
+                                <strong style="margin-bottom: 10px;">{{msgErrorPassword}}</strong>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div class="col-xs-12 col-sm-12 mt-3">
+                        <label>{{msg}}</label>
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col-sm-12 pull-right form-group">
+                        <button mat-raised-button color="primary" class="pull-right" [disabled]="submit" (click)="changePassword()" title="{{'btn.guardar'|translate}}">{{'btn.guardar'|translate}}
+                            <mat-icon>save</mat-icon>
+                            </button>
+                    </div>
+                </div>
+
+            </form>
+        </mat-card-content>
+    </mat-card>
+</div>

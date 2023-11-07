@@ -1,0 +1,26 @@
+<mat-form-field appearance="{{appearanceInput}}" matTooltip="{{tooltip|translate}}" matTooltipPosition="above" matTooltipClass="tooltip-background">
+    <mat-label>{{label | translate}}</mat-label>
+    <!-- <input matInput [(ngModel)]="value" [value]="value" [matDatepicker]="picker2" [min]="minDate" [max]="maxDate" autocomplete="off" [required]="required" readonly="false" [disabled]="isDisabled" (input)="onInput($event.target.value)" (blur)="onInput($event.target.value)"> -->
+    <input matInput #inputDate [formControl]="controll" [matDatepicker]="picker2" [min]="minDate" [max]="maxDate" autocomplete="off" [required]="required" readonly="true">
+
+    <mat-datepicker-toggle matSuffix [for]="picker2" style="display: inline-block;"></mat-datepicker-toggle>
+    <mat-datepicker touchUi disabled="false" #picker2></mat-datepicker>
+    <mat-datepicker-toggle matSuffix style="display: inline-block;" (click)="cleanValue()">
+        <mat-icon matDatepickerToggleIcon>close</mat-icon>
+    </mat-datepicker-toggle>
+    <mat-error *ngIf="controll.hasError('required')">
+        <strong>{{'msg.campoRequerido'|translate}}</strong>
+    </mat-error>
+    <mat-error *ngIf="controll.hasError('matDatepickerMin') || controll.hasError('matDatepickerMax')">
+        <strong>{{'msg.campoFechaIncorrecta'|translate}} 
+            ( 
+            {{(controll.errors.matDatepickerMin?.min ? ('lbl.fechaMin' | translate) +' '+ (controll.errors.matDatepickerMin.min | date:formatDateView): '')}}
+            {{controll.errors.matDatepickerMin?.min && controll.errors.matDatepickerMax?.max ? ' - ':''}}
+            {{(controll.errors.matDatepickerMax?.max ? ('lbl.fechaMax' | translate) +' '+ (controll.errors.matDatepickerMax.max | date:formatDateView): '')}} 
+            )
+        </strong>
+    </mat-error>
+
+    <!-- { "matDatepickerMin": { "min": "2020-05-31T10:00:00.000Z", "actual": "2020-04-30T10:00:00.000Z" } } -->
+    <!-- { "matDatepickerMax": { "max": "2020-05-04T15:06:13.529Z", "actual": "2020-05-31T10:00:00.000Z" } } -->
+</mat-form-field>

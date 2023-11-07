@@ -1,0 +1,88 @@
+table {
+    width: 100%;
+  }
+  
+  tr.example-detail-row {
+    height: 0;
+  }
+  
+  tr.example-element-row:not(.example-expanded-row):hover {
+    background: whitesmoke;
+  }
+  
+  tr.example-element-row:not(.example-expanded-row):active {
+    background: #efefef;
+  }
+  
+  .example-element-row td {
+    border-bottom-width: 0;
+  }
+  
+  .example-element-detail {
+    overflow: hidden;
+    display: flex;
+  }
+  .example-element-detail{
+    overflow: hidden;
+    display: flex;
+    
+    margin-left: 10px;
+  }
+  .table-horizontal{
+    margin-right: 80px;
+    margin-left: 50px;
+    float:left;
+    text-align: center;
+  }
+  
+  .example-element-diagram {
+    text-align: left;
+  }
+
+  .example-element-diagram a {
+    text-align: left;
+    font-weight: bold;
+    font-size: medium
+  }
+  
+  .example-element-symbol {
+    font-weight: bold;
+    font-size: 40px;
+    line-height: normal;
+  }
+  
+  .example-element-description {
+    padding: 16px;
+  }
+  
+  .example-element-description-attribution {
+    opacity: 0.5;
+  }
+
+  .estiloselec {
+    position: inherit;
+    display: inline-block;
+    border: 1px solid #adadad;
+    width: 100%;
+    padding: 6px 12px;
+    margin-bottom: 0;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 1.1;
+    text-align: left;
+    vertical-align: middle;
+    cursor: pointer;
+    background-image: none;
+    border-radius: 4px;
+}
+
+.cambio div{
+  position: inherit;
+}
+
+.barra{
+  border: none;
+  height: 2px;
+  background-color: rgb(31, 168, 202);
+}
+

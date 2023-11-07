@@ -1,0 +1,111 @@
+<mat-card>
+    <mat-card-header>
+        <mat-card-title>{{'ttl.fasePruebas'|translate}}</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+        <form #formV="ngForm" [formGroup]="form">
+
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-4 form-group" *ngIf="showSelectCompany">
+                    <!-- <app-input-select [label]="'lbl.empresa'" [lst]="lstCompanies" [xOption]="'nombreEmpresa'"
+                        [xId]="'id'" formControlName="idEmpresa" [controll]="f.idEmpresa" [required]="false"
+                        (eventEmmitter)="loadDataByEmpresa($event)">
+                    </app-input-select> -->
+
+                    <app-input-select [label]="'lbl.empresa'" [lst]="lstCompanies" [xOption]="'nombreEmpresa'"
+                        [xId]="'id'" [formControl]="company" [required]="false"
+                        (eventEmmitter)="loadDataByEmpresa($event)">
+                    </app-input-select>
+                </div>
+            </div>
+
+            <div class="row">
+
+                <div class="col-xs-12 col-md-4 form-group">
+                    <app-input-select [label]="'lbl.convocatoria'" [lst]="lstConvocatories"
+                        [xOption]="'nombreConvocatoria'" [xId]="'id'" formControlName="idConvocatoria"
+                        [controll]="f.idConvocatoria" (eventEmmitter)="loadDataByConvocatoria($event)">
+                    </app-input-select>
+                </div>
+
+                <div class="col-xs-12 col-md-4 form-group">
+                    <app-input-select [label]="'lbl.tipoFase'" [lst]="lstTipoFases" [xOption]="'nombreFase'"
+                        [xId]="'id'" formControlName="idTipoFase" [controll]="f.idTipoFase"></app-input-select>
+                </div>
+
+                <div class="col-xs-12 col-md-4 form-group">
+                    <app-input-select [label]="'lbl.tipoPrueba'" [lst]="lstPruebas" [xOption]="'tipoPrueba'"
+                        [xId]="'id'" formControlName="idTipoPrueba" [controll]="f.idTipoPrueba"></app-input-select>
+                </div>
+
+            </div>
+
+            <div class="row">
+                <div class="col-sm-12 pull-right form-group">
+                    <app-buttons-fotter [showBtnAccept]="true" [submit]="submit" (eventEmmitterAccept)="add()"
+                        [showBtnCancel]="true" (eventEmmitterCancel)="cleanForm()"></app-buttons-fotter>
+                </div>
+            </div>
+
+            <div class="row">
+
+                <div class="col-xs-12 col-sm-6">
+                    <app-input-search-table (eventEmmitter)="applyFilter($event , dataSource)">
+                    </app-input-search-table>
+                </div>
+                <div class="col-xs-12 col-md-12 form-group">
+
+
+
+                    <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8 col-xs-12 full-width"
+                        (matSortChange)="sortData($event)">
+
+                        <ng-container matColumnDef="idConvocatoria">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.convocatoria'|translate}}
+                            </th>
+                            <td mat-cell *matCellDef=" let element " style="width: 35%;">{{element.convocatoria.nombreConvocatoria}}
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="idTipoFase">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                {{'lbl.tipoFase'|translate}}</th>
+                            <td mat-cell *matCellDef=" let element " style="width: 25%;">{{element.fase.nombreFase}}
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="idTipoPrueba">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                {{'lbl.tipoPrueba'|translate}}</th>
+                            <td mat-cell *matCellDef=" let element " style="width: 25%;">{{element.prueba.tipoPrueba}}</td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="options">
+                            <th mat-header-cell *matHeaderCellDef style="text-align: center;">
+                                {{'lbl.acciones'|translate}}</th>
+                            <td mat-cell *matCellDef="let element" class="mat-cell-left" style="width: 15%;">
+                                <div class="mat-cell-left" style="display: inline-block;">
+                                    <button (click)="edit(element)" type="button" title="{{'btn.editar'|translate}}"
+                                        color="primary" mat-icon-button>
+                                        <mat-icon>edit</mat-icon>
+                                    </button>
+
+                                    <button type="button" color="warn" mat-icon-button
+                                        title="{{'btn.eliminar'|translate}}" (click)="delete(element)">
+                                        <mat-icon>delete</mat-icon>
+                                    </button>
+                                </div>
+
+                            </td>
+                        </ng-container>
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns "></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns; "
+                            [ngClass]="{hovered: row.hovered, highlighted: isSelectedTable(elementCurrent , row.id)}"
+                            (mouseover)="row.hovered = true" (mouseout)="row.hovered = false"></tr>
+                    </table>
+                    <mat-paginator [pageSizeOptions]="[5,10, 20]" showFirstLastButtons></mat-paginator>
+                </div>
+            </div>
+        </form>
+    </mat-card-content>
+</mat-card>

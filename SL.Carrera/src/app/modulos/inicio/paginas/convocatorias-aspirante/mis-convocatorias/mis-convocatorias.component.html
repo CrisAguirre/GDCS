@@ -1,0 +1,173 @@
+<mat-card class="mb-2">
+    <mat-card-header>
+        <mat-card-title>{{'ttl.misConvocatorias'|translate}}</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+
+        <div class="row">
+            <div class="col-xs-12 col-md-12">
+
+                <div class="col-xs-12 col-md-6">
+                    <mat-form-field>
+                        <mat-label>{{'lbl.buscar'|translate}}</mat-label>
+                        <input matInput (keyup)="applyFilter($event, dataSource)" placeholder="{{'lbl.buscarPlh'|translate}}" autocomplete="off">
+                    </mat-form-field>
+                </div>
+
+                <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 col-xs-12 full-width">
+                    <ng-container matColumnDef="nombreConvocatoria">
+                        <th mat-header-cell *matHeaderCellDef>{{'lbl.nombreConvocatoria'|translate}}</th>
+                        <td mat-cell *matCellDef=" let element " style="width: 25%;">
+                            {{element.convocatoria ? element.convocatoria.nombreConvocatoria : ''}}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="cargoInscrito">
+                        <th mat-header-cell *matHeaderCellDef>{{'lbl.cargo'|translate}}</th>
+                        <td mat-cell *matCellDef=" let element " style="width: 19%;">
+                            {{element.cargoHumano ? element.cargoHumano : element.cargo ? element.cargo : ''}}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="estadoAspirante">
+                        <th mat-header-cell *matHeaderCellDef>{{'lbl.estadoAspirante'|translate}}</th>
+                        <td mat-cell *matCellDef=" let element " style="width: 10%;">
+                            {{element.estadoAspirante}}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="fechaInscripcion">
+                        <th mat-header-cell *matHeaderCellDef>{{'lbl.fechaInscripcion'|translate}}</th>
+                        <td mat-cell *matCellDef=" let element " style="width: 5%;">
+                            {{element.fechaRegistro | date:formatDateView}}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="acuerdoConvocatoria">
+                        <th mat-header-cell *matHeaderCellDef>{{'lbl.acuerdo'|translate}}</th>
+                        <td mat-cell *matCellDef="let element" style="width: 8%;">
+                            <button *ngIf="element.id" (click)="viewFile(element)" type="button" color="warn" title="{{'lbl.verAcuerdo'|translate}}" mat-icon-button>
+                                <mat-icon>attach_file</mat-icon>
+                            </button>
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="constancia">
+                        <th mat-header-cell *matHeaderCellDef>{{'lbl.constancia'|translate}}</th>
+                        <td mat-cell *matCellDef="let element" style="width: 8%;">
+                            <button *ngIf="element.id" (click)="viewFileContancia(element)" type="button" color="warn" title="{{'lbl.verConstancia'|translate}}" mat-icon-button>
+                                <mat-icon>attach_file</mat-icon>
+                            </button>
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="aclaracionesModifificaciones">
+                        <th mat-header-cell *matHeaderCellDef>{{'lbl.aclaracionesModificaciones'|translate}}</th>
+                        <td mat-cell *matCellDef="let element" style="width: 8%;">
+                            <div>
+                                <button *ngIf="element.idSoporteAclaracionesModificaciones" (click)="viewFile(element.idSoporte)" type="button" color="warn" title="{{'lbl.verSoporte'|translate}}" mat-icon-button>
+                                    <mat-icon>attach_file</mat-icon>
+                                </button>
+                            </div>
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="recalificacion">
+                        <th mat-header-cell *matHeaderCellDef>{{'lbl.habilitarReclasificacion'|translate}}</th>
+                        <td mat-cell *matCellDef="let element" style="width: 10%;">
+                            <div *ngIf="aplicaRecalificacionValor !== 0">
+                                <div *ngIf="verifyActionRecalificacion(element); let btnStates">
+                                    <button *ngIf="btnStates.btnRecalificacion" [disabled]="disableButton" (click)="openDialogHVInfo(element)" type="button" color="warn" title="{{'lbl.habilitarReclasificacion'|translate}}" mat-icon-button>
+                                        <mat-icon>dvr</mat-icon>
+                                    </button>
+
+                                    <button *ngIf="btnStates.btnInactive" [disabled]="disableButton" type="button" color="dark" mat-icon-button title="{{'lbl.habilitarReclasificacion'|translate}}">
+                                        <mat-icon>dvr</mat-icon>
+                                    </button>
+                                </div>
+                            </div>
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="vacantes">
+                        <th mat-header-cell *matHeaderCellDef>{{'lbl.opcionSedes'|translate}}</th>
+                        <td mat-cell *matCellDef="let element" style="width: 8%;">
+                            <div *ngIf="verifyActionVacantes(element); let btnStates">
+                                <button *ngIf="btnStates.btnActive" [disabled]="disableButton" (click)="verVacantes(element)" type="button" color="warn" title="{{'btn.verVacantes'|translate}}" mat-icon-button>
+                                    <mat-icon>person_search</mat-icon>
+                                </button>
+
+                                <button *ngIf="btnStates.btnInactive" [disabled]="disableButton" type="button" color="dark" title="{{'btn.verVacantes'|translate}}" mat-icon-button>
+                                    <mat-icon>person_search</mat-icon>
+                                </button>
+                            </div>
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="declinar">
+                        <th mat-header-cell *matHeaderCellDef style="text-align: center;">{{'lbl.declinarVacante'|translate}}</th>
+                        <td mat-cell *matCellDef="let element" style="width: 5%;" class="text-center">
+                            <div *ngIf="verifyActionsDeclinar(element); let btnStates">
+                                <button *ngIf="btnStates.btnActive" [disabled]="disableButton" (click)="declinarAVacante(element)" type="button" title="{{'btn.declinar'|translate}}" color="warn" mat-icon-button>
+                                    <mat-icon>cancel</mat-icon>
+                                </button>
+                                <label *ngIf="btnStates.btnDate">{{element.fechaDeclinacion | date:formatDateView}}</label>
+                            </div>
+                        </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns "></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns; " [ngClass]="{hovered: row.hovered, highlighted: isSelectedTable(elementCurrent , row.id)}" (mouseover)="row.hovered = true" (mouseout)="row.hovered = false"></tr>
+                </table>
+                <mat-paginator [pageSizeOptions]="[5,10, 20]" showFirstLastButtons>
+                </mat-paginator>
+            </div>
+        </div>
+
+    </mat-card-content>
+</mat-card>
+
+<ng-template #dialogHVInfo>
+    <h2 matDialogTitle>{{'ttl.solicitudReclasificacion'| translate}}</h2>
+
+    <div class="row">
+
+        <div class="col-md-6 col-sm-6 form-group">
+            <app-input-general [formControl]="convocatoria" [controll]="convocatoria" [label]="'lbl.convocatoria'"></app-input-general>
+        </div>
+
+        <div class="col-md-6 col-sm-6 form-group">
+            <app-input-general [formControl]="cargoAspirante" [controll]="cargoAspirante" [label]="'lbl.nombreCargo'"></app-input-general>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12 col-sm-12 form-group">
+            <iframe [src]="rutaSafe" class="frameSet" frameborder="0" width="100%" height="390"></iframe>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-12 pull-right form-group">
+            <app-buttons-fotter [showBtnAccept]="true" [submit]="submit" (eventEmmitterAccept)="saveRecalificacion()" [labelBtnAccept]="'btn.solicitarReclasificacion'" [iconAccept]="'check_circle_outline'" [showBtnCancel]="true" (eventEmmitterCancel)="clean()" [labelBtnCancel]="'btn.cerrar'"></app-buttons-fotter>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #dialogInfo>
+    <h2 matDialogTitle>{{'lbl.observaciones'| translate}}</h2>
+    <div class="row">
+        <div class="col-xs-12 col-md-12 form-group">
+            <mat-form-field appearance="{{appearanceInput}}">
+                <mat-label>{{'lbl.observaciones'|translate}}</mat-label>
+                <textarea rows="3" matInput [formControl]="observaciones" placeholder="{{'lbl.observaciones'|translate}}" autocomplete="off" [required]="false"></textarea>
+            </mat-form-field>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12 col-md-12 form-group">
+            <button mat-raised-button class="pull-right" color="primary" title="{{'btn.guardar'|translate}}" [disabled]="submit" (click)="saveDeclinacion()">{{'btn.guardar'|translate}}<mat-icon>save
+                </mat-icon>
+            </button>
+            <button mat-raised-button type="button" class="pull-right mr-1" (click)="closeDialogInfo()" title="{{'btn.cerrar'|translate}}">{{'btn.cerrar'|translate}}
+                <mat-icon>clear_all</mat-icon>
+            </button>
+        </div>
+    </div>
+</ng-template>

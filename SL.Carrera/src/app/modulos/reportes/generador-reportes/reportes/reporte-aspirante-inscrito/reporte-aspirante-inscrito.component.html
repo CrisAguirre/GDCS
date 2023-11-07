@@ -1,0 +1,23 @@
+<form #formV="ngForm" [formGroup]="form">
+    <div class="row">
+        
+        <div *ngIf="showSelectCompany" class="col-xs-12 col-md-6 form-group">
+            <mat-form-field appearance="{{appearanceInput}}">
+                <mat-label>{{'lbl.empresa'|translate}}</mat-label>
+                <mat-select [formControl]="company" (selectionChange)='loadEmpresa($event)'>
+                    <mat-option *ngFor="let g of lstEmpresa" [value]="g.id">
+                        {{g.nombreEmpresa}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+
+        <div class="col-xs-12 col-md-6 form-group">
+            <app-input-select [label]="'lbl.convocatoria'" [lst]="lstConvocatoria"
+                [xOption]="'nombreConvocatoria'" [xId]="'id'" formControlName="idConvocatoria"
+                [controll]="f.idConvocatoria" (eventEmmitter)="eventConvocatoria($event)">
+            </app-input-select>
+        </div>
+        
+    </div>
+</form>

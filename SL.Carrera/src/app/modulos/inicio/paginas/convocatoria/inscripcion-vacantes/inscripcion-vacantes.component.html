@@ -1,0 +1,160 @@
+<form #formV="ngForm" [formGroup]="form">
+    <div class="col-sm-12  col-md-12 col-lg-12">
+        <mat-card>
+            <mat-card-header>
+                <mat-card-title>{{'ttl.inscripcionVacantes'|translate}}</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+
+                <div class="row mt-4" *ngIf="showSelectCompany">
+                    <div class="col-xs-12 col-sm-12 col-md-4 form-group" *ngIf="showSelectCompany">
+                        <app-input-select [label]="'lbl.empresa'" [lst]="lstEmpresa" [xOption]="'nombreEmpresa'"
+                            [xId]="'id'" formControlName="idEmpresa" [controll]="f.idEmpresa" [required]="false"
+                            (eventEmmitter)="loadEmpresa($event)">
+                        </app-input-select>
+                    </div>
+                </div>
+
+                <div class="row">
+
+                    <div class="col-xs-12 col-md-4 form-group">
+                        <app-input-select [label]="'lbl.convocatoria'" [lst]="lstConvocatoriaAux"
+                            [xOption]="'nombreConvocatoria'" [xId]="'id'" formControlName="idConvocatoria"
+                            [controll]="f.idConvocatoria" (eventEmmitter)="loadDataByConvocatoria($event)">
+                        </app-input-select>
+                    </div>
+
+                    <div class="col-xs-12 col-md-4 form-group">
+                        <app-input-date [label]="'lbl.fechaInicial'" [maxDate]="f.endDate.value" [required]="true"
+                            formControlName="initDate" [controll]="f.initDate"></app-input-date>
+                    </div>
+
+                    <div class="col-xs-12 col-md-4 form-group">
+                        <app-input-date [label]="'lbl.fechaFinal'" [minDate]="f.initDate.value" [maxDate]="now"
+                            [required]="true" formControlName="endDate" [controll]="f.endDate"></app-input-date>
+                    </div>
+
+                    <div class="col-xs-12 col-md-4 form-group">
+                        <div class="row">
+                            <div class="col-sm-10 pr-0">
+                                <mat-form-field appearance="{{appearanceInput}}">
+                                    <mat-label>{{'lbl.adjuntarSoporte'|translate}}</mat-label>
+                                    <ngx-mat-file-input #removableInput class="removableInput"
+                                        formControlName="requiredfile"
+                                        valuePlaceholder="{{(!elementCurrent.nameTypeFileAux? 'lbl.seleccioneArchivo':elementCurrent.nameTypeFileAux) | translate}}"
+                                        [accept]="configFile.allowExtensions" [errorStateMatcher]="matcher">
+                                    </ngx-mat-file-input>
+                                    <button mat-icon-button matSuffix
+                                        *ngIf="elementCurrent.nameTypeFileAux || this.f.requiredfile.value"
+                                        (click)="removableInput.clear($event); deleteFileView()">
+                                        <mat-icon>clear</mat-icon>
+                                    </button>
+                                    <mat-hint>{{'msg.archivoPermitido'|translate}} ({{configFile.allowExtensions}})
+                                    </mat-hint>
+                                    <mat-error *ngIf="f.requiredfile.hasError('maxContentSize')">
+                                        {{'msg.tamanioArchivo'|translate}}
+                                        {{f.requiredfile?.getError('maxContentSize').maxSize | byteFormat}}
+                                        ({{f.requiredfile?.getError('maxContentSize').actualSize | byteFormat}}).
+                                    </mat-error>
+                                    <mat-error *ngIf="f.requiredfile.hasError('badExtension')">
+                                        {{f.requiredfile.errors.badExtension}} ({{configFile.allowExtensions}})
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-sm-2 p-0">
+                                <button mat-icon-button class="mt-2" type="button" color="primary"
+                                    (click)="!elementCurrent.idSoporte ? openDialogFile('.removableInput') :viewFile(elementCurrent.idSoporte)"
+                                    title="{{(!elementCurrent.nameTypeFile ? 'lbl.cargarArchivo':'lbl.verAdjunto')|translate}}">
+                                    <mat-icon>{{!elementCurrent.id ? 'attach_file':'remove_red_eye'}}</mat-icon>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-12 pull-right form-group">
+                        <button mat-raised-button color="primary" class="pull-right" [disabled]="submit"
+                            (click)="addDiasHabilesVacantes()"
+                            title="{{'btn.guardar'|translate}}">{{'btn.guardar'|translate}}
+                            <mat-icon>save</mat-icon>
+                        </button>
+                        <button mat-raised-button type="button" class="pull-right mr-1" (click)="cleanForm()"
+                            title="{{'btn.limpiar'|translate}}">{{'btn.limpiar'|translate}}
+                            <mat-icon>clear_all</mat-icon>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="row mt-4">
+                    <div class="col-xs-12 col-md-12">
+                        <div class="col-xs-12 col-md-6">
+                            <mat-form-field>
+                                <mat-label>{{'lbl.buscar'|translate}}</mat-label>
+                                <input matInput (keyup)="applyFilter($event , dataSource)"
+                                    placeholder="{{'lbl.buscarPlh'|translate}}" autocomplete="off">
+                            </mat-form-field>
+                        </div>
+                        <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8 col-xs-12 full-width"
+                            (matSortChange)="sortData($event)">
+
+                            <ng-container matColumnDef="convocatoria">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.convocatoria'|translate}}
+                                </th>
+                                <td mat-cell *matCellDef=" let element ">{{element.nombreConvocatoria}}</td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="fechaIngreso">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.fechaIngreso'|translate}}
+                                </th>
+                                <td mat-cell *matCellDef=" let element ">{{element.fechaInicio | date:formatDateView}}
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="fechaRetiro">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.fechaRetiro'|translate}}
+                                </th>
+                                <td mat-cell *matCellDef=" let element ">{{element.fechaFin | date:formatDateView}}</td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="soporte">
+                                <th mat-header-cell *matHeaderCellDef>{{'lbl.soporte'|translate}}</th>
+                                <td mat-cell *matCellDef="let element">
+                                    <div *ngIf="element.idSoporte !== null">
+                                        <button *ngIf="element.id" (click)="viewFile(element.idSoporte)" type="button"
+                                            color="warn" title="{{'lbl.verSoporte'|translate}}" mat-icon-button>
+                                            <mat-icon>attach_file</mat-icon>
+                                        </button>
+                                    </div>
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="options">
+                                <th mat-header-cell *matHeaderCellDef>{{'lbl.editarEliminar'|translate}}</th>
+                                <td mat-cell *matCellDef="let element">
+                                    <button (click)="edit(element)" type="button" title="{{'btn.editar'|translate}}"
+                                        color="primary" mat-icon-button
+                                        aria-label=" Example icon-button with a heart icon ">
+                                        <mat-icon>edit</mat-icon>
+                                    </button>
+
+                                    <button type="button" color="warn" mat-icon-button
+                                        title="{{'btn.eliminar'|translate}}" (click)="delete(element)">
+                                        <mat-icon>delete</mat-icon>
+                                    </button>
+                                </td>
+                            </ng-container>
+                            <tr mat-header-row *matHeaderRowDef="displayedColumns "></tr>
+                            <tr mat-row *matRowDef="let row; columns: displayedColumns; "
+                                [ngClass]="{hovered: row.hovered, highlighted: isSelectedTable(elementCurrent , row.id)}"
+                                (mouseover)="row.hovered = true" (mouseout)="row.hovered = false"></tr>
+                        </table>
+                        <mat-paginator [pageSizeOptions]="[5,10, 20]" showFirstLastButtons></mat-paginator>
+                    </div>
+                </div>
+
+            </mat-card-content>
+        </mat-card>
+    </div>
+</form>

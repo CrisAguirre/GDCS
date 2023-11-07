@@ -1,0 +1,184 @@
+<mat-card>
+    <mat-card-header>
+        <mat-card-title>{{'ttl.elegibleAltaCorte'| translate}}</mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+
+        <form #formV="ngForm" [formGroup]="form">
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-4 form-group" *ngIf="showSelectCompany">
+                    <app-input-select [label]="'lbl.empresa'" [lst]="lstCompanies" [xOption]="'nombreEmpresa'" [xId]="'id'" formControlName="idEmpresa" [controll]="f.idEmpresa" [required]="false" (eventEmmitter)="loadDataByEmpresa($event)">
+                    </app-input-select>
+                </div>
+
+                <div class="col-xs-12 col-md-4 form-group">
+                    <app-input-select [label]="'lbl.convocatoria'" [lst]="lstConvocatories" [xOption]="'nombreConvocatoria'" [xId]="'id'" formControlName="idConvocatoria" [controll]="f.idConvocatoria" (eventEmmitter)="loadDataByConvocatoria($event)" [required]="false">
+                    </app-input-select>
+                </div>
+            </div>
+        </form>
+
+        <div class="row">
+            <div class="col-xs-12 col-sm-6">
+                <app-input-search-table (eventEmmitter)="applyFilter($event , dataSource)">
+                </app-input-search-table>
+            </div>
+
+            <div class="col-xs-12 col-md-12 form-group">
+
+                <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8 col-xs-12 full-width" (matSortChange)="sortData($event, 2)">
+
+                    <!-- Checkbox Column -->
+                    <ng-container matColumnDef="select">
+                        <th mat-header-cell *matHeaderCellDef>
+                            <mat-checkbox (change)="$event ? masterToggle() : null" [checked]="selection.hasValue() && isAllSelected()" [indeterminate]="selection.hasValue() && !isAllSelected()" [aria-label]="checkboxLabel()">
+                            </mat-checkbox>
+                        </th>
+                        <td mat-cell *matCellDef="let row" style="width: 10%;">
+                            <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(row) : null" [checked]="selection.isSelected(row)" [aria-label]="checkboxLabel(row)">
+                            </mat-checkbox>
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="identificacion">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.identificacion'|translate}}
+                        </th>
+                        <td mat-cell *matCellDef=" let element " style="width: 15%;">
+                            {{commonService.getNumeroDocumento(element)}}
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="nombreAspirante">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                            {{'lbl.nombreAspirante'|translate}}</th>
+                        <td mat-cell *matCellDef=" let element " style="width: 20%;">{{commonService.getNameAspirante(element)}}
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="cargoAspirante">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                            {{'lbl.nombreCargo'|translate}}</th>
+                        <td mat-cell *matCellDef=" let element " style="width: 25%;">{{commonService.getCargoAspirante(element)}}
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="gradoCargo">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                            {{'lbl.grado'|translate}}</th>
+                        <td mat-cell *matCellDef=" let element " style="width: 10%;">{{commonService.getGradoCargo(element)}}
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="dependencia">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                            {{'lbl.tipoDependencia'|translate}}</th>
+                        <td mat-cell *matCellDef=" let element " style="width: 25%;">{{commonService.getTipoDependencia(element)}}
+                        </td>
+                    </ng-container>
+
+                    <!-- <ng-container matColumnDef="lugar">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                            {{'lbl.tipoDependenciaHija'|translate}}</th>
+                        <td mat-cell *matCellDef=" let element " style="width: 25%;">{{commonService.getDependenciaLugar(element)}}
+                        </td>
+                    </ng-container> -->
+
+                    <ng-container matColumnDef="estadoAspirante">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                            {{'lbl.estadoAspirante'|translate}}</th>
+                        <td mat-cell *matCellDef=" let element " style="width: 25%;">
+                            {{element.estadoAspiranteModel['nombreCategoria'+this.lang]}}
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="options">
+                        <th mat-header-cell *matHeaderCellDef style="text-align: center;"></th>
+                        <td mat-cell *matCellDef="let element" class="mat-cell-left" style="width: 15%;text-align: center;">
+                            <div class="mat-cell-left" style="display: inline-block;">
+                                <!-- <button *ngIf="validateElement(element)" (click)="loadAspirante(element)" type="button" title="{{'btn.verMasDetalles'|translate}}" [ngStyle]="{'color': selection.isSelected(element) ? '#3f51b5' : '#bcbcbc'}" mat-icon-button> -->
+                                <button *ngIf="validateElement(element)" (click)="loadInfoElegido(element)" type="button" title="{{'btn.verMasDetalles'|translate}}" [ngStyle]="{'color':'#3f51b5'}" mat-icon-button>
+                                    <mat-icon>remove_red_eye</mat-icon>
+                                </button>
+                            </div>
+
+                        </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns ; sticky: true"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="selection.toggle(row)" ></tr>
+                </table>
+                <mat-paginator [pageSizeOptions]="[5,10, 20]" showFirstLastButtons></mat-paginator>
+            </div>
+
+            <div *ngIf="showBtnNotificar" class="row col-sm-12 col-md-12">
+                <div class="col-sm-12 pull-right form-group">
+                    <button mat-raised-button color="primary" class="pull-right" [disabled]="submit" (click)="enviarNotificacion()" title="{{ 'btn.comunicar' | translate }}">
+                        {{ 'btn.comunicar' | translate }}
+                        <mat-icon>add_alert</mat-icon>
+                    </button>
+                </div>
+            </div>
+
+        </div>
+
+
+        <div *ngIf="!selection.isEmpty() && !existeElegido" class="row mt-4">
+            <div class="offset-sm-2 col-sm-8">
+                <mat-divider></mat-divider>
+            </div>
+
+            <!-- <div class="col-sm-12 text-center mt-4">
+                <h6>{{'lbl.soporte' | translate}}</h6>
+            </div> -->
+        </div>
+
+        <div *ngIf="!selection.isEmpty() && !existeElegido" class="mt-5">
+            <form #formV2="ngForm" [formGroup]="form2">
+                
+                <div class="col-xs-12 col-md-6 form-group">
+                    <div class="row">
+                        <div class="col-sm-10 pr-0">
+                            <mat-form-field appearance="{{appearanceInput}}">
+                                <mat-label>{{'lbl.adjuntarSoporte'|translate}}</mat-label>
+                                <ngx-mat-file-input #removableInput class="removableInput" formControlName="requiredfile" valuePlaceholder="{{(!fileModel ? 'lbl.seleccioneArchivo':fileModel.nombreAuxiliar) | translate}}" [accept]="configFile.allowExtensions" [errorStateMatcher]="matcher" required>
+                                </ngx-mat-file-input>
+                                <button mat-icon-button matSuffix *ngIf="!fileModel && this.f2.requiredfile.value" (click)="removableInput.clear($event); deleteFileView()">
+                                    <mat-icon>clear</mat-icon>
+                                </button>
+                                <mat-hint>{{'msg.archivoPermitido'|translate}} ({{configFile.allowExtensions}})
+                                </mat-hint>
+                                <mat-error *ngIf="f2.requiredfile.hasError('required')">
+                                    {{'msg.seleccioneArchivo'|translate}} ({{configFile.allowExtensions}})
+                                </mat-error>
+                                <mat-error *ngIf="f2.requiredfile.hasError('maxContentSize')">
+                                    {{'msg.tamanioArchivo'|translate}}
+                                    {{f2.requiredfile?.getError('maxContentSize').maxSize | byteFormat}}
+                                    ({{f2.requiredfile?.getError('maxContentSize').actualSize | byteFormat}}).
+                                </mat-error>
+                                <mat-error *ngIf="f2.requiredfile.hasError('badExtension')">
+                                    {{f2.requiredfile.errors.badExtension}} ({{configFile.allowExtensions}})
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-sm-2 p-0">
+                            <button mat-icon-button class="mt-2" type="button" color="primary" (click)="!fileModel ? openDialogFile('.removableInput') :viewFile(fileModel.id)" title="{{(!fileModel ? 'lbl.cargarArchivo':'lbl.verAdjunto')|translate}}">
+                                <mat-icon>{{!elementCurrent.id ? 'attach_file':'remove_red_eye'}}</mat-icon>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                
+            </form>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col-sm-12 col-xs-12 pull-right form-group">
+                <app-buttons-fotter [showBtnAccept]="showBtnGuardar" [submit]="submit" (eventEmmitterAccept)="save()" [showBtnCancel]="true" (eventEmmitterCancel)="cleanForm()">
+                </app-buttons-fotter>
+            </div>
+        </div>
+
+    </mat-card-content>
+</mat-card>

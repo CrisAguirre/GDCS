@@ -1,0 +1,15 @@
+<h2 mat-dialog-title>{{'ttl.terminosServicio'|translate}}</h2>
+<mat-dialog-content class="mat-typography ml-5 mr-5">
+
+    <div [innerHTML]="content" class="text-justify"></div>
+
+    <br><br>
+
+    <div class="col-ms-12">
+        <mat-checkbox [(ngModel)]="acceptCbx" color="primary">{{'lbl.aceptoPoliticasPrivacidad'|translate}}</mat-checkbox>
+    </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>{{'btn.cerrar'|translate}}</button>
+    <button mat-raised-button [mat-dialog-close]="true" cdkFocusInitial color="primary" [disabled]="!acceptCbx">{{'btn.acepto'|translate}}</button>
+</mat-dialog-actions>

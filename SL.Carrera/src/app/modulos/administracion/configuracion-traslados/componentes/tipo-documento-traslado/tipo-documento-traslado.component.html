@@ -1,0 +1,94 @@
+<form #formV="ngForm" [formGroup]="form">
+
+    <div class="col-sm-12  col-md-12 col-lg-12">
+
+        <div class="row mt-4">
+            <div class="col-xs-12 col-md-4 form-group">
+                <app-input-select [label]="'lbl.tipoTraslado'" [lst]="lstTipoTraslado" [xOption]="'tipoTraslado'" [xId]="'id'" formControlName="idTipoTraslado" [controll]="f.idTipoTraslado">
+                </app-input-select>
+            </div>
+
+            <div class="col-xs-12 col-md-4 form-group">
+                <app-input-general formControlName="tipoDocumento" [controll]="f.tipoDocumento" [label]="'lbl.tipoDocumento'"></app-input-general>
+            </div>
+
+            <div class="col-xs-12 col-md-4 form-group">
+                <app-input-general formControlName="codigoTipoDocumento" [controll]="f.codigoTipoDocumento" [label]="'lbl.codigoTipoDocumentoTraslado'"></app-input-general>
+            </div>
+
+            <div class="col-xs-12 col-md-4 form-group">
+                <mat-checkbox formControlName="esObligatorio">
+                    {{'lbl.esObligatorio'|translate}}
+                </mat-checkbox>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-12 pull-right form-group">
+                <button mat-raised-button color="primary" class="pull-right" [disabled]="submit" (click)="saveTipoDocumentoTraslado()" title="{{'btn.guardar'|translate}}">{{'btn.guardar'|translate}}<mat-icon>save</mat-icon>
+                </button>
+                <button mat-raised-button type="button" class="pull-right mr-1" (click)="cleanForm()" title="{{'btn.limpiar'|translate}}">{{'btn.limpiar'|translate}}
+                    <mat-icon>clear_all</mat-icon>
+                </button>
+            </div>
+        </div>
+
+
+        <div class="col-xs-12 col-md-6">
+            <!-- <mat-form-field>
+                <mat-label>{{'lbl.buscar'|translate}}</mat-label>
+                <input matInput (keyup)="applyFilter($event , dataSource)" placeholder="{{'lbl.buscarPlh'|translate}}" autocomplete="off">
+            </mat-form-field> -->
+
+
+            <app-input-search-table (eventEmmitter)="applyFilter($event , dataSource)">
+            </app-input-search-table>
+
+        </div>
+
+        <div class="row">
+            <div class="col-xs-12 col-md-12 form-group">
+                <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8 col-xs-12 full-width" (matSortChange)="sortDataInfo($event)">
+
+                    <ng-container matColumnDef="tipoTraslado">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.tipoTraslado'|translate}}</th>
+                        <td mat-cell *matCellDef=" let element ">{{element.tipoTraslado ? element.tipoTraslado.tipoTraslado : ''}}</td>
+                        <!-- <td mat-cell *matCellDef=" let element ">{{element.nombreTipoTraslado}}</td> -->
+                    </ng-container>
+
+                    <ng-container matColumnDef="tipoDocumento">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.tipoDocumento'|translate}}</th>
+                        <td mat-cell *matCellDef=" let element ">{{element.tipoDocumento}}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="codTipoDocumento">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.codigoTipoDocumentoTraslado'|translate}}</th>
+                        <td mat-cell *matCellDef=" let element " style="font-size: 10px;">{{element.codAlterno}}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="esObligatorio">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.esObligatorio'|translate}}</th>
+                        <td mat-cell *matCellDef=" let element ">{{element.esObligatorio ? 'Si' : 'No'}}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="options">
+                        <th mat-header-cell *matHeaderCellDef>{{'lbl.editarEliminar'|translate}}</th>
+                        <td mat-cell *matCellDef="let element">
+                            <button (click)="edit(element)" type="button" title="{{'btn.editar'|translate}}" color="primary" mat-icon-button aria-label=" Example icon-button with a heart icon ">
+                                <mat-icon>edit</mat-icon>
+                            </button>
+
+                            <button type="button" color="warn" mat-icon-button title="{{'btn.eliminar'|translate}}" (click)="delete(element)">
+                                <mat-icon>delete</mat-icon>
+                            </button>
+                        </td>
+                    </ng-container>
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns "></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns; " [ngClass]="{hovered: row.hovered, highlighted: isSelectedTable(elementCurrent , row.id)}" (mouseover)="row.hovered = true" (mouseout)="row.hovered = false"></tr>
+                </table>
+                <mat-paginator [pageSizeOptions]="[5,10, 20]" showFirstLastButtons></mat-paginator>
+            </div>
+        </div>
+
+    </div>
+</form>

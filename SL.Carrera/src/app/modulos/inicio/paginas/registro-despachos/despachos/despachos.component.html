@@ -1,0 +1,175 @@
+<form #formV="ngForm" [formGroup]="form">
+    <div class="col-sm-12  col-md-12 col-lg-12">
+        <mat-card>
+            <mat-card-header>
+                <mat-card-title>{{'ttl.registroDespacho'|translate}}</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+
+                <div class="row">                   
+                    <div class="col-xs-12 col-md-6 form-group">
+                        <app-input-general formControlName="codigoDespacho" [controll]="f.codigoDespacho"
+                            [label]="'lbl.codigoDespacho'">
+                        </app-input-general>
+                    </div>
+
+                    <div class="col-xs-12 col-md-6 form-group">
+                        <app-input-general formControlName="despacho" [controll]="f.despacho"
+                            [label]="'lbl.despacho'">
+                        </app-input-general>
+                    </div>
+
+                    <div class="col-xs-12 col-md-6 form-group">
+                        <app-input-general formControlName="codigoMunicipio" [controll]="f.codigoMunicipio"
+                            [label]="'lbl.codMunicipio'">
+                        </app-input-general>
+                    </div>
+
+                    <div class="col-xs-12 col-md-6 form-group">
+                        <app-input-general formControlName="sede" [controll]="f.sede"
+                            [label]="'lbl.sede'">
+                        </app-input-general>
+                    </div>
+                
+                    <div class="col-xs-12 col-md-6 form-group">
+                        <app-input-general formControlName="codigoSeccional" [controll]="f.codigoSeccional"
+                            [label]="'lbl.codSeccional'">
+                        </app-input-general>
+                    </div>
+
+                    
+                    <div class="col-xs-12 col-md-6 form-group">
+                        <app-input-general formControlName="seccional" [controll]="f.seccional"
+                            [label]="'lbl.seccional'">
+                        </app-input-general>
+                    </div>
+
+                    <div class="col-xs-12 col-md-6 form-group">
+                        <app-input-general formControlName="codigoEspecialidad" [controll]="f.codigoEspecialidad"
+                            [label]="'lbl.codEspecialidad'">
+                        </app-input-general>
+                    </div>
+
+                    <div class="col-xs-12 col-md-6 form-group">
+                        <app-input-general formControlName="especialidad" [controll]="f.especialidad"
+                            [label]="'lbl.especialidad'">
+                        </app-input-general>
+                    </div>
+                
+                    <div class="col-xs-12 col-md-6 form-group">
+                        <app-input-general formControlName="ordenDespacho" [controll]="f.ordenDespacho"
+                            [label]="'lbl.ordenDespacho'">
+                        </app-input-general>
+                    </div>
+
+                    <div class="col-xs-12 col-md-6 form-group">
+                        <app-input-general formControlName="codAlterno" [controll]="f.codAlterno"
+                            [label]="'lbl.codAlterno'" [required]="false">
+                        </app-input-general>
+                    </div>
+                   
+                    
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-12 pull-right form-group">
+                        <button mat-raised-button color="primary" class="pull-right" [disabled]="submit"
+                            (click)="addDespacho()" title="{{'btn.guardar'|translate}}">{{'btn.guardar'|translate}}
+                            <mat-icon>save</mat-icon>
+                        </button>
+                        <button mat-raised-button type="button" class="pull-right mr-1" (click)="cleanForm()"
+                            title="{{'btn.limpiar'|translate}}">{{'btn.limpiar'|translate}}
+                            <mat-icon>clear_all</mat-icon>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="row mt-4">
+                    <div class="col-xs-12 col-md-12">
+                        <div class="col-xs-12 col-md-6">
+                            <mat-form-field>
+                                <mat-label>{{'lbl.buscar'|translate}}</mat-label>
+                                <input matInput (keyup)="applyFilter($event , dataSource)"
+                                    placeholder="{{'lbl.buscarPlh'|translate}}" autocomplete="off">
+                            </mat-form-field>
+                        </div>
+                        <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 col-xs-12 full-width" matSort
+                            (matSortChange)="sortData($event)">
+
+                            <ng-container matColumnDef="codigoDespacho">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                    {{'lbl.codigoDespacho'|translate}}</th>
+                                <td mat-cell *matCellDef=" let element ">{{element.codigoDespacho}}</td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="despacho">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                    {{'lbl.despacho'|translate}}</th>
+                                <td mat-cell *matCellDef=" let element ">{{element.despacho}}</td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="codigoMunicipio">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                    {{'lbl.codMunicipio'|translate}}</th>
+                                <td mat-cell *matCellDef=" let element ">{{element.codigoMunicipio}}</td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="sede">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                    {{'lbl.sede'|translate}}</th>
+                                <td mat-cell *matCellDef=" let element ">{{element.sede}}</td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="codigoSeccional">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                    {{'lbl.codSeccional'|translate}}</th>
+                                <td mat-cell *matCellDef=" let element ">{{element.codigoSeccional}}</td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="seccional">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                    {{'lbl.seccional'|translate}}</th>
+                                <td mat-cell *matCellDef=" let element ">{{element.seccional}}</td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="codigoEspecialidad">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                    {{'lbl.codEspecialidad'|translate}}</th>
+                                <td mat-cell *matCellDef=" let element ">{{element.codigoEspecialidad}}</td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="ordenDespacho">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                    {{'lbl.ordenDespacho'|translate}}</th>
+                                <td mat-cell *matCellDef=" let element ">{{element.ordenDespacho}}</td>
+                            </ng-container>                                                
+
+                            <ng-container matColumnDef="options">
+                                <th mat-header-cell *matHeaderCellDef>{{'lbl.editarEliminar'|translate}}</th>
+                                <td mat-cell *matCellDef="let element">
+                                    <button (click)="edit(element)" type="button" title="{{'btn.editar'|translate}}"
+                                        color="primary" mat-icon-button
+                                        aria-label=" Example icon-button with a heart icon ">
+                                        <mat-icon>edit</mat-icon>
+                                    </button>
+
+                                    <button type="button" color="warn" mat-icon-button
+                                        title="{{'btn.eliminar'|translate}}" (click)="delete(element)">
+                                        <mat-icon>delete</mat-icon>
+                                    </button>
+                                </td>
+                            </ng-container>
+                            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                            <tr mat-row *matRowDef="let row; columns: displayedColumns; "
+                                [ngClass]="{hovered: row.hovered, highlighted: isSelectedTable(elementCurrent , row.id)}"
+                                (mouseover)="row.hovered = true" (mouseout)="row.hovered = false"></tr>
+                        </table>
+                        <mat-paginator [pageSizeOptions]="[5,10, 20]" showFirstLastButtons>
+                        </mat-paginator>
+                    </div>
+                </div>
+
+            </mat-card-content>
+        </mat-card>
+    </div>
+</form>

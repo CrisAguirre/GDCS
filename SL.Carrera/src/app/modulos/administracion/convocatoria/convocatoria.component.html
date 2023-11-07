@@ -1,0 +1,124 @@
+<app-progress-bar [show]="showProgressBar"></app-progress-bar>
+<mat-card>
+    <mat-tab-group>
+        <mat-tab *ngIf="showTab('actividadConvocatoriaAdmin')" label="{{'ttl.actividadConvocatoria'|translate}}">
+            <ng-container matTabContent="matTabContent" *ngTemplateOutlet="actividadConvocatoriaAdmin"></ng-container>
+        </mat-tab>
+
+        <mat-tab *ngIf="showTab('tipoConvocatoriaAdmin')" label="{{'ttl.tipoConvocatoria'|translate}}">
+            <ng-container matTabContent="matTabContent" *ngTemplateOutlet="tipoConvocatoriaAdmin"></ng-container>
+        </mat-tab>
+
+        <mat-tab *ngIf="showTab('tipoLugarAdmin')" label="{{'ttl.paramLugar'|translate}}">
+            <ng-container matTabContent="matTabContent" *ngTemplateOutlet="tipoLugarAdmin"></ng-container>
+        </mat-tab>
+
+        <mat-tab *ngIf="showTab('tipodependenciaLugar')" label="{{'ttl.DependenciaLugar'|translate}}">
+            <ng-container matTabContent="matTabContent" *ngTemplateOutlet="tipodependenciaLugar"></ng-container>
+        </mat-tab>
+        
+        <mat-tab *ngIf="showTab('tipoSedeAdmin')" label="{{'ttl.paramSede'|translate}}">
+            <ng-container matTabContent="matTabContent" *ngTemplateOutlet="tipoSedeAdmin"></ng-container>
+        </mat-tab>
+
+        <mat-tab *ngIf="showTab('tipoAdicionalAdmin')" label="{{'ttl.tipoAdicionalConvocatoria'|translate}}">
+            <ng-container matTabContent="matTabContent" *ngTemplateOutlet="tipoAdicionalAdmin"></ng-container>
+        </mat-tab>
+
+        <mat-tab *ngIf="showTab('tipoCalificacionAdmin')" label="{{'ttl.tipoCalificacionConvocatoria'|translate}}">
+            <ng-container matTabContent="matTabContent" *ngTemplateOutlet="tipoCalificacionAdmin"></ng-container>
+        </mat-tab>
+
+        <mat-tab *ngIf="showTab('tipoPruebaAdmin')" label="{{'ttl.tipoPruebaConvocatoria'|translate}}">
+            <ng-container matTabContent="matTabContent" *ngTemplateOutlet="tipoPruebaAdmin"></ng-container>
+        </mat-tab>
+
+        <mat-tab *ngIf="showTab('tipoEtapaAdmin')" label="{{'ttl.tipoEtapaConvocatoria'|translate}}">
+            <ng-container matTabContent="matTabContent" *ngTemplateOutlet="tipoEtapaAdmin"></ng-container>
+        </mat-tab>
+
+        <mat-tab *ngIf="showTab('tipoSubEtapaAdmin')" label="{{'ttl.tipoSubEtapaConvocatoria'|translate}}">
+            <ng-container matTabContent="matTabContent" *ngTemplateOutlet="tipoSubEtapaAdmin"></ng-container>
+        </mat-tab>
+
+        <mat-tab *ngIf="showTab('estadoAspirante')" label="{{'ttl.estadoAspirante'|translate}}">
+            <ng-container matTabContent="matTabContent" *ngTemplateOutlet="estadoAspirante"></ng-container>
+        </mat-tab>
+
+        <mat-tab *ngIf="showTab('tipoAjusteAcuerdo')" label="{{'ttl.tipoAjusteAcuerdo'|translate}}">
+            <ng-container matTabContent="matTabContent" *ngTemplateOutlet="tipoAjusteAcuerdo"></ng-container>
+        </mat-tab>
+        
+        <mat-tab *ngIf="showTab('tipoCargo')" label="{{'ttl.tipoCargo'|translate}}">
+            <ng-container matTabContent="matTabContent" *ngTemplateOutlet="tipoCargo"></ng-container>
+        </mat-tab>
+
+        <mat-tab *ngIf="showTab('tipoFase')" label="{{'ttl.tipoFase'|translate}}">
+            <ng-container matTabContent="matTabContent" *ngTemplateOutlet="tipoFase"></ng-container>
+        </mat-tab>
+
+        <mat-tab *ngIf="showTab('tipoCategoriaAdmitido')" label="{{'ttl.tipoCategoriaAdmitido'|translate}}">
+            <ng-container matTabContent="matTabContent" *ngTemplateOutlet="tipoCategoriaAdmitido"></ng-container>
+        </mat-tab>
+    </mat-tab-group>
+
+    <ng-template #actividadConvocatoriaAdmin>
+        <app-actividad-convocatoria-admin [path]="'actividadConvocatoriaAdmin'" (messageEvent)="receiveMessage($event)"></app-actividad-convocatoria-admin>
+    </ng-template>
+
+    <ng-template #tipoConvocatoriaAdmin>
+        <app-tipo-convocatoria-admin [path]="'tipoConvocatoriaAdmin'" (messageEvent)="receiveMessage($event)"></app-tipo-convocatoria-admin>
+    </ng-template>
+
+    <ng-template #tipoLugarAdmin>
+        <app-tipo-lugar-admin [path]="'tipoLugarAdmin'" (messageEvent)="receiveMessage($event)"></app-tipo-lugar-admin>
+    </ng-template>
+
+    <ng-template #tipodependenciaLugar>
+        <app-tipo-dependencia-lugar [path]="'tipodependenciaLugar'" (messageEvent)="receiveMessage($event)"></app-tipo-dependencia-lugar>
+    </ng-template>
+
+    <ng-template #tipoSedeAdmin>
+        <app-tipo-sede-admin [path]="'tipoSedeAdmin'" (messageEvent)="receiveMessage($event)"></app-tipo-sede-admin>
+    </ng-template>
+
+    <ng-template #tipoAdicionalAdmin>
+        <app-tipo-adicional [path]="'tipoAdicionalAdmin'" (messageEvent)="receiveMessage($event)"></app-tipo-adicional>
+    </ng-template>
+
+    <ng-template #tipoCalificacionAdmin>
+        <app-tipo-calificacion [path]="'tipoCalificacionAdmin'" (messageEvent)="receiveMessage($event)"></app-tipo-calificacion>
+    </ng-template>
+
+    <ng-template #tipoPruebaAdmin>
+        <app-tipo-prueba [path]="'tipoPruebaAdmin'" (messageEvent)="receiveMessage($event)"></app-tipo-prueba>
+    </ng-template>
+
+    <ng-template #tipoEtapaAdmin>
+        <app-tipo-etapa [path]="'tipoEtapaAdmin'" (messageEvent)="receiveMessage($event)"></app-tipo-etapa>
+    </ng-template>
+
+    <ng-template #tipoSubEtapaAdmin>
+        <app-tipo-sub-etapa [path]="'tipoSubEtapaAdmin'" (messageEvent)="receiveMessage($event)"></app-tipo-sub-etapa>
+    </ng-template>
+
+    <ng-template #estadoAspirante>
+        <app-estado-aspirante [path]="'estadoAspirante'" (messageEvent)="receiveMessage($event)"></app-estado-aspirante>
+    </ng-template>
+
+    <ng-template #tipoAjusteAcuerdo>
+        <app-tipo-ajuste-acuerdo [path]="'tipoAjusteAcuerdo'" (messageEvent)="receiveMessage($event)"></app-tipo-ajuste-acuerdo>
+    </ng-template>
+
+    <ng-template #tipoCargo>
+        <app-tipo-cargo [path]="'tipoCargo'" (messageEvent)="receiveMessage($event)"></app-tipo-cargo>
+    </ng-template>
+
+    <ng-template #tipoFase>
+        <app-tipo-fase [path]="'tipoFase'" (messageEvent)="receiveMessage($event)"></app-tipo-fase>
+    </ng-template>
+
+    <ng-template #tipoCategoriaAdmitido>
+        <app-tipo-categoria-admitido [path]="'tipoCategoriaAdmitido'" (messageEvent)="receiveMessage($event)"></app-tipo-categoria-admitido>
+    </ng-template>
+</mat-card>

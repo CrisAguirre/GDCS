@@ -1,0 +1,76 @@
+<!-- <form #formV="ngForm" [formGroup]="form"> -->
+    <mat-card>
+        <mat-card-header>
+            <mat-card-title>{{'ttl.convocatorias'|translate}}</mat-card-title>
+            <!-- <mat-card-subtitle>Subtitulo</mat-card-subtitle> -->
+        </mat-card-header>
+        <mat-card-content>
+
+            <div class="row mt-4" *ngIf="showSelectCompany">
+                <div class="col-xs-12 col-md-4 form-group">
+                    <mat-form-field appearance="{{appearanceInput}}">
+                        <mat-label>{{'lbl.empresa'|translate}}</mat-label>
+                        <mat-select [formControl]="company" (selectionChange)='loadConvocatoryByCompany($event)'>
+                            <mat-option *ngFor="let g of lstCompanies" [value]="g.id">
+                                {{g.nombreEmpresa}}
+                            </mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="company.hasError('required')">
+                            <strong>{{'msg.campoRequerido'|translate}}</strong>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-12 col-md-12 form-group">
+
+                    <div class="col-xs-12 col-md-6">
+                        <mat-form-field>
+                            <mat-label>{{'lbl.buscar'|translate}}</mat-label>
+                            <input matInput (keyup)="applyFilter($event, dataSource)" placeholder="{{'lbl.buscarPlh'|translate}}" autocomplete="off">
+                        </mat-form-field>
+                    </div>
+
+                    <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8 col-xs-12 full-width" matSortActive="nombreConvocatoria" matSortDirection="desc" (matSortChange)="sortData($event)">
+                        <ng-container matColumnDef="nombreConvocatoria">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.nombreConvocatoria'|translate}}</th>
+                            <td mat-cell *matCellDef=" let element " style="width: 32%;">{{element.nombreConvocatoria}}</td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="numeroConvocatoria">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header style="text-align: justify;">{{'lbl.numeroConvocatoria2'|translate}}</th>
+                            <td mat-cell *matCellDef=" let element " class="mat-cell-right" style="width: 10%;">{{element.numeroConvocatoria}}</td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="nombreTipoConvocatoria">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.tipoConvocatoria'|translate}}</th>
+                            <td mat-cell *matCellDef=" let element " style="width: 10%;">{{element.nombreTipoConvocatoria}}</td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="nombreTipoSede">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.seccional'|translate}}</th>
+                            <td mat-cell *matCellDef=" let element " style="width: 10%;">{{element.nombreTipoSede}}</td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="codigoAcuerdo">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.codigoAcuerdo'|translate}}</th>
+                            <td mat-cell *matCellDef=" let element " class="mat-cell-right" style="width: 10%;">{{element.codigoAcuerdo}}</td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="nombreSoporteAcuerdo">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header style="text-align: center;">{{'lbl.soporte'|translate}}</th>
+                            <td mat-cell *matCellDef="let element" style="width: 5%; text-align: center;">
+                                <button *ngIf="element.idSoporteAcuerdo" (click)="viewFile(element.idSoporteAcuerdo)" type="button" color="warn" title="{{'lbl.verSoporte'|translate}}" mat-icon-button>
+                                    <mat-icon>attach_file</mat-icon>
+                                </button> </td>
+                        </ng-container>
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns "></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns; " [ngClass]="{hovered: row.hovered, highlighted: isSelectedTable(elementCurrent , row.id)}" (mouseover)="row.hovered = true" (mouseout)="row.hovered = false"></tr>
+                    </table>
+                    <mat-paginator [pageSizeOptions]="[5,10, 20]" showFirstLastButtons></mat-paginator>
+                </div>
+            </div>
+        </mat-card-content>
+    </mat-card>
+<!-- </form> -->

@@ -1,0 +1,71 @@
+<form #formV="ngForm" [formGroup]="form">
+    <div class="col-sm-12  col-md-12 col-lg-12">
+
+        <div class="row mt-4">
+            <div class="col-xs-12 col-md-6 form-group">
+                <app-input-general formControlName="ajusteAcuerdo" [controll]="f.ajusteAcuerdo" [label]="'lbl.tipoAjusteAcuerdo'" [placeholder]="'lbl.tipoAjusteAcuerdo'"></app-input-general>
+            </div>
+
+            <div class="col-xs-12 col-md-6 form-group">
+                <app-input-general formControlName="ajusteAcuerdo_En" [controll]="f.ajusteAcuerdo_En" [required]="reqCampoIngles" [label]="'lbl.tipoAjusteAcuerdo'" [labelTranslate]="'lbl.campoEn'"></app-input-general>
+            </div>
+
+        </div>
+
+        <div class="row">
+            <div class="col-sm-12 pull-right form-group">
+                <button mat-raised-button color="primary" class="pull-right"
+                    [disabled]="submit" (click)="addApplicantState()" title="{{'btn.guardar'|translate}}">{{'btn.guardar'|translate}}<mat-icon>save</mat-icon>
+                </button>
+                <button mat-raised-button type="button" class="pull-right mr-1" (click)="cleanForm()" title="{{'btn.limpiar'|translate}}">{{'btn.limpiar'|translate}}
+                    <mat-icon>clear_all</mat-icon></button>
+            </div>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col-xs-12 col-md-12">
+                <div class="col-xs-12 col-md-6">
+                    <mat-form-field>
+                        <mat-label>{{'lbl.buscar'|translate}}</mat-label>
+                        <input matInput (keyup)="applyFilter($event , dataSource)" placeholder="{{'lbl.buscarPlh'|translate}}"
+                            autocomplete="off">
+                    </mat-form-field>
+                </div>
+                <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8 col-xs-12 full-width" (matSortChange)="sortData($event)">
+
+                    <ng-container matColumnDef="id">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.id'|translate}}</th>
+                        <td mat-cell *matCellDef=" let element " style="font-size: 10px;">{{element.id}}</td>
+                    </ng-container>
+                    
+                    <ng-container matColumnDef="ajusteAcuerdo">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.tipoAjusteAcuerdo'|translate}}</th>
+                        <td mat-cell *matCellDef=" let element ">{{element.ajusteAcuerdo}}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="ajusteAcuerdo_En">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.tipoAjusteAcuerdo'|translate}} {{'lbl.campoEn'|translate}}</th>
+                        <td mat-cell *matCellDef=" let element ">{{element.ajusteAcuerdo_En}}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="options">
+                        <th mat-header-cell *matHeaderCellDef>{{'lbl.editarEliminar'|translate}}</th>
+                        <td mat-cell *matCellDef="let element">
+                            <button (click)="edit(element)" type="button" title="{{'btn.editar'|translate}}" color="primary" mat-icon-button
+                                aria-label=" Example icon-button with a heart icon ">
+                                <mat-icon>edit</mat-icon>
+                            </button>
+                            
+                            <button type="button" color="warn" mat-icon-button title="{{'btn.eliminar'|translate}}" (click)="delete(element)">
+                                <mat-icon>delete</mat-icon>
+                            </button>
+                        </td>
+                    </ng-container>
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns "></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns; " [ngClass]="{hovered: row.hovered, highlighted: isSelectedTable(elementCurrent , row.id)}" (mouseover)="row.hovered = true" (mouseout)="row.hovered = false"></tr>
+                </table>
+                <mat-paginator [pageSizeOptions]="[5,10, 20]" showFirstLastButtons></mat-paginator>
+            </div>
+        </div>
+    </div>
+</form>

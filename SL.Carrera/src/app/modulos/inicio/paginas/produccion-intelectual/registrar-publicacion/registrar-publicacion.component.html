@@ -1,0 +1,120 @@
+<form #formV="ngForm" [formGroup]="form">
+    <mat-card>
+        <mat-card-header>
+            <mat-card-title>{{'ttl.publicaciones'|translate}}</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+            <div class="col-sm-12  col-md-12 col-lg-12">
+                <div class="row mt-4">
+
+                    <!-- <div class="col-xs-12 col-md-12 form-group">
+                    <app-input-select [label]="'lbl.publicaciones'" [lst]="lstCategoriaPublicacion"
+                        [xOption]="'nombreCategoria'" [xId]="'id'" formControlName="idCategoria"
+                        [controll]="f.idCategoria">
+                    </app-input-select>
+                </div> -->
+
+                    <div class="col-xs-12 col-md-6 form-group">
+                        <app-input-select [label]="'lbl.tipo'" [lst]="lstCategoriaPublicacion"
+                            [xOption]="'nombreCategoria'" [xId]="'id'" formControlName="idCategoria"
+                            [controll]="f.idCategoria"  >
+                            <!-- (eventEmmitter)="campoOtro($event)" -->
+                        </app-input-select>
+                    </div>
+
+                    <div *ngIf="showField" class="col-xs-12 col-md-6 form-group">
+                        <mat-form-field appearance="{{appearanceInput}}">
+                            <mat-label>{{'lbl.otro'|translate}}</mat-label>
+                            <input matInput formControlName="otraCategoria" placeholder="{{'lbl.otroPlh'|translate}}" autocomplete="off" type="text">
+                        </mat-form-field>
+                    </div>
+
+                    <div class="col-xs-12 col-md-6 form-group">
+                        <app-input-general formControlName="nombre" [controll]="f.nombre" [label]="'lbl.nombre'">
+                        </app-input-general>
+                    </div>
+
+                    <div class="col-xs-12 col-md-6 form-group">
+                        <app-input-general formControlName="area" [controll]="f.area" [label]="'lbl.area'">
+                        </app-input-general>
+                    </div>
+
+                    <div class="col-xs-12 col-md-6 form-group">
+                        <app-input-general formControlName="editorial" [controll]="f.editorial"
+                            [label]="'lbl.editorial'">
+                        </app-input-general>
+                    </div>
+                    
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-12 pull-right form-group">
+                        <button mat-raised-button color="primary" class="pull-right" [disabled]="submit"
+                            (click)="addPublicacion()" title="{{'btn.guardar'|translate}}">{{'btn.guardar'|translate}}
+                            <mat-icon>save</mat-icon>
+                        </button>
+                        <button mat-raised-button type="button" class="pull-right mr-1" (click)="cleanForm()"
+                            title="{{'btn.limpiar'|translate}}">{{'btn.limpiar'|translate}}
+                            <mat-icon>clear_all</mat-icon></button>
+                    </div>
+                </div>
+
+                <div class="row mt-4">
+                    <div class="col-xs-12 col-md-12">
+                        <div class="col-xs-12 col-md-3">
+                            <mat-form-field>
+                                <mat-label>{{'lbl.buscar'|translate}}</mat-label>
+                                <input matInput (keyup)="applyFilter($event , dataSource)"
+                                    placeholder="{{'lbl.buscarPlh'|translate}}" autocomplete="off">
+                            </mat-form-field>
+                        </div>
+                        <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8 col-xs-12 full-width"
+                            (matSortChange)="sortData($event)">
+
+                            <ng-container matColumnDef="tipo">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.tipo'|translate}}</th>
+                                <td mat-cell *matCellDef=" let element ">{{element.nombreCategoria}}</td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="nombre">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.nombre'|translate}} </th>
+                                <td mat-cell *matCellDef=" let element ">{{element.nombre}}</td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="area">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.area'|translate}}</th>
+                                <td mat-cell *matCellDef=" let element ">{{element.area}}</td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="editorial">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.editorial'|translate}}</th>
+                                <td mat-cell *matCellDef=" let element ">{{element.editorial}}</td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="options">
+                                <th mat-header-cell *matHeaderCellDef>{{'lbl.editarEliminar'|translate}}</th>
+                                <td mat-cell *matCellDef="let element">
+                                    <button (click)="edit(element)" type="button" title="{{'btn.editar'|translate}}"
+                                        color="primary" mat-icon-button
+                                        aria-label=" Example icon-button with a heart icon ">
+                                        <mat-icon>edit</mat-icon>
+                                    </button>
+
+                                    <button type="button" color="warn" mat-icon-button
+                                        title="{{'btn.eliminar'|translate}}" (click)="delete(element)">
+                                        <mat-icon>delete</mat-icon>
+                                    </button>
+                                </td>
+                            </ng-container>
+                            <tr mat-header-row *matHeaderRowDef="displayedColumns "></tr>
+                            <tr mat-row *matRowDef="let row; columns: displayedColumns; "
+                                [ngClass]="{hovered: row.hovered, highlighted: isSelectedTable(elementCurrent , row.id)}"
+                                (mouseover)="row.hovered = true" (mouseout)="row.hovered = false"></tr>
+                        </table>
+                        <mat-paginator [pageSizeOptions]="[5,10, 20]" showFirstLastButtons></mat-paginator>
+                    </div>
+                </div>
+            </div>
+        </mat-card-content>
+    </mat-card>
+</form>

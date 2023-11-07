@@ -1,0 +1,68 @@
+<form #formV="ngForm" [formGroup]="form">
+    <div class="row">
+
+        <div *ngIf="showSelectCompany" class="col-xs-12 col-md-6 form-group">
+            <app-input-select [label]="'lbl.empresa'" [lst]="lstEmpresa" [xOption]="'nombreEmpresa'" [xId]="'id'"
+                [formControl]="company" [controll]="company" (eventEmmitter)='loadConvocatoriasByEmpresa($event)'>
+            </app-input-select>
+        </div>
+
+        <div class="col-xs-12 col-md-6 form-group">
+            <app-input-select [label]="'lbl.convocatoria'" [lst]="lstConvocatoria" [xOption]="'nombreConvocatoria'"
+                [xId]="'id'" formControlName="idConvocatoria" [controll]="f.idConvocatoria"
+                (eventEmmitter)="eventConvocatoria($event)">
+            </app-input-select>
+        </div>
+
+        <div class="col-xs-12 col-md-6 form-group">
+            <mat-form-field appearance="{{appearanceInput}}">
+                <mat-label>{{'lbl.detalle1'|translate}}</mat-label>
+                <textarea rows="5" matInput formControlName="detalle1"></textarea>
+            </mat-form-field>
+        </div>
+
+        <div class="col-xs-12 col-md-6 form-group">
+            <mat-form-field appearance="{{appearanceInput}}">
+                <mat-label>{{'lbl.detalle2'|translate}}</mat-label>
+                <textarea rows="5" matInput formControlName="detalle2"></textarea>
+            </mat-form-field>
+        </div>
+        
+        <div class="col-xs-12 col-md-6 col-lg-4 form-group">
+            <app-input-general formControlName="nombreCreador" [controll]="f.nombreCreador"
+                [label]="'lbl.nombreCreador'" [required]="false">
+            </app-input-general>
+        </div>
+
+        <div class="col-xs-12 col-md-6 col-lg-4 form-group">
+            <app-input-general formControlName="tituloCreador" [controll]="f.tituloCreador"
+                [label]="'lbl.tituloCreador'" [required]="false">
+            </app-input-general>
+        </div>
+
+        <div class="col-xs-12 col-md-6 col-lg-4 form-group">
+            <app-input-general formControlName="nombreFirma" [controll]="f.nombreFirma" [label]="'lbl.nombre'"
+                [required]="false">
+            </app-input-general>
+        </div>
+
+        <div class="col-xs-12 col-md-6 col-lg-4 form-group">
+            <app-input-general formControlName="cargoFirma" [controll]="f.cargoFirma" [label]="'lbl.cargo'"
+                [required]="false">
+            </app-input-general>
+        </div>
+
+        <div class="col-xs-12 col-md-6 col-lg-4 form-group">
+            <app-input-general formControlName="despachoFirma" [controll]="f.despachoFirma"
+                [label]="'lbl.despachoFirma'" [required]="false">
+            </app-input-general>
+        </div>
+
+        <div class="col-xs-12 col-md-6 col-lg-4 form-group">
+            <app-input-general formControlName="ciudadPiePagina" [controll]="f.ciudadPiePagina"
+                [label]="'lbl.ciudadPiePagina'" [required]="false">
+            </app-input-general>
+        </div>
+
+    </div>
+</form>

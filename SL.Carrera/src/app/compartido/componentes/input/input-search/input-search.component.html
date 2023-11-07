@@ -1,0 +1,15 @@
+<mat-form-field appearance="{{appearanceInput}}">
+    <mat-label>{{label|translate}}</mat-label>
+    <input type="text" placeholder="{{label|translate}}" matInput [formControl]="controll"
+        [matAutocomplete]="autoSearch" (blur)="onBlurInputEvent(autoSearch)" [required]="required">
+    <!-- (optionSelected)="loadFieldsCargo($event)" -->
+    <mat-autocomplete #autoSearch="matAutocomplete" [displayWith]="displayLabel">
+        <mat-option *ngFor="let item of filteredList | async" [value]="item"
+            (onSelectionChange)="onSelectionChangeEvent($event)">
+            {{getOption(item)}}
+        </mat-option>
+    </mat-autocomplete>
+    <mat-error *ngIf="controll.hasError('required')">
+        <strong>{{'msg.campoRequerido'|translate}}</strong>
+    </mat-error>
+</mat-form-field>

@@ -1,0 +1,70 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/4.2.0/css/ionicons.min.css"
+    integrity="sha256-F3Xeb7IIFr1QsWD113kV2JXaEbjhsfpgrKkwZFGIA4E=" crossorigin="anonymous" />
+<form #formV="ngForm">
+
+
+    <mat-card>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-xl-12 pa-0">
+                    <div class="container mt-sm-60 mt-30">
+                        <div class="hk-row">
+                            <div class="col-xl-4">
+                                <div class="card">
+                                    <!-- <mat-card-title>{{'lbl.categoria'|translate}}</mat-card-title> -->
+                                    <h5 class="card-header">
+                                        {{'lbl.categoria'|translate}}
+                                    </h5>
+                                    <mat-list>
+                                        <mat-list-item *ngFor="let r of lstCategoriaFaq"
+                                            [ngClass]="{red: clickedItem === r.id}" style="cursor: pointer"
+                                            (click)="loadPreguntasCategoria(r)">
+                                            <mat-icon mat-list-icon>source</mat-icon>
+
+                                            <h4 mat-line>{{r['nombreCategoria' + lang]}}</h4>
+                                            <p mat-line> {{getNumeroPreguntas(r)}} {{'lbl.PreguntasFre'|translate}} </p>
+                                            <mat-divider></mat-divider>
+                                        </mat-list-item>
+                                    </mat-list>
+                                </div>
+                            </div>
+
+                            <div class="col-xl-8">
+                                <div class="card card-lg">
+
+                                    <!-- <mat-card-title>{{'lbl.PreguntasFre'|translate}}</mat-card-title> -->
+                                    <h5 class="card-header border-bottom-0">
+                                        {{'lbl.PreguntasFre'|translate}}
+                                    </h5>
+
+                                    <div class="card">
+                                        <mat-accordion>
+                                            <mat-expansion-panel class="card-header justify-content-between" hideToggle
+                                                *ngFor="let d of lstPreguntaFaqView;">
+                                                <mat-expansion-panel-header>
+                                                    <mat-panel-title>
+                                                        <a>{{d['descripcion' + lang]}}</a>
+                                                    </mat-panel-title>
+                                                    <mat-panel-description>
+                                                        {{d.lstRespuestas.length}} {{'lbl.RespuestasFre'|translate}}
+                                                    </mat-panel-description>
+                                                </mat-expansion-panel-header>
+                                                <mat-list>                                                    
+                                                        <mat-list class="card-body pa-15"
+                                                            *ngFor="let r of d.lstRespuestas">
+                                                            <div>{{r['descripcion' + lang]}}</div>                                                          
+                                                            <mat-divider></mat-divider>
+                                                        </mat-list>                                                   
+                                                </mat-list>
+                                            </mat-expansion-panel>
+                                        </mat-accordion>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </mat-card>
+</form>

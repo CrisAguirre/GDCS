@@ -1,0 +1,314 @@
+<form #formV="ngForm" [formGroup]="form">
+    <div class="col-sm-12  col-md-12 col-lg-12">
+        <mat-card>
+            <mat-card-header>
+                <mat-card-title>{{'ttl.cargarInfoEscalafon'|translate}}</mat-card-title>
+            </mat-card-header>
+
+            <mat-card-content>
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-xs-12 col-md-6 form-group">
+                                <app-input-general formControlName="numDocumento" [typeField]="'number'"
+                                    [controll]="f.numDocumento" [label]="'lbl.documento'">
+                                </app-input-general>
+                            </div>
+
+                            <div class="col-xs-12 col-md-6 form-group">
+                                <app-input-general formControlName="nombreCompleto" [controll]="f.nombreCompleto"
+                                    [label]="'lbl.apellidosNombres'">
+                                </app-input-general>
+                            </div>
+
+                            <div class="col-xs-12 col-md-6 form-group">
+                                <app-input-select [label]="'lbl.seccional'" [lst]="lstEmpresa"
+                                    [xOption]="'nombreEmpresa'" [xId]="'id'" formControlName="idSeccional"
+                                    [controll]="f.idSeccional">
+                                </app-input-select>
+                            </div>
+
+                            <div class="col-xs-12 col-md-6 form-group">
+                                <app-input-general formControlName="novedad" [controll]="f.novedad"
+                                    [label]="'lbl.novedad'">
+                                </app-input-general>
+                            </div>
+
+                            <div class="col-xs-12 col-md-6 form-group">
+                                <app-input-general formControlName="resolucion" [typeField]="'number'"
+                                    [controll]="f.resolucion" [label]="'lbl.resolucionAD'">
+                                </app-input-general>
+                            </div>
+
+                            <div class="col-xs-12 col-md-6 form-group">
+                                <app-input-date [label]="'lbl.fechaResolucionAD'" formControlName="fechaResolucion"
+                                    [controll]="f.fechaResolucion"></app-input-date>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <hr class="barra">
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+
+                            <div class="col-xs-12 col-md-12 form-group">
+                                <!-- <app-input-select [label]="'lbl.cargo'"
+                                    [lst]="tipoCargo === 0 ? lstCargo: lstCargoHumano"
+                                    [xOption]="tipoCargo === 0 ? 'codAlterno': 'codigoAlterno'" [xOption2]="'cargo'"
+                                    [xId]="tipoCargo === 0 ? 'id' : 'codigoAlterno'"
+                                    formControlName="codigoAlternoPerfil" [controll]="f.codigoAlternoPerfil">
+                                </app-input-select> -->
+
+                                <app-input-search 
+                                [label]="'lbl.cargo'" 
+                                formControlName="codigoAlternoPerfil"
+                                [controll]="f.codigoAlternoPerfil" 
+                                [xOption]="tipoCargo === 0 ? 'codAlterno': 'codigoAlterno'"
+                                [xOption2]="'cargo'"
+                                [displayLabel]="tipoCargo === 0 ? displayCg : displayCgH"
+                                [filteredList]="filterCargos" 
+                                [cleanTextUnselected]="true"
+                                [xId]="tipoCargo === 0 ? 'id' : 'codigoAlterno'"
+                                [lst]="tipoCargo === 0 ? lstCargo: lstCargoHumano"
+                                [required]="true"></app-input-search>
+
+                            </div>            
+
+                            <!-- <div class="col-xs-12 col-md-12 form-group">
+
+                                <app-input-search 
+                                [label]="'lbl.despacho'" 
+                                formControlName="despacho"
+                                [controll]="f.despacho" 
+                                [xOption]="'codigoDespacho'"
+                                [xOption2]="'despacho'"
+                                [displayLabel]="displayFn"
+                                [filteredList]="filteredOptions" 
+                                [cleanTextUnselected]="true"
+                                [xId]="'codigoDespacho'"
+                                [lst]="lstDespacho"
+                                [required]="true"></app-input-search>
+
+                            </div> -->
+
+                            <div class="col-xs-12 col-md-12 form-group">
+                                <app-input-select-custom
+                                [label]="'lbl.despacho'" 
+                                formControlName="despacho"
+                                [controll]="f.despacho" 
+                                [xOption]="'codigoDespacho'"
+                                [xOption2]="'despacho'"
+                                [cleanTextUnselected]="true"
+                                [xId]="'id'"
+                                [lst]="lstDespacho"
+                                [required]="true"
+                                (onSelectionChange)="despachoSeleccionado = $event;"
+                                ></app-input-select-custom>
+                            </div>
+
+
+                            <!-- <div class="col-xs-12 col-md-12 form-group">
+                                <app-input-general [label]="'lbl.despacho'" formControlName="despacho"
+                                    [controll]="f.despacho">
+                                </app-input-general>
+                            </div> -->
+
+                            <div class="col-xs-12 col-md-6 form-group">
+                                <app-input-general [label]="'lbl.orden'" formControlName="orden" [controll]="f.orden"
+                                    [required]="false">
+                                </app-input-general>
+                            </div>
+
+                            <div class="col-xs-12 col-md-6 form-group">
+                                <app-input-general [label]="'lbl.sede'" formControlName="sede" [controll]="f.sede">
+                                </app-input-general>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <hr class="barra">
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-xs-12 col-md-6 form-group">
+                                <app-input-date [label]="'lbl.fechaPosesion'" formControlName="fechaPosesion"
+                                    [controll]="f.fechaPosesion"></app-input-date>
+                            </div>
+
+                            <div class="col-xs-12 col-md-6 form-group">
+                                <app-input-date [label]="'lbl.fechaRetiro'" formControlName="fechaRetiro"
+                                    [controll]="f.fechaRetiro"></app-input-date>
+                            </div>
+
+                            <div class="col-xs-12 col-md-6 form-group">
+                                <app-input-general [label]="'lbl.radicadoSigobius'" formControlName="radicadoSigobius"
+                                    [controll]="f.radicadoSigobius" [required]="false"></app-input-general>
+                            </div>
+
+                            <div class="col-xs-12 col-md-6 form-group">
+                                <app-input-date [label]="'lbl.fechaRadicadoSigobius'"
+                                    formControlName="fechaRadicadoSigobius" [controll]="f.fechaRadicadoSigobius">
+                                </app-input-date>
+                            </div>
+
+                            <div class="col-xs-12 col-md-6 form-group">
+                                <app-input-date [label]="'lbl.fechaGrabacion'" formControlName="fechaGrabacion"
+                                    [controll]="f.fechaGrabacion"></app-input-date>
+                            </div>
+
+                            <div class="col-xs-12 col-md-4 form-group">
+                                <div class="row">
+                                    <div class="col-sm-10 pr-0">
+                                        <mat-form-field appearance="{{appearanceInput}}">
+                                            <mat-label>{{'lbl.adjuntarSoporte'|translate}}</mat-label>
+                                            <ngx-mat-file-input #removableInput class="removableInput"
+                                                formControlName="requiredfile"
+                                                valuePlaceholder="{{(!elementCurrent.nameTypeFileAux? 'lbl.seleccioneArchivo':elementCurrent.nameTypeFileAux) | translate}}"
+                                                [accept]="configFile.allowExtensions" [errorStateMatcher]="matcher">
+                                            </ngx-mat-file-input>
+                                            <button mat-icon-button matSuffix
+                                                *ngIf="elementCurrent.nameTypeFileAux || this.f.requiredfile.value"
+                                                (click)="removableInput.clear($event); deleteFileView()">
+                                                <mat-icon>clear</mat-icon>
+                                            </button>
+                                            <mat-hint>{{'msg.archivoPermitido'|translate}}
+                                                ({{configFile.allowExtensions}})
+                                            </mat-hint>
+                                            <mat-error *ngIf="f.requiredfile.hasError('maxContentSize')">
+                                                {{'msg.tamanioArchivo'|translate}}
+                                                {{f.requiredfile?.getError('maxContentSize').maxSize | byteFormat}}
+                                                ({{f.requiredfile?.getError('maxContentSize').actualSize |
+                                                byteFormat}}).
+                                            </mat-error>
+                                            <mat-error *ngIf="f.requiredfile.hasError('badExtension')">
+                                                {{f.requiredfile.errors.badExtension}} ({{configFile.allowExtensions}})
+                                            </mat-error>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-sm-2 p-0">
+                                        <button mat-icon-button class="mt-2" type="button" color="primary"
+                                            (click)="!elementCurrent.idSoporte ? openDialogFile('.removableInput') :viewFile(elementCurrent.idSoporte)"
+                                            title="{{(!elementCurrent.nameTypeFile ? 'lbl.cargarArchivo':'lbl.verAdjunto')|translate}}">
+                                            <mat-icon>{{!elementCurrent.id ? 'attach_file':'remove_red_eye'}}</mat-icon>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-xs-12 col-md-12 form-group">
+                        <button mat-raised-button class="pull-right" color="primary" title="{{'btn.guardar'|translate}}"
+                            [disabled]="submit" (click)="addEscalafonRama()">{{'btn.guardar'|translate}}
+                            <mat-icon>save</mat-icon>
+                        </button>
+                        <button mat-raised-button type="button" class="pull-right mr-1" (click)="cleanForm()"
+                            title="{{'btn.limpiar'|translate}}">{{'btn.limpiar'|translate}}
+                            <mat-icon>clear_all</mat-icon>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="row mt-4">
+                    <div class="col-xs-12 col-md-12">
+                        <div class="col-xs-12 col-md-3">
+                            <mat-form-field>
+                                <mat-label>{{'lbl.buscar'|translate}}</mat-label>
+                                <input matInput (keyup)="applyFilter($event , dataSource)"
+                                    placeholder="{{'lbl.buscarPlh'|translate}}" autocomplete="off">
+                            </mat-form-field>
+                        </div>
+                        <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8 col-xs-12 full-width"
+                            (matSortChange)="sortData($event)">
+
+                            <ng-container matColumnDef="numDocumento">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.documento'|translate}}
+                                </th>
+                                <td mat-cell *matCellDef=" let element ">{{element.numDocumento}}</td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="nombreCompleto">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                    {{'lbl.apellidosNombres'|translate}}
+                                </th>
+                                <td mat-cell *matCellDef=" let element ">{{element.nombreCompleto}}</td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="idSeccional">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.seccional'|translate}}
+                                </th>
+                                <td mat-cell *matCellDef=" let element ">{{element.nombreSeccional}}</td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="cargo">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.cargo'|translate}}
+                                </th>
+                                <td mat-cell *matCellDef=" let element ">{{element.nombreCargo}}</td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="despacho">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.despacho'|translate}}
+                                </th>
+                                <td mat-cell *matCellDef=" let element ">{{element.nombreDespacho}}</td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="fechaPosesion">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.fechaPosesion'|translate}}
+                                </th>
+                                <td mat-cell *matCellDef=" let element ">{{element.fechaPosesion | date:formatDateView}}
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="soporte">
+                                <th mat-header-cell *matHeaderCellDef>{{'lbl.soporte'|translate}}</th>
+                                <td mat-cell *matCellDef="let element">
+                                    <button *ngIf="element.id" (click)="viewFile(element.idSoporte)" type="button"
+                                        color="warn" title="{{'lbl.verSoporte'|translate}}" mat-icon-button>
+                                        <mat-icon>attach_file</mat-icon>
+                                    </button>
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="options">
+                                <th mat-header-cell *matHeaderCellDef>{{'lbl.editarEliminar'|translate}}</th>
+                                <td mat-cell *matCellDef="let element">
+                                    <button (click)="edit(element)" type="button" title="{{'btn.editar'|translate}}"
+                                        color="primary" mat-icon-button
+                                        aria-label=" Example icon-button with a heart icon ">
+                                        <mat-icon>edit</mat-icon>
+                                    </button>
+
+                                    <button type="button" color="warn" mat-icon-button
+                                        title="{{'btn.eliminar'|translate}}" (click)="delete(element)">
+                                        <mat-icon>delete</mat-icon>
+                                    </button>
+                                </td>
+                            </ng-container>
+                            <tr mat-header-row *matHeaderRowDef="displayedColumns "></tr>
+                            <tr mat-row *matRowDef="let row; columns: displayedColumns; "
+                                [ngClass]="{hovered: row.hovered, highlighted: isSelectedTable(elementCurrent , row.id)}"
+                                (mouseover)="row.hovered = true" (mouseout)="row.hovered = false"></tr>
+                        </table>
+                        <mat-paginator [pageSizeOptions]="[5,10, 20]" showFirstLastButtons></mat-paginator>
+                    </div>
+                </div>
+
+            </mat-card-content>
+        </mat-card>
+    </div>
+</form>

@@ -1,0 +1,548 @@
+<form #formV="ngForm" [formGroup]="form">
+
+    <mat-card>
+        <mat-card-header>
+            <mat-card-title>{{'ttl.resumen'|translate}}</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+
+            <div class="row mt-4" *ngIf="showSelectCompany">
+                <div class="col-xs-12 col-md-4 form-group">
+                    <mat-form-field appearance="{{appearanceInput}}">
+                        <mat-label>{{'lbl.empresa'|translate}}</mat-label>
+                        <mat-select [formControl]="company" (selectionChange)='loadConvocatoryByCompany($event)'>
+                            <mat-option *ngFor="let g of lstCompanies" [value]="g.id">
+                                {{g.nombreEmpresa}}
+                            </mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="company.hasError('required')">
+                            <strong>{{'msg.campoRequerido'|translate}}</strong>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-12 col-md-12 form-group">
+                    <label>{{'ttl.seleccionConvocatoria'|translate}}</label>
+                    <app-input-select [label]="'lbl.convocatoria'" [lst]="lstConvocatoriesAll"
+                        [xOption]="'nombreConvocatoria'" [xId]="'id'" formControlName="idConvocatoria"
+                        [controll]="f.idConvocatoria" (eventEmmitter)='changeConvocatory($event)'></app-input-select>
+                </div>
+            </div>
+
+            <div #divFormMain>
+
+                <div class="row">
+
+                    <div class="col-xs-12 col-md-8 form-group">
+                        <app-input-general formControlName="nombreConvocatoria" [controll]="f.nombreConvocatoria"
+                            [label]="'lbl.nombreConvocatoria'" [readOnly]="true"></app-input-general>
+                        <!-- <mat-form-field appearance="{{appearanceInput}}">
+                            <mat-label>{{'lbl.nombreConvocatoria'|translate}}</mat-label>
+                            <input matInput="matInput" formControlName="nombreConvocatoria" type="text" readonly>
+                        </mat-form-field> -->
+                    </div>
+
+                    <div class="col-xs-12 col-md-4 form-group">
+                        <app-input-general formControlName="numeroConvocatoria" [controll]="f.numeroConvocatoria"
+                            [label]="'lbl.numeroConvocatoria'" [readOnly]="true"></app-input-general>                        
+                    </div>
+
+                    <div class="col-xs-12 col-md-3 form-group">
+
+                        <app-input-general formControlName="idTipoConvocatoria" [controll]="f.idTipoConvocatoria"
+                            [label]="'lbl.tipoConvocatoria'" [readOnly]="true"></app-input-general>
+
+                        <!-- <mat-form-field appearance="{{appearanceInput}}">
+                            <mat-label>{{'lbl.tipoConvocatoria'|translate}}</mat-label>
+                            <input matInput="matInput" formControlName="idTipoConvocatoria" autocomplete="off"
+                                placeholder="{{'lbl.tipoConvocatoria'|translate}}" type="text" readonly>
+                        </mat-form-field> -->
+                    </div>
+
+                    <div class="col-xs-12 col-md-3 form-group">
+                        <app-input-general formControlName="idTipoSede" [controll]="f.idTipoSede" [label]="'lbl.sede'"
+                            [readOnly]="true"></app-input-general>
+
+                        <!-- <mat-form-field appearance="{{appearanceInput}}">
+                            <mat-label>{{'lbl.sede'|translate}}</mat-label>
+                            <input matInput="matInput" formControlName="idTipoSede" autocomplete="off"
+                                placeholder="{{'lbl.idTipoSede'|translate}}" type="text" readonly>
+                        </mat-form-field> -->
+                    </div>
+
+
+
+
+                    <div class="col-xs-12 col-md-3">
+                        <app-input-general formControlName="numeroCargosAplicar" [controll]="f.numeroCargosAplicar"
+                            [label]="'lbl.numerocargosAplicarAspirante'" [readOnly]="true"></app-input-general>
+                        <!-- <mat-form-field appearance="{{appearanceInput}}">
+                            <mat-label>{{'lbl.numerocargosAplicarAspirante'|translate}}</mat-label>
+                            <input matInput="matInput" formControlName="numeroCargosAplicar" autocomplete="off"
+                                type="text" readonly>
+                        </mat-form-field> -->
+                    </div>
+
+                    <div class="col-xs-12 col-md-3 form-group">
+                        <app-input-general formControlName="codigoAcuerdo" [controll]="f.codigoAcuerdo"
+                            [label]="'lbl.codigoAcuerdo'" [readOnly]="true"></app-input-general>
+                        <!-- <mat-form-field appearance="{{appearanceInput}}">
+                            <mat-label>{{'lbl.codigoAcuerdo'|translate}}</mat-label>
+                            <input matInput="matInput" formControlName="codigoAcuerdo" autocomplete="off"
+                                placeholder="{{'lbl.codigoAcuerdo'|translate}}" type="text" readonly>
+                        </mat-form-field> -->
+                    </div>
+
+                    <div class="col-xs-12 col-md-3 form-group">
+                        <app-input-general formControlName="fechaAcuerdo" [controll]="f.fechaAcuerdo"
+                            [label]="'lbl.fechaAcuerdo'" [readOnly]="true"></app-input-general>
+
+                        <!-- <mat-form-field appearance="{{appearanceInput}}">
+                            <mat-label>{{'lbl.fechaAcuerdo'|translate}}</mat-label>
+                            <input matInput formControlName="fechaAcuerdo" [matDatepicker]="pickerAcuerdo"
+                                autocomplete="off" readonly>
+                        </mat-form-field> -->
+                    </div>
+
+
+                    <div class="col-xs-12 col-md-3 form-group">
+                        <div class="row">
+                            <div class="col-sm-10 pr-0">
+                                <app-input-general formControlName="idSoporteAcuerdo" [controll]="f.idSoporteAcuerdo"
+                                    [label]="'lbl.soporteAcuerdo'" [readOnly]="true"></app-input-general>
+                                <!-- <mat-form-field appearance="{{appearanceInput}}">
+                                    <mat-label>{{'lbl.soporteAcuerdo'|translate}}</mat-label>
+                                    <input matInput formControlName="idSoporteAcuerdo" type="text" readonly>
+                                </mat-form-field> -->
+                            </div>
+
+                            <div class="col-sm-2 p-0">
+                                <button mat-icon-button class="mt-2" type="button" color="primary"
+                                    [disabled]="!dataConvocatory?.idSoporteAcuerdo"
+                                    (click)="viewFile(dataConvocatory.idSoporteAcuerdo)"
+                                    title="{{'lbl.consultarDocumento'|translate}}"
+                                    title="{{'lbl.verAdjunto'| translate }}">
+                                    <mat-icon>remove_red_eye </mat-icon>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xs-12 col-md-6 form-group">
+                        <label class="col-sm-12">{{'lbl.corporaionOficinaUnidad'|translate}}</label>
+
+                        <label class="col-xs-12 col-sm-6" *ngFor="let item of lstNameCorporations">► {{item}}</label>
+                    </div>
+
+                </div>
+
+
+                <div class="col-sm-12 form-group subtitle mt-5">
+                    <div class="alert alert-subtitle" role="alert">
+                        {{'ttl.cronograma'|translate}}
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-xs-12 col-md-12 form-group">
+
+                        <table mat-table [dataSource]="dataSourceCronograma" matSort #TableOneSort="matSort"
+                            (matSortChange)="sortData($event)" matSortDirection="asc"
+                            class="mat-elevation-z8 col-xs-12 full-width">
+
+                            <ng-container matColumnDef="codeConvocatoria">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                    {{'lbl.codigoConvocatoria'|translate}}</th>
+                                <td mat-cell *matCellDef=" let element ">{{element.convocatoria}}</td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="activity">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.actividad'|translate}}</th>
+                                <td mat-cell *matCellDef=" let element ">{{element.actividadaConvocatoria}}</td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="initDate">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.fechaInicial'|translate}}
+                                </th>
+                                <td mat-cell *matCellDef=" let element ">{{element.fechaInicial | date:formatDateView}}
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="dateEnd">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.fechaFinal'|translate}}
+                                </th>
+                                <td mat-cell *matCellDef=" let element ">{{element.fechaFinal | date:formatDateView}}
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="esProrroga">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.esProrroga'|translate}}
+                                </th>
+                                <td mat-cell *matCellDef=" let element ">
+                                    {{(element.esProrroga == 0 ? 'lbl.no':'lbl.si') | translate }}</td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="recordActive">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.registroActivo'|translate}}
+                                </th>
+                                <td mat-cell *matCellDef=" let element ">
+                                    {{(element.registroActivo == 0 ? 'lbl.no':'lbl.si') | translate }}</td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="soport">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.soporte'|translate}}</th>
+                                <td mat-cell *matCellDef="let element">
+                                    <button *ngIf="element.idSoporteProrroga"
+                                        (click)="viewFile(element.idSoporteProrroga)" type="button"
+                                        title="{{'lbl.verSoporte'|translate}}" color="warn" mat-icon-button>
+                                        <mat-icon>attach_file</mat-icon>
+                                    </button>
+                                </td>
+                            </ng-container>
+
+                            <tr mat-header-row *matHeaderRowDef="displayedColumns "></tr>
+                            <tr mat-row *matRowDef="let row; columns: displayedColumns; "></tr>
+                        </table>
+                        <mat-paginator #matPaginator1="matPaginator" [pageSizeOptions]="[5,10, 20]"
+                            showFirstLastButtons>
+                        </mat-paginator>
+                    </div>
+                </div>
+
+                <div class="col-sm-12 form-group subtitle mt-5">
+                    <div class="alert alert-subtitle" role="alert">
+                        {{'ttl.crearSecciones'|translate}}
+                    </div>
+                </div>
+
+
+                <div class="row">
+                    <div class="col-xs-12 col-md-12 form-group">
+                        <table mat-table [dataSource]="dataSourceCrearSecciones" matSort #TableTwoSort="matSort"
+                            (matSortChange)="sortData2($event)" matSortDirection="asc"
+                            class="mat-elevation-z8 col-xs-12 full-width">
+
+                            <ng-container matColumnDef="titulo">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                    {{'lbl.tituloSeccion'|translate}}</th>
+                                <td mat-cell *matCellDef=" let element ">{{element.titulo}}</td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="nombreConvocatoria">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                    {{'lbl.nombreConvocatoria'|translate}}</th>
+                                <td mat-cell *matCellDef=" let element ">{{element.nombreConvocatoria}}</td>
+                            </ng-container>
+
+                            <tr mat-header-row *matHeaderRowDef="displayedColumns2"></tr>
+                            <tr mat-row *matRowDef="let row; columns: displayedColumns2; "></tr>
+                        </table>
+                        <mat-paginator #matPaginator2 [pageSizeOptions]="[5,10, 20]" showFirstLastButtons>
+                        </mat-paginator>
+                    </div>
+                </div>
+
+
+                <div class="col-sm-12 form-group subtitle mt-5">
+                    <div class="alert alert-subtitle" role="alert">
+                        {{'ttl.crearSubsecciones'|translate}}
+                    </div>
+                </div>
+
+                <div class="col-xs-12 col-md-12 form-group">
+                    <table mat-table [dataSource]="dataSourceSubSecciones" matSort #TableThreeSort="matSort"
+                        (matSortChange)="sortData3($event)" matSortDirection="asc"
+                        class="mat-elevation-z8 col-xs-12 full-width">
+
+                        <ng-container matColumnDef="nombreConvocatoria">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.convocatoria'|translate}}
+                            </th>
+                            <td mat-cell *matCellDef=" let element ">{{element.nombreConvocatoria}}</td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="idSeccion">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                {{'lbl.seccionPrincipal'|translate}}</th>
+                            <td mat-cell *matCellDef=" let element ">{{element.nombreSeccion}}</td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="titulo">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.subSeccion'|translate}}
+                            </th>
+                            <td mat-cell *matCellDef=" let element ">{{element.titulo}}</td>
+                        </ng-container>
+
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns3"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns3; "></tr>
+                    </table>
+                    <mat-paginator #matPaginator3 [pageSizeOptions]="[5,10, 20]" showFirstLastButtons></mat-paginator>
+                </div>
+
+
+                <!-- <div class="col-sm-12 form-group subtitle mt-5">
+                    <div class="alert alert-subtitle" role="alert">
+                        {{'ttl.equivalencias'|translate}}
+                    </div>
+                </div>
+
+                <div class="col-xs-12 col-md-12 form-group">
+                    <table mat-table [dataSource]="dataSourceEquivalencias" matSort #TableFourSort="matSort" (matSortChange)="sortData4($event)" matSortDirection="asc" class="mat-elevation-z8 col-xs-12 full-width">
+
+                        <ng-container matColumnDef="idConvocatoria">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.convocatoria'|translate}}
+                            </th>
+                            <td mat-cell *matCellDef=" let element ">{{element.nombreConvocatoria}}</td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="idTipoEstudio">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.tipoEstudio'|translate}}
+                            </th>
+                            <td mat-cell *matCellDef=" let element ">{{element.tipoAdicional}}</td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="anio">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.anio'|translate}}</th>
+                            <td mat-cell *matCellDef=" let element " class="mat-cell-right">{{element.anio}}</td>
+                        </ng-container>
+
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns4"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns4; "></tr>
+                    </table>
+                    <mat-paginator #matPaginator4 [pageSizeOptions]="[5,10, 20]" showFirstLastButtons></mat-paginator>
+                </div> -->
+
+                <div class="col-sm-12 form-group subtitle mt-5">
+                    <div class="alert alert-subtitle" role="alert">
+                        {{'ttl.etapas'|translate}}
+                    </div>
+                </div>
+
+                <div class="col-xs-12 col-md-12 form-group">
+                    <table mat-table [dataSource]="dataSourceEtapas" matSort #TableFiveSort="matSort"
+                        (matSortChange)="sortData5($event)" matSortDirection="asc"
+                        class="mat-elevation-z8 col-xs-12 full-width">
+
+                        <ng-container matColumnDef="idConvocatoria">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.convocatoria'|translate}}
+                            </th>
+                            <td mat-cell *matCellDef=" let element ">{{element.nombreConvocatoria}}</td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="idTipoCalificacion">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.tipoCalificacion'|translate}}
+                            </th>
+                            <td mat-cell *matCellDef=" let element ">{{element.tipoCalificacion}}</td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="idTipoEtapa">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.tipoEtapa'|translate}}</th>
+                            <td mat-cell *matCellDef=" let element ">{{element.tipoEtapa}}</td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="idTipoPrueba">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.tipoPrueba'|translate}}</th>
+                            <td mat-cell *matCellDef=" let element ">{{element.tipoPrueba}}</td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="idTipoSubEtapa">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.tipoSubEtapa'|translate}}</th>
+                            <td mat-cell *matCellDef=" let element">{{element.tipoSubEtapa}}</td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="valorMinimo">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header class="mat-header-cell-right">
+                                {{'lbl.valorMinimo'|translate}}</th>
+                            <td mat-cell *matCellDef=" let element" class="mat-cell-right">{{element.valorMinimo}}</td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="valorMaximo">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header class="mat-header-cell-right">
+                                {{'lbl.valorMaximo'|translate}}</th>
+                            <td mat-cell *matCellDef=" let element" class="mat-cell-right">{{element.valorMaximo}}</td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="puntajeMinimo">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header class="mat-header-cell-right">
+                                {{'lbl.puntajeMinimo'|translate}}</th>
+                            <td mat-cell *matCellDef=" let element" class="mat-cell-right">{{element.puntajeMaximo}}
+                            </td>
+                        </ng-container>
+
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns5"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns5; "></tr>
+                    </table>
+                    <mat-paginator #matPaginator5 [pageSizeOptions]="[5,10, 20]" showFirstLastButtons></mat-paginator>
+                </div>
+
+                <div class="col-sm-12 form-group subtitle mt-5">
+                    <div class="alert alert-subtitle" role="alert">
+                        {{'ttl.adicional'|translate}}
+                    </div>
+                </div>
+
+                <div class="col-xs-12 col-md-12">
+
+                    <table mat-table [dataSource]="dataSourceAdicional" matSort #TabletSixSort="matSort"
+                        (matSortChange)="sortData6($event)" matSortDirection="asc"
+                        class="mat-elevation-z8 col-xs-12 full-width">
+
+                        <ng-container matColumnDef="convocatoria">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.convocatoria'|translate}}</th>
+                            <td mat-cell *matCellDef=" let element ">{{element.convocatoria}}</td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="etapa">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.etapa'|translate}}</th>
+                            <td mat-cell *matCellDef=" let element ">{{element.tipoEtapa}}</td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="tipo">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.tipo'|translate}}</th>
+                            <td mat-cell *matCellDef=" let element ">{{element.tipoAdicional}}</td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="puntajeMaximo">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.puntajeMaximo'|translate}}</th>
+                            <td mat-cell *matCellDef=" let element " class="mat-cell-right">{{element.puntajeMaximo}}
+                            </td>
+                        </ng-container>
+
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns6"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns6; "></tr>
+                    </table>
+                    <mat-paginator #matPaginator6 [pageSizeOptions]="[5,10, 20]" showFirstLastButtons></mat-paginator>
+                </div>
+
+                <div class="col-sm-12 form-group subtitle mt-5">
+                    <div class="alert alert-subtitle" role="alert">
+                        {{'ttl.cargosConvocatoria'|translate}}
+                    </div>
+                </div>
+
+                <div class="col-xs-12 col-md-12">
+
+                    <table mat-table matSort [dataSource]="dataSourcePC" matSortActive="codCargo"
+                        #TableEightSort="matSort" matSortDirection="asc" class="mat-elevation-z8 col-xs-12 full-width"
+                        (matSortChange)="sortDataPC($event)">
+                        <ng-container matColumnDef="codCargo">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.codigoCargo'|translate}}</th>
+                            <td mat-cell *matCellDef=" let element " style="width: 5%;">
+                                <!-- {{tipoCargo == 1 ? element.perfil.cargoHumanoModel.codCargo : element.perfil?.cargoModel?.codAlterno}} -->
+                                {{element.perfil.cargoHumanoModel ? element.perfil.cargoHumanoModel.codCargo :
+                                element.perfil?.cargoModel?.codAlterno}}
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="grado">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.grado'|translate}}</th>
+                            <td mat-cell *matCellDef=" let element " style="width: 5%;">
+                                {{element.perfil.idGradoCargo}}
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="cargo">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.cargo'|translate}}</th>
+                            <td mat-cell *matCellDef=" let element " style="width: 15%;">
+                                <!-- {{tipoCargo == 1 ? element.perfil.cargoHumanoModel.cargo : element.perfil.cargoModel?.cargo}} -->
+                                {{element.perfil.cargoHumanoModel ? element.perfil.cargoHumanoModel.cargo :
+                                element.perfil.cargoModel?.cargo}}
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="lugar">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.tipoDependencia'|translate}}
+                            </th>
+                            <td mat-cell *matCellDef=" let element " style="width: 20%;">
+                                {{element.perfil.tipoLugar['lugar'+lang]}}</td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="dependenciaLugar">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                {{'lbl.tipoDependenciaLugar'|translate}}</th>
+                            <td mat-cell *matCellDef=" let element " style="width: 20%;">
+                                {{element.perfil.dependenciaHija ? element.perfil.dependenciaHija['nombre'+lang] : ''}}
+                            </td>
+                        </ng-container>
+
+                        <tr mat-header-row *matHeaderRowDef="displayedColumnsPC "></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumnsPC; "></tr>
+                    </table>
+                    <mat-paginator #matPaginator8 [pageSizeOptions]="[5,10, 20]" showFirstLastButtons></mat-paginator>
+                </div>
+
+                <div class="col-sm-12 form-group subtitle mt-5">
+                    <div class="alert alert-subtitle" role="alert">
+                        {{'ttl.presentacionPruebas'|translate}}
+                    </div>
+                </div>
+
+                <div class="col-xs-12 col-md-12 form-group">
+                    <table mat-table [dataSource]="dataSourceLugarPrueba" matSort #TableSevenSort="matSort"
+                        (matSortChange)="sortData7($event)" matSortDirection="asc"
+                        class="mat-elevation-z8 col-xs-12 full-width">
+
+                        <ng-container matColumnDef="convocatoria">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.convocatoria'|translate}}</th>
+                            <td mat-cell *matCellDef=" let element" style="width: 30%">{{element.nombreConvocatoria}}
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="departamento">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.departamento'|translate}} </th>
+                            <td mat-cell *matCellDef=" let element ">{{element.nombreDepartamento}}</td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="municipio">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.municipio'|translate}}</th>
+                            <td mat-cell *matCellDef=" let element ">{{element.nombreCiudad}}</td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="sitio">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.sitio'|translate}}</th>
+                            <td mat-cell *matCellDef=" let element ">{{element.sitio}}</td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="direccion">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.direccion'|translate}}</th>
+                            <td mat-cell *matCellDef=" let element ">{{element.direccion}}</td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="salon">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.salon'|translate}}</th>
+                            <td mat-cell *matCellDef=" let element ">{{element.aula}}</td>
+                        </ng-container>
+
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns7"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns7; "></tr>
+                    </table>
+                    <mat-paginator #matPaginator7 [pageSizeOptions]="[5,10, 20]" showFirstLastButtons></mat-paginator>
+                </div>
+
+                <div class="row">
+                    <div *ngIf="showField" class="col-xs-12 col-md-12 form-group">
+                        <button mat-raised-button class="pull-right mr-1" (click)="publicar()" color="primary"
+                            title="{{'btn.publicar'|translate}}">{{'btn.publicar'|translate}}<mat-icon>save
+                            </mat-icon>
+                        </button>
+                    </div>
+
+                    <div class="col-xs-12 col-md-12 form-group">
+                        <div class="pull-right">
+                            <h6>{{estadoConvocatoria}}</h6>
+                            <hr class="barra">
+                        </div>
+                    </div>
+
+                    <div *ngIf="showField2" class="col-xs-12 col-md-12 form-group">
+                        <button mat-raised-button class="pull-right" (click)="finalizar()" color="primary"
+                            title="{{'btn.finalizar'|translate}}">{{'btn.finalizar'|translate}}<mat-icon>save
+                            </mat-icon>
+                        </button>
+                    </div>
+                </div>            
+            </div>
+        </mat-card-content>
+    </mat-card>
+</form>

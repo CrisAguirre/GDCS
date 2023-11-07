@@ -1,0 +1,186 @@
+<mat-card>
+    <mat-card-header>
+        <mat-card-title>{{'ttl.cargos'|translate}}</mat-card-title>
+
+        <mat-card-subtitle>{{subtitle}}</mat-card-subtitle>
+    </mat-card-header>
+
+    <div class="col-sm-12 col-md-12 col-lg-12">
+        <div class="row">
+            <div class="col-sm-12 pull-right form-group">
+                <button mat-raised-button color="primary" class="pull-right" (click)="goBack()" title="{{'btn.regresar'|translate}}">{{'btn.regresar'|translate}}<mat-icon>
+                        keyboard_backspace</mat-icon>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <mat-card-content>
+
+        <div class="row">
+            <div class="col-xs-12 col-md-12 form-group">
+                <div class="col-xs-12 col-md-6">
+                    <mat-form-field>
+                        <mat-label>{{'lbl.buscar'|translate}}</mat-label>
+                        <input matInput (keyup)="applyFilter($event, dataSource)" placeholder="{{'lbl.buscarPlh'|translate}}" autocomplete="off">
+                    </mat-form-field>
+                </div>
+
+                <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8 col-xs-12 full-width" matSort #TableOneSort="matSort" matSortActive="codCargo" matSortDirection="asc">
+                    <ng-container matColumnDef="codCargo">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.codigoCargo'|translate}}</th>
+                        <td mat-cell *matCellDef=" let element ">{{element.detallePerfilModel.cargoHumanoModel ? element.detallePerfilModel.cargoHumanoModel.codCargo : element.detallePerfilModel.cargoModel ? element.detallePerfilModel.cargoModel.codAlterno : ''}}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="cargo">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header style="text-align: justify;">{{'lbl.cargo'|translate}}</th>
+                        <td mat-cell *matCellDef=" let element ">{{element.detallePerfilModel.cargoHumanoModel ? element.detallePerfilModel.cargoHumanoModel.cargo : element.detallePerfilModel.cargoModel ? element.detallePerfilModel.cargoModel.cargo : ''}}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="grado">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.grado'|translate}}</th>
+                        <td mat-cell *matCellDef=" let element ">{{element.detallePerfilModel ? element.detallePerfilModel.idGradoCargo : ''}}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="tipoDependencia">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.tipoDependencia'|translate}}</th>
+                        <td mat-cell *matCellDef=" let element ">{{element.detallePerfilModel.tipoLugar ? element.detallePerfilModel.tipoLugar.lugar : ''}}
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="dependenciaLugar">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header style="text-align: center;">{{'lbl.tipoDependenciaLugar'|translate}}</th>
+                        <td mat-cell *matCellDef=" let element ">{{element.detallePerfilModel.dependenciaHija ? element.detallePerfilModel.dependenciaHija.nombre : ''}}</td>
+                    </ng-container>
+
+                    <!-- <ng-container matColumnDef="nCargos">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header style="text-align: center;">{{'lbl.numCargos'|translate}}</th>
+                        <td mat-cell *matCellDef=" let element ">{{element.numeroCargosAplicar}}</td>
+                    </ng-container> -->
+
+                    <ng-container matColumnDef="cierreInscripcion">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.cierreInscripcion'|translate}}</th>
+                        <td mat-cell *matCellDef=" let element ">{{element.cierreInscripciones | date:formatDateView}}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="perfil">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.perfilCargo'|translate}}</th>
+                        <td mat-cell *matCellDef="let element" style="width: 4%;">
+                            <button (click)="openDialogProfileInfo(element.idPerfil)" type="button" color="warn" title="{{'lbl.verPerfil'|translate}}" mat-icon-button>
+                                <mat-icon>assignment_ind</mat-icon>
+                            </button> </td>
+                    </ng-container>
+
+                    <!-- <ng-container matColumnDef="fav">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.favoritos'|translate}}</th>
+                        <td mat-cell *matCellDef="let element" style="width: 4%;">
+                            <button (click)="marcarFavorito(element.idConvocatoria, element.idConvocatoriaPerfil, element.idFavoritoConvocatoria)" type="button" color="warn" title="{{'lbl.marcarFavorito'|translate}}" mat-icon-button>
+                                <mat-icon>{{element.iconoFavorito}}</mat-icon>
+                            </button> </td>
+                    </ng-container> -->
+
+                    <ng-container matColumnDef="options">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header style="text-align: center;">{{'lbl.inscripcion'|translate}}</th>
+                        <td mat-cell *matCellDef="let element" style="width: 5%;" class="text-center">
+                            <div *ngIf="verifyActions(element); let btnStates">
+
+                                <button *ngIf="btnStates.btnActive && !element.tieneInscripciones" [disabled]="disableButton" (click)="inscripcionConvocatoria(element)" type="button" title="{{'btn.inscripcion'|translate}}" color="warn" mat-icon-button>
+                                    <mat-icon>input</mat-icon>
+                                </button>
+
+                                <!-- <button *ngIf="btnStates.btnInscrito" [disabled]="true" type="button" title="{{'btn.inscrito'|translate}}" color="warn" mat-icon-button>
+                                    <mat-icon>assignment_turned_in</mat-icon>
+                                </button> -->
+
+                                <button *ngIf="btnStates.btnInscrito"  (click)="actualizarInscripcionHv(element)" type="button" title="{{'btn.actualizarInscripcion'|translate}}" color="warn" mat-icon-button>
+                                    <mat-icon>autorenew</mat-icon>
+                                </button>
+
+                                <button *ngIf="btnStates.btnAnularInscripcion" [disabled]="disableButton" (click)="anularInscripcionConvocatoria(element)" type="button" title="{{'btn.anularInscripcion'|translate}}" color="warn" mat-icon-button>
+                                    <mat-icon>remove_circle</mat-icon>
+                                </button>
+
+                                <button *ngIf="btnStates.btnInactive" [disabled]="disableButton" type="button" color="dark" mat-icon-button title="{{'btn.inscripcionCerrada'|translate}}">
+                                    <mat-icon>lock</mat-icon>
+                                </button>
+
+                            </div>
+                        </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns "></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns; " [ngClass]="{hovered: row.hovered, highlighted: isSelectedTable(elementCurrent , row.id)}" (mouseover)="row.hovered = true" (mouseout)="row.hovered = false"></tr>
+                </table>
+                <mat-paginator #matPaginator [pageSizeOptions]="[5,10, 20]" showFirstLastButtons></mat-paginator>
+            </div>
+        </div>
+    </mat-card-content>
+</mat-card>
+
+<!-- Dialogo para mostrar la información del perfil -->
+<ng-template #dialogProfileInfo>
+    <h2 matDialogTitle>{{'lbl.perfilCargo'| translate}}</h2>
+
+    <div class="row">
+
+        <div class="col-md-12 col-sm-12">
+            
+            <table class="table table-bordered">
+                <tr *ngIf="profileCurrent.mision">
+                    <th style="width: 30%;" scope="col">{{'lbl.mision'| translate}}</th>
+                    <td colspan="2">{{profileCurrent.mision}}</td>
+                </tr>
+                <tr *ngIf="profileCurrent.titulosAcademicos.length > 0">
+                    <th rowspan="profileCurrent.titulosAcademicos.length" style="width: 30%;" scope="col">{{'lbl.tituloAcademico'| translate}}</th>
+                    <div class="col-xs-12 col-md-12">
+                        <td class="row" *ngFor="let item of profileCurrent.titulosAcademicos" colspan="2">
+                            <div class="col-md-12">{{item.titulo}}</div>
+                        </td>
+                    </div>
+                </tr>
+                <tr *ngIf="profileCurrent.experienciasExternas.length > 0">
+                    <th rowspan="profileCurrent.experienciasExternas.length" style="width: 30%;">{{'lbl.experiencia'| translate}}</th>
+                    
+                    <div *ngFor="let item of profileCurrent.experienciasExternas">
+                        <td class="col-md-6 col-sm-6 col-xs-6" >
+                            <div class="col-md-12">{{item.area}}</div>
+                        </td>
+                        <td class="col-md-6 col-sm-6 col-xs-6" >
+                            <div class="col-md-12">{{item.anios ? item.anios + ' años' : item.meses + ' meses'}}</div>
+                        </td>
+                    </div>
+                </tr>
+                <tr *ngIf="profileCurrent.experienciasRelacionadas.length > 0">
+                    <th rowspan="profileCurrent.experienciasRelacionadas.length" style="width: 30%;">{{'lbl.experienciaRelacionada'| translate}}</th>
+                    <div *ngFor="let item of profileCurrent.experienciasRelacionadas">
+                        <td class="col-md-6 col-sm-6 col-xs-6" >
+                            <div class="col-md-12 col-xs-12">{{item.area}}</div>
+                        </td>
+                        <td class="col-md-6 col-sm-6 col-xs-6" >
+                            <div class="col-md-12 col-xs-12">{{item.anios ? item.anios + ' años' : item.meses + ' meses'}}</div>
+                        </td>
+                    </div>
+
+                </tr>
+                <tr *ngIf="profileCurrent.equivalencias.length > 0">
+                    <th rowspan="profileCurrent.equivalencias.length" style="width: 30%;">{{'ttl.equivalencias'| translate}}</th>
+                    <div *ngFor="let item of profileCurrent.equivalencias">
+                        <td class="col-md-6 col-sm-6 col-xs-6" >
+                            <div class="col-md-12 col-xs-12">{{item.tipoAdicional}}</div>
+                        </td>
+                        <td class="col-md-6 col-sm-6 col-xs-6" >
+                            <div class="col-md-12 col-xs-12">{{item.anio + ' años'}}</div>
+                        </td>
+                    </div>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-12 pull-right form-group">
+            <app-buttons-fotter [showBtnCancel]="true" (eventEmmitterCancel)="clean()" [labelBtnCancel]="'btn.cerrar'"></app-buttons-fotter>
+        </div>
+    </div>
+
+</ng-template>

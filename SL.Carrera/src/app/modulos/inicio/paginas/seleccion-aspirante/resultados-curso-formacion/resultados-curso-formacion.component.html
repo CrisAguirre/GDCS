@@ -1,0 +1,302 @@
+<form #formV="ngForm" [formGroup]="form">
+    <mat-card>
+        <mat-card-header>
+            <mat-card-title>{{'ttl.resultadosCursoFormacion'|translate}}</mat-card-title>
+        </mat-card-header>
+
+        <mat-card-content>
+
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 form-group" *ngIf="showSelectCompany">
+                    <!-- <app-input-select [label]="'lbl.empresa'" [lst]="lstCompanies" [xOption]="'nombreEmpresa'" [xId]="'id'" formControlName="idEmpresa" [controll]="f.idEmpresa" [required]="false" (eventEmmitter)="loadDataByEmpresa($event)"> -->
+                    <app-input-select [label]="'lbl.empresa'" [lst]="lstCompanies" [xOption]="'nombreEmpresa'" [xId]="'id'" [formControl]="idEmpresa" [controll]="idEmpresa" [required]="false" (eventEmmitter)="loadDataByEmpresa($event)">
+                    </app-input-select>
+                </div>
+
+                <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 form-group">
+                    <!-- <app-input-select [label]="'lbl.convocatoria'" [lst]="lstConvocatories" [xOption]="'nombreConvocatoria'" [xId]="'id'" formControlName="idConvocatoria" [controll]="f.idConvocatoria" (eventEmmitter)="loadDataByConvocatoria($event)"> -->
+                    <app-input-select [label]="'lbl.convocatoria'" [lst]="lstConvocatories" [xOption]="'nombreConvocatoria'" [xId]="'id'" [formControl]="idConvocatoria" [controll]="idConvocatoria" (eventEmmitter)="loadDataByConvocatoria($event)">
+                    </app-input-select>
+                </div>
+            </div>
+
+            <div class="row">
+
+                <div class="col-xs-12 col-sm-6">
+                    <app-input-search-table (eventEmmitter)="applyFilter($event , dataSourceAspirantes)"></app-input-search-table>
+                </div>
+
+                <div class="col-xs-12 col-md-12 form-group">
+
+                    <table mat-table [dataSource]="dataSourceAspirantes" #matSort2="matSort" matSort class="mat-elevation-z8 col-xs-12 full-width" (matSortChange)="sortData($event)">
+
+                        <ng-container matColumnDef="identificacion">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.identificacion'|translate}}</th>
+                            <td mat-cell *matCellDef=" let element " style="width: 15%;">{{getNumeroDocumento(element)}}</td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="nombreAspirante">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.nombreAspirante'|translate}}</th>
+                            <td mat-cell *matCellDef=" let element " style="width: 20%;">{{getNameAspirante(element)}}</td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="cargoAspirante">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                {{'lbl.nombreCargo'|translate}}</th>
+                            <td mat-cell *matCellDef=" let element " style="width: 25%;">{{getCargoAspirante(element)}}
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="gradoCargo">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                {{'lbl.grado'|translate}}</th>
+                            <td mat-cell *matCellDef=" let element " style="width: 10%;">{{getGradoCargo(element)}}
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="estadoAspirante">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.estadoAspirante'|translate}}</th>
+                            <td mat-cell *matCellDef=" let element " style="width: 25%;">{{element.estadoAspiranteModel['nombreCategoria'+this.lang]}}</td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="options">
+                            <th mat-header-cell *matHeaderCellDef style="text-align: center;">{{'lbl.acciones'|translate}}</th>
+                            <td mat-cell *matCellDef="let element" class="mat-cell-left" style="width: 15%;text-align: center;">
+                                <div class="mat-cell-left" style="display: inline-block;">
+                                    <button (click)="loadFormResult(element)" type="button" title="{{'btn.ingresarResultadoCF'|translate}}" color="primary" mat-icon-button>
+                                        <mat-icon>input</mat-icon>
+                                    </button>
+                                </div>
+                            </td>
+                        </ng-container>
+                        <tr mat-header-row *matHeaderRowDef="displayedColumnsAspirantes "></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumnsAspirantes; " [ngClass]="{hovered: row.hovered, highlighted: isSelectedTable(elementCurrent , row.id)}" (mouseover)="row.hovered = true" (mouseout)="row.hovered = false"></tr>
+                    </table>
+                    <mat-paginator #matPaginator2 [pageSizeOptions]="[5,10, 20]" showFirstLastButtons></mat-paginator>
+                </div>
+            </div>
+
+
+            <!-- <div *ngIf="elementCurrent.id" class="row mt-4"> -->
+            <div class="row mt-4">
+                <div class="offset-sm-2 col-sm-8">
+                    <mat-divider></mat-divider>
+                </div>
+
+                <div class="col-sm-12 text-center mt-4">
+                    <h6>{{'ttl.resultadosCursoFormacion' | translate}}</h6>
+                </div>
+            </div>
+
+            <div class="row mt-5">
+                <div class="row col-md-12 col-sm-12">
+                    <div class="col-xs-12 col-sm-12 col-md-4 form-group">
+                        <app-input-general [formControl]="identificacion" [controll]="identificacion" [label]="'lbl.identificacion'"></app-input-general>
+                    </div>
+
+                    <div class="col-xs-12 col-sm-12 col-md-4 form-group">
+                        <app-input-general [formControl]="nombreAspirante" [controll]="nombreAspirante" [label]="'lbl.nombreAspirante'"></app-input-general>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sx-12 col-md-12 form-group">
+                    <label>{{'lbl.resultadoCursoFormacion'|translate}}</label> <br>
+                    <mat-radio-group aria-label="Clase" formControlName="resultadoCursoFormacion" required>
+                        <mat-radio-button *ngFor="let e of lstEstadosCursoFormacion" labelPosition="after" [value]="e.id" class="mr-1">{{e.valor}}</mat-radio-button>
+                    </mat-radio-group>
+
+                    <mat-error *ngIf="f.resultadoCursoFormacion.hasError('required')" style="font-size: 11px;">
+                        <strong>{{'msg.campoRequerido'|translate}}</strong>
+                    </mat-error>
+                </div>
+            </div>
+
+            <!-- Aprueba o pierde por nota -->
+            <!-- <div *ngIf="showRegionAprueba" class="col-sm-12 text-center mt-4">
+                <h6>{{'ttl.apruebaCursoFormacion' | translate}}</h6>
+            </div>
+
+            <div *ngIf="showRegionReprueba" class="col-sm-12 text-center mt-4">
+                <h6>{{'ttl.repruebaCursoPorNota' | translate}}</h6>
+            </div> -->
+
+            <div *ngIf="showRegionAprueba || showRegionReprueba" class="row mt-3">
+                <div class="col-xs-12 col-sm-12 col-md-3 form-group">
+                    <app-input-general formControlName="resolucion" [controll]="f.resolucion" [label]="'lbl.resolucion'" [required]="true"></app-input-general>
+                </div>
+
+                <div class="col-xs-12 col-sm-12 col-md-3 form-group">
+                    <app-input-date [label]="'lbl.fechaResolucion'" [required]="true" formControlName="fechaResolucion" [controll]="f.fechaResolucion"></app-input-date>
+                </div>
+
+                <div class="col-xs-12 col-sm-12 col-md-3 form-group">
+                    <app-input-general formControlName="totalCFJI_100" [controll]="f.totalCFJI_100" [label]="'lbl.totalCFJI_100'" [required]="true" (keypress)="validateNumber($event)"></app-input-general>
+                </div>
+            </div>
+
+            <!-- Homologado -->
+            <!-- <div *ngIf="showRegionHomologado" class="col-sm-12 text-center mt-4">
+                <h6>{{'ttl.homolagoDelCurso' | translate}}</h6>
+            </div> -->
+            <div *ngIf="showRegionHomologado" class="row mt-3">
+                <div class="col-xs-12 col-sm-12 col-md-3 form-group">
+                    <app-input-general formControlName="resolucion" [controll]="f.resolucion" [label]="'lbl.resolucion'" [required]="true"></app-input-general>
+                </div>
+
+                <div class="col-xs-12 col-sm-12 col-md-3 form-group">
+                    <app-input-date [label]="'lbl.fechaResolucion'" [required]="true" formControlName="fechaResolucion" [controll]="f.fechaResolucion"></app-input-date>
+                </div>
+
+                <div class="col-xs-12 col-sm-12 col-md-3 form-group">
+                    <app-input-general formControlName="notaConsolidadaHomologacion" [controll]="f.notaConsolidadaHomologacion" [label]="'lbl.notaConsolidadaHomologacion'" [required]="true" (keypress)="validateNumber($event)"></app-input-general>
+                </div>
+            </div>
+
+            <!-- Pierde por inasistencia o Retiro voluntario -->
+            <div *ngIf="showRegionPierdeXInasistencia || showRegionRetiroVoluntario" class="row mt-3">
+                <div class="col-xs-12 col-sm-12 col-md-3 form-group">
+                    <app-input-general formControlName="resolucion" [controll]="f.resolucion" [label]="'lbl.resolucion'" [required]="true"></app-input-general>
+                </div>
+
+                <div class="col-xs-12 col-sm-12 col-md-3 form-group">
+                    <app-input-date [label]="'lbl.fechaResolucion'" [required]="true" formControlName="fechaResolucion" [controll]="f.fechaResolucion"></app-input-date>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-12 col-md-12 form-group">
+                    <button mat-raised-button class="pull-right" color="primary" title="{{'btn.guardar'|translate}}" [disabled]="submit" (click)="saveResultadosCursoFormacion()">{{'btn.guardar'|translate}}<mat-icon>save
+                        </mat-icon>
+                    </button>
+                    <button mat-raised-button type="button" class="pull-right mr-1" (click)="cleanForm()" title="{{'btn.limpiar'|translate}}">{{'btn.limpiar'|translate}}
+                        <mat-icon>clear_all</mat-icon>
+                    </button>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-12 col-md-6">
+                    <app-input-search-table (eventEmmitter)="applyFilter($event , dataSource)">
+                    </app-input-search-table>
+                </div>
+
+                <div class="row col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <div class="col-xs-12 col-md-12 form-group">
+                        <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8 col-xs-12 full-width" (matSortChange)="sortData($event)">
+
+                            <ng-container matColumnDef="identificacion">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.identificacion'|translate}}</th>
+                                <td mat-cell *matCellDef=" let element ">{{element.numeroDocumento}}</td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="nombreAspirante">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.nombreAspirante'|translate}}</th>
+                                <td mat-cell *matCellDef=" let element ">{{element.nombres + ' ' + element.apellidos}}</td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="resultadoCurso">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.resultadoCursoFormacion'|translate}}</th>
+                                <td mat-cell *matCellDef=" let element ">{{getResultadoFinalCFAspirante(element)}}</td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="options">
+                                <th mat-header-cell *matHeaderCellDef style="text-align: center;">{{'lbl.acciones'|translate}}</th>
+                                <td mat-cell *matCellDef="let element" style="width: 15%;">
+
+                                    <button (click)="showDetailResult(element)" type="button" title="{{'btn.verMasDetalles'|translate}}" color="primary" mat-icon-button>
+                                        <mat-icon>visibility</mat-icon>
+                                    </button>
+
+                                    <button (click)="editResultadoPruebas(element)" type="button" title="{{'btn.editar'|translate}}" color="primary" mat-icon-button>
+                                        <mat-icon>edit</mat-icon>
+                                    </button>
+
+                                    <button type="button" color="warn" mat-icon-button title="{{'btn.eliminar'|translate}}" (click)="deleteResultadoCF(element)">
+                                        <mat-icon>delete</mat-icon>
+                                    </button>
+                                </td>
+                            </ng-container>
+                            <tr mat-header-row *matHeaderRowDef="displayedColumns "></tr>
+                            <tr mat-row *matRowDef="let row; columns: displayedColumns; " [ngClass]="{hovered: row.hovered, highlighted: isSelectedTable(elementCurrent , row.id)}" (mouseover)="row.hovered = true" (mouseout)="row.hovered = false"></tr>
+                        </table>
+                        <mat-paginator #matPaginator1 [pageSizeOptions]="[5,10, 20]" showFirstLastButtons></mat-paginator>
+                    </div>
+                </div>
+            </div>
+
+        </mat-card-content>
+    </mat-card>
+</form>
+
+<ng-template #dialogInfo>
+    <h2 matDialogTitle>{{'ttl.detalleResultado'| translate}}</h2>
+    <form #formV2="ngForm" [formGroup]="form2">
+
+        <div class="row">
+            <div class="row col-md-12 col-sm-12">
+                <div class="col-xs-12 col-sm-12 col-md-4 form-group">
+                    <app-input-general [formControl]="identificacion" [controll]="identificacion" [label]="'lbl.identificacion'"></app-input-general>
+                </div>
+
+                <div class="col-xs-12 col-sm-12 col-md-6 form-group">
+                    <app-input-general [formControl]="nombreAspirante" [controll]="nombreAspirante" [label]="'lbl.nombreAspirante'"></app-input-general>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sx-12 col-md-12 form-group">
+                <label>{{'lbl.resultadoCursoFormacion'|translate}}</label> <br>
+                <mat-radio-group aria-label="Clase" formControlName="resultadoCursoFormacion" required>
+                    <mat-radio-button *ngFor="let e of lstEstadosCursoFormacion" labelPosition="after" [value]="e.id" class="mr-1">{{e.valor}}</mat-radio-button>
+                </mat-radio-group>
+            </div>
+        </div>
+
+        <div *ngIf="showRegionAprueba || showRegionReprueba" class="row mt-3">
+            <div class="col-xs-12 col-sm-12 col-md-4 form-group">
+                <app-input-general formControlName="resolucion" [controll]="f2.resolucion" [label]="'lbl.resolucion'" [required]="true"></app-input-general>
+            </div>
+
+            <div class="col-xs-12 col-sm-12 col-md-4 form-group">
+                <app-input-date [label]="'lbl.fechaResolucion'" [required]="true" formControlName="fechaResolucion" [controll]="f2.fechaResolucion"></app-input-date>
+            </div>
+
+            <div class="col-xs-12 col-sm-12 col-md-4 form-group">
+                <app-input-general formControlName="totalCFJI_100" [controll]="f2.totalCFJI_100" [label]="'lbl.totalCFJI_100'" [required]="true" (keypress)="validateNumber($event)"></app-input-general>
+            </div>
+        </div>
+
+        <div *ngIf="showRegionHomologado" class="row mt-3">
+            <div class="col-xs-12 col-sm-12 col-md-4 form-group">
+                <app-input-general formControlName="resolucion" [controll]="f2.resolucion" [label]="'lbl.resolucion'" [required]="true"></app-input-general>
+            </div>
+
+            <div class="col-xs-12 col-sm-12 col-md-4 form-group">
+                <app-input-date [label]="'lbl.fechaResolucion'" [required]="true" formControlName="fechaResolucion" [controll]="f2.fechaResolucion"></app-input-date>
+            </div>
+
+            <div class="col-xs-12 col-sm-12 col-md-4 form-group">
+                <app-input-general formControlName="notaConsolidadaHomologacion" [controll]="f2.notaConsolidadaHomologacion" [label]="'lbl.notaConsolidadaHomologacion'" [required]="true" (keypress)="validateNumber($event)"></app-input-general>
+            </div>
+        </div>
+
+        <div *ngIf="showRegionPierdeXInasistencia || showRegionRetiroVoluntario" class="row mt-3">
+            <div class="col-xs-12 col-sm-12 col-md-4 form-group">
+                <app-input-general formControlName="resolucion" [controll]="f2.resolucion" [label]="'lbl.resolucion'" [required]="true"></app-input-general>
+            </div>
+
+            <div class="col-xs-12 col-sm-12 col-md-4 form-group">
+                <app-input-date [label]="'lbl.fechaResolucion'" [required]="true" formControlName="fechaResolucion" [controll]="f2.fechaResolucion"></app-input-date>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-12 pull-right form-group">
+                <app-buttons-fotter [showBtnCancel]="true" (eventEmmitterCancel)="closeDialogInfo()" [labelBtnCancel]="'btn.cerrar'" [iconCancel]="'close'"></app-buttons-fotter>
+            </div>
+        </div>
+    </form>
+</ng-template>

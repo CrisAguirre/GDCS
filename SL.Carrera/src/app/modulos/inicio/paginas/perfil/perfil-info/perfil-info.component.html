@@ -1,0 +1,60 @@
+<mat-card class="mb-2">
+    <mat-card-header>
+        <mat-card-title>{{'ttl.perfil'|translate}}</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+
+
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-4 form-group" *ngIf="showSelectCompany">
+                <app-input-select [label]="'lbl.empresa'" [lst]="lstCompanies" [xOption]="'nombreEmpresa'" [xId]="'id'"
+                    [formControl]="company" [controll]="company" (eventEmmitter)="loadDataByCompany($event)" [required]="false">
+                </app-input-select>
+            </div>
+        </div>
+
+        <!-- Tabla Perfiles -->
+        <div class="row">
+            <div class="col-xs-12 col-md-12 form-group">
+
+                <div class="col-xs-12 col-md-6">
+                    <mat-form-field>
+                        <mat-label>{{'lbl.buscar'|translate}}</mat-label>
+                        <input matInput (keyup)="applyFilter($event, dataSource)"
+                            placeholder="{{'lbl.buscarPlh'|translate}}" autocomplete="off">
+                    </mat-form-field>
+                </div>
+
+                <table mat-table #sortProfile="matSort" [dataSource]="dataSource" matSort
+                    class="mat-elevation-z8 col-xs-12 full-width">
+                    <ng-container matColumnDef="codigoCargo">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.codigoCargo'|translate}}</th>
+                        <td mat-cell *matCellDef=" let element " style="width: 20%;">{{element.codigoCargo}}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="grado">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.grado'|translate}}</th>
+                        <td mat-cell *matCellDef=" let element " style="width: 20%;">{{element.idGradoCargo}}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="cargo">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.cargo'|translate}}</th>
+                        <td mat-cell *matCellDef=" let element ">{{element.cargo}}</td>
+                    </ng-container>
+
+                    
+
+                    <!-- <ng-container matColumnDef="funcion">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.funcion'|translate}}</th>
+                        <td mat-cell *matCellDef=" let element " style="width: 32%;">{{element.funcion}}</td>
+                    </ng-container> -->
+                    <tr mat-header-row *matHeaderRowDef="displayedColumnsTable "></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumnsTable; "
+                        [ngClass]="{hovered: row.hovered, highlighted: isSelectedTable(elementCurrent , row.id)}"
+                        (mouseover)="row.hovered = true" (mouseout)="row.hovered = false"></tr>
+                </table>
+                <mat-paginator #profilesPaginator [pageSizeOptions]="[5,10, 20]" showFirstLastButtons></mat-paginator>
+            </div>
+        </div>
+    </mat-card-content>
+</mat-card>

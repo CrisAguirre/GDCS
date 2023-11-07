@@ -1,0 +1,24 @@
+<h2 mat-dialog-title>{{'ttl.seleccioneEmpresa'|translate}}</h2>
+<mat-dialog-content class="mat-typography ml-5 mr-5" [formGroup]="form">
+
+    <div [innerHTML]="content" class="bd-lead text-justify"></div>
+
+    <br>
+
+    <div class="form-group">
+        <mat-form-field appearance="{{appearanceInput}}">
+            <mat-label>{{'lbl.empresa'|translate}}</mat-label>
+
+            <mat-select formControlName="companySelected" (selectionChange)='onSelect($event)' [required]="true">
+                <mat-option *ngFor="let g of lstCompanies" [value]="g">
+                    {{g.nombreEmpresa}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
+
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close (click)="close()">{{'btn.cancelar'|translate}}</button>
+    <button mat-raised-button [mat-dialog-close]="true" cdkFocusInitial color="primary" [disabled]="!submit" (click)="save()">{{'btn.continuar'|translate}}</button>
+</mat-dialog-actions>

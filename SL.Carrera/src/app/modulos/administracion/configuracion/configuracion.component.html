@@ -1,0 +1,154 @@
+<app-progress-bar [show]="showProgressBar"></app-progress-bar>
+
+<mat-card>
+
+    <mat-tab-group>
+
+        <mat-tab *ngIf="showTab('configuracionAdmin')" label="{{'ttl.variablesSistema'|translate}}">
+            <ng-container matTabContent="matTabContent" *ngTemplateOutlet="configuracionAdmin"></ng-container>
+        </mat-tab>
+
+        <mat-tab *ngIf="showTab('tipoDocumentoAdmin')" label="{{'ttl.tipoDocumento'|translate}}">
+            <ng-container matTabContent="matTabContent" *ngTemplateOutlet="tipoDocumentoAdmin"></ng-container>
+        </mat-tab>
+
+        <mat-tab *ngIf="showTab('nivelEstudioAdmin')" label="{{'ttl.nivelesEstudio'|translate}}">
+            <ng-container matTabContent="matTabContent" *ngTemplateOutlet="nivelEstudioAdmin"></ng-container>
+        </mat-tab>
+        <mat-tab *ngIf="showTab('sectorExperienciaAdmin')" label="{{'ttl.sectorExperiencia'|translate}}">
+            <ng-container matTabContent="matTabContent" *ngTemplateOutlet="sectorExperienciaAdmin"></ng-container>
+        </mat-tab>
+        <mat-tab *ngIf="showTab('actividadPersonalAdmin')" label="{{'ttl.actividadPersonal'|translate}}">
+            <ng-container matTabContent="matTabContent" *ngTemplateOutlet="actividadPersonalAdmin"></ng-container>
+        </mat-tab>
+        <mat-tab *ngIf="showTab('areaConocimientoAdmin')" label="{{'ttl.areaConocimiento'|translate}}">
+            <ng-container matTabContent="matTabContent" *ngTemplateOutlet="areaConocimientoAdmin"></ng-container>
+        </mat-tab>
+        <mat-tab *ngIf="showTab('frequenciaActividadAdmin')" label="{{'ttl.frecuenciaActividad'|translate}}">
+            <ng-container matTabContent="matTabContent" *ngTemplateOutlet="frequenciaActividadAdmin"></ng-container>
+        </mat-tab>
+        <mat-tab *ngIf="showTab('institucionAdmin')" label="{{'ttl.institucion'|translate}}">
+            <ng-container matTabContent="matTabContent" *ngTemplateOutlet="institucionAdmin"></ng-container>
+        </mat-tab>
+
+        <mat-tab *ngIf="showTab('tipoArchivoAnexoAdmin')" label="{{'ttl.tipoArchivoAnexo'|translate}}">
+            <ng-container matTabContent="matTabContent" *ngTemplateOutlet="tipoArchivoAnexoAdmin"></ng-container>
+        </mat-tab>
+
+        <!-- SE DEBE ELIMINAR EL COMPONENTE POR SE LO UNIO EN OTRO COMPONENTE -->
+        <!-- <mat-tab *ngIf="showTab('tipoCursoAdmin')" label="{{'ttl.tipoCurso'|translate}}">
+            <ng-container matTabContent="matTabContent" *ngTemplateOutlet="tipoCursoAdmin"></ng-container>
+        </mat-tab> -->
+
+        <mat-tab *ngIf="showTab('discapacidad')" label="{{'ttl.discapacidad'|translate}}">
+            <ng-container matTabContent="matTabContent" *ngTemplateOutlet="discapacidad"></ng-container>
+        </mat-tab>
+
+        <mat-tab *ngIf="showTab('tituloObtenidoAdmin')" label="{{'ttl.tituloObtenido'|translate}}">
+            <ng-container matTabContent="matTabContent" *ngTemplateOutlet="tituloObtenidoAdmin"></ng-container>
+        </mat-tab>
+
+        <mat-tab *ngIf="showTab('publicacionAdmin')" label="{{'ttl.catePublicacion'|translate}}">
+            <ng-container matTabContent="matTabContent" *ngTemplateOutlet="publicacionAdmin"></ng-container>
+        </mat-tab>
+
+        <mat-tab *ngIf="showTab('aspiranteAdmin')" label="{{'ttl.estadoAspirante'|translate}}">
+            <ng-container matTabContent="matTabContent" *ngTemplateOutlet="aspiranteAdmin"></ng-container>
+        </mat-tab>
+
+        <mat-tab *ngIf="showTab('ubicacionAdmin')" label="{{'ttl.ubicacion'|translate}}">
+            <ng-container matTabContent="matTabContent" *ngTemplateOutlet="ubicacionAdmin"></ng-container>
+        </mat-tab>
+
+        <mat-tab *ngIf="showTab('calendarioAdmin')" label="{{'ttl.calendario'|translate}}">
+            <ng-container matTabContent="matTabContent" *ngTemplateOutlet="calendarioAdmin"></ng-container>
+        </mat-tab>
+
+        <mat-tab *ngIf="showTab('tipoExperienciaLaboral')" label="{{'ttl.tipoExperienciaLaboral'|translate}}">
+            <ng-container matTabContent="matTabContent" *ngTemplateOutlet="tipoExperienciaLaboral"></ng-container>
+        </mat-tab>
+
+    </mat-tab-group>
+
+    <ng-template #configuracionAdmin>
+        <app-configuracion-admin [path]="'configuracionAdmin'" (messageEvent)="receiveMessage($event)">
+        </app-configuracion-admin>
+    </ng-template>
+
+    <ng-template #tipoDocumentoAdmin>
+        <app-tipo-documento-admin [path]="'tipoDocumentoAdmin'" (messageEvent)="receiveMessage($event)">
+        </app-tipo-documento-admin>
+    </ng-template>
+
+    <ng-template #nivelEstudioAdmin>
+        <app-nivel-estudio-admin [path]="'nivelEstudioAdmin'" (messageEvent)="receiveMessage($event)">
+        </app-nivel-estudio-admin>
+    </ng-template>
+
+    <ng-template #sectorExperienciaAdmin>
+        <app-sector-experiencia-admin [path]="'sectorExperienciaAdmin'" (messageEvent)="receiveMessage($event)">
+        </app-sector-experiencia-admin>
+    </ng-template>
+
+    <ng-template #actividadPersonalAdmin>
+        <app-actividad-personal-admin [path]="'actividadPersonalAdmin'" (messageEvent)="receiveMessage($event)">
+        </app-actividad-personal-admin>
+    </ng-template>
+
+    <ng-template #areaConocimientoAdmin>
+        <app-area-conocimiento-admin [path]="'areaConocimientoAdmin'" (messageEvent)="receiveMessage($event)">
+        </app-area-conocimiento-admin>
+    </ng-template>
+
+    <ng-template #frequenciaActividadAdmin>
+        <app-frecuencia-actividad-admin [path]="'areaConocimientoAdmin'" (messageEvent)="receiveMessage($event)">
+        </app-frecuencia-actividad-admin>
+    </ng-template>
+
+    <ng-template #institucionAdmin>
+        <app-institucion-admin [path]="'institucionAdmin'" (messageEvent)="receiveMessage($event)">
+        </app-institucion-admin>
+    </ng-template>
+
+    <ng-template #tipoArchivoAnexoAdmin>
+        <app-tipo-archivo-anexo-admin [path]="'tipoArchivoAnexoAdmin'" (messageEvent)="receiveMessage($event)">
+        </app-tipo-archivo-anexo-admin>
+    </ng-template>
+
+    <ng-template #tipoCursoAdmin>
+        <app-tipo-curso-admin [path]="'tipoCursoAdmin'" (messageEvent)="receiveMessage($event)"></app-tipo-curso-admin>
+    </ng-template>
+
+    <ng-template #discapacidad>
+        <app-tipo-discapacidad-admin [path]="'discapacidad'" (messageEvent)="receiveMessage($event)">
+        </app-tipo-discapacidad-admin>
+    </ng-template>
+
+    <ng-template #tituloObtenidoAdmin>
+        <app-titulo-obtenido-admin [path]="'tituloObtenidoAdmin'" (messageEvent)="receiveMessage($event)">
+        </app-titulo-obtenido-admin>
+    </ng-template>
+
+    <ng-template #publicacionAdmin>
+        <app-categoria-publicacion-admin [path]="'publicacionAdmin'" (messageEvent)="receiveMessage($event)">
+        </app-categoria-publicacion-admin>
+    </ng-template>
+
+    <ng-template #aspiranteAdmin>
+        <app-estado-aspirante-admin [path]="'aspiranteAdmin'" (messageEvent)="receiveMessage($event)">
+        </app-estado-aspirante-admin>
+    </ng-template>
+
+    <ng-template #ubicacionAdmin>
+        <app-ubicacion [path]="'ubicacionAdmin'" (messageEvent)="receiveMessage($event)"></app-ubicacion>
+    </ng-template>
+
+    <ng-template #calendarioAdmin>
+        <app-calendario [path]="'calendarioAdmin'" (messageEvent)="receiveMessage($event)"></app-calendario>
+    </ng-template>
+
+    <ng-template #tipoExperienciaLaboral>
+        <app-tipo-experiencia-laboral [path]="'tipoExperienciaLaboral'" (messageEvent)="receiveMessage($event)"></app-tipo-experiencia-laboral>
+    </ng-template>
+
+</mat-card>

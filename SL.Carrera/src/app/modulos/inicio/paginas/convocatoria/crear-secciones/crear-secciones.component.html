@@ -1,0 +1,118 @@
+<form #formV="ngForm" [formGroup]="form">
+    <mat-card>
+        <mat-card-header>
+            <mat-card-title>{{'ttl.crearSecciones'|translate}}</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+
+            <div>
+                <div class="row mt-4" *ngIf="showSelectCompany">
+                    <div class="col-xs-12 col-md-4 form-group">
+                        <mat-form-field appearance="{{appearanceInput}}">
+                            <mat-label>{{'lbl.empresa'|translate}}</mat-label>
+                            <mat-select [formControl]="company" (selectionChange)='loadSeccionByEmpresa($event)'>
+                                <mat-option *ngFor="let g of lstCompanies" [value]="g.id">
+                                    {{g.nombreEmpresa}}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="company.hasError('required')">
+                                <strong>{{'msg.campoRequerido'|translate}}</strong>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-xs-12 col-md-7 form-group">
+                        <mat-form-field appearance="{{appearanceInput}}">
+                            <mat-label>{{'lbl.tituloSeccion'|translate}}</mat-label>
+                            <input matInput="matInput" formControlName="titulo" autocomplete="off" placeholder="{{'lbl.tituloSeccion'|translate}}" type="text" required>
+                            <mat-error *ngIf="f.titulo.hasError('required')">
+                                <strong>{{'msg.campoRequerido'|translate}}</strong>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div class="col-xs-12 col-md-5 form-group">
+                        <mat-form-field appearance="{{appearanceInput}}">
+                            <mat-label>{{'lbl.convocatoria'|translate}}</mat-label>
+                            <mat-select formControlName="idConvocatoria" required>
+                                <mat-option *ngFor="let f of lstConvocatory" [value]="f.id">
+                                    {{f.nombreConvocatoria}}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="f.idConvocatoria.hasError('required')">
+                                <strong>{{'msg.campoRequerido'|translate}}</strong>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div class="col-xs-12 col-md-12">
+                        <mat-form-field appearance="{{appearanceInput}}">
+                            <mat-label>{{'lbl.descripcionSeccion'|translate}}</mat-label>
+                            <textarea rows="8" matInput formControlName="descripcion" placeholder="{{'lbl.descripcionSeccionPlh'|translate}}" autocomplete="off" type="text" required></textarea>
+                            <mat-error *ngIf="f.descripcion.hasError('required')">
+                                <strong>{{'msg.campoRequerido'|translate}}</strong>
+                            </mat-error>
+                            <!-- <mat-hint [ngStyle]="{color: '#05a005'}">{{msgObervation}}</mat-hint> -->
+                        </mat-form-field>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-12 pull-right form-group">
+                        <button mat-raised-button color="primary" class="pull-right" title="{{'btn.guardar'|translate}}" [disabled]="submit" (click)="addSeccion()">{{'btn.guardar'|translate}}<mat-icon>save
+                            </mat-icon>
+                        </button>
+                        <button mat-raised-button type="button" class="pull-right mr-1" (click)="cleanForm()" title="{{'btn.limpiar'|translate}}">{{'btn.limpiar'|translate}}
+                            <mat-icon>clear_all</mat-icon>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="col-xs-12 col-md-6">
+                    <mat-form-field>
+                        <mat-label>{{'lbl.buscar'|translate}}</mat-label>
+                        <input matInput (keyup)="applyFilter($event , dataSource)" placeholder="{{'lbl.buscarPlh'|translate}}" autocomplete="off">
+                    </mat-form-field>
+                </div>
+
+                <div class="row">
+                    <div class="col-xs-12 col-md-12 form-group">
+                        <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8 col-xs-12 full-width">
+
+                            <ng-container matColumnDef="titulo">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                    {{'lbl.tituloSeccion'|translate}}</th>
+                                <td mat-cell *matCellDef=" let element " style="width: 25%;">{{element.titulo}}</td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="nombreConvocatoria">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                    {{'lbl.nombreConvocatoria'|translate}}</th>
+                                <td mat-cell *matCellDef=" let element " style="width: 65%;">{{element.nombreConvocatoria}}</td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="options">
+                                <th mat-header-cell *matHeaderCellDef>{{'lbl.editarEliminar'|translate}}</th>
+                                <td mat-cell *matCellDef="let element" class="mat-cell-left" style="width: 10%;">
+                                    <div *ngIf="element.mostrarOpciones">
+                                        <button (click)="edit(element)" type="button" title="{{'btn.editar'|translate}}" color="primary" mat-icon-button aria-label=" Example icon-button with a heart icon ">
+                                            <mat-icon>edit</mat-icon>
+                                        </button>
+                                        <button type="button" color="warn" mat-icon-button title="{{'btn.eliminar'|translate}}" (click)="delete(element)">
+                                            <mat-icon>delete</mat-icon>
+                                        </button>
+                                    </div>
+                                </td>
+                            </ng-container>
+                            <tr mat-header-row *matHeaderRowDef="displayedColumns "></tr>
+                            <tr mat-row *matRowDef="let row; columns: displayedColumns; " [ngClass]="{hovered: row.hovered, highlighted: isSelectedTable(elementCurrent , row.id)}" (mouseover)="row.hovered = true" (mouseout)="row.hovered = false"></tr>
+                        </table>
+                        <mat-paginator [pageSizeOptions]="[5,10, 20]" showFirstLastButtons></mat-paginator>
+                    </div>
+                </div>
+            </div>
+        </mat-card-content>
+    </mat-card>
+</form>

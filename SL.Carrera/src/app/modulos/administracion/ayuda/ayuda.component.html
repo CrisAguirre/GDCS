@@ -1,0 +1,30 @@
+<app-progress-bar [show]="showProgressBar"></app-progress-bar>
+<mat-card>
+    <mat-tab-group>
+        <mat-tab *ngIf="showTab('preguntasAdmin')" label="{{'ttl.faqPreguntas'|translate}}">
+            <ng-container matTabContent="matTabContent" *ngTemplateOutlet="preguntasAdmin"></ng-container>
+        </mat-tab>
+
+        <mat-tab *ngIf="showTab('tutorialAdmin')" label="{{'ttl.videoTutoriales'|translate}}">
+            <ng-container matTabContent="matTabContent" *ngTemplateOutlet="tutorialAdmin"></ng-container>
+        </mat-tab>
+
+        <mat-tab *ngIf="showTab('manualAdmin')" label="{{'ttl.manualDeUso'|translate}}">
+            <ng-container matTabContent="matTabContent" *ngTemplateOutlet="manualAdmin"></ng-container>
+        </mat-tab>
+
+    </mat-tab-group>
+
+    <ng-template #preguntasAdmin>
+        <app-preguntas-frecuentes-admin [path]="'preguntasAdmin'" (messageEvent)="receiveMessage($event)">
+        </app-preguntas-frecuentes-admin>
+    </ng-template>
+
+    <ng-template #tutorialAdmin>
+        <app-tutorial-admin [path]="'tutorialAdmin'" (messageEvent)="receiveMessage($event)"></app-tutorial-admin>
+    </ng-template>
+
+    <ng-template #manualAdmin>
+        <app-manual-admin [path]="'manualAdmin'" (messageEvent)="receiveMessage($event)"></app-manual-admin>
+    </ng-template>
+</mat-card>

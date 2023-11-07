@@ -1,0 +1,34 @@
+<div class="col-sm-12 form-group mb-4">
+    <!-- <mat-progress-bar mode="determinate" value="{{progress.value}}" color="primary"></mat-progress-bar> -->
+
+    <div class="progress progress-striped" style="height: 25px;">
+        <div class="progress-bar progress-bar-striped progress-bar-success" [ngClass]="{
+            'progressBarColor33': progress.value == 33 ,
+            'progressBarColor66': progress.value == 66,
+            'progressBarColor100': progress.value == 100,
+            'progressBarColor0': progress.valueFake == 0
+          }" role="progressbar" aria-valuenow="40" aria-valuemin="-1" aria-valuemax="100" [style.width]="progress.value + '%'">
+            {{'comp.progressCurriculumVitae'|translate}} {{progress.title}}
+        </div>
+    </div>
+</div>
+
+<div class="col-sm-12">
+    <nav #mtg mat-tab-nav-bar>
+
+        <a #mtl mat-tab-link *ngFor="let link of navLinks" routerLinkActive #rla="routerLinkActive" [disabled]="link.disabled" [active]="rla.isActive" [style.background-color]="!link.disabled ? link.color : link.colorDisabled" [style.color]="'white'" (click)="tabChanged($event , link)"
+            (selectedTabChange)="tabChanged($event, link)">
+            <!-- (click)="tabChanged($event , link)" [disabled]="link.disabled" [routerLink]="link.path" [style.background-color]="!link.disabled ? link.color : link.colorDisabled"-->
+            {{ link['label'+lang] }}
+        </a>
+    </nav>
+</div>
+
+<div class="clear-fix"></div>
+
+<div class="col-sm-12 mt-4">
+    <!-- <mat-progress-bar *ngIf="showProgressLoading" mode="indeterminate" color="warn"></mat-progress-bar> -->
+    <app-progress-bar [show]="showProgressLoading"></app-progress-bar>
+    <router-outlet> </router-outlet>
+</div>
+

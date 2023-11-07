@@ -1,0 +1,203 @@
+<form #formV="ngForm" [formGroup]="form">
+    <div class="col-sm-12  col-md-12 col-lg-12">
+        <div class="row mt-4">
+
+            <div class="col-xs-12 col-md-3 form-group">
+                <mat-form-field appearance="{{appearanceInput}}">
+                    <mat-label>{{'lbl.institucion'|translate}}</mat-label>
+                    <input matInput="matInput" formControlName="institution"
+                        placeholder="{{'lbl.institucion'|translate}}" autocomplete="off" type="text" required>
+                    <mat-error *ngIf="f.institution.hasError('required')">
+                        <strong>{{'msg.campoRequerido'|translate}}</strong>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+
+            <div class="col-xs-12 col-md-3 form-group">
+                <mat-form-field appearance="{{appearanceInput}}">
+                    <mat-label>{{'lbl.nitInstitucion'|translate}}</mat-label>
+                    <input matInput="matInput" formControlName="nitInstitution"
+                        placeholder="{{'lbl.nitInstitucion'|translate}}" autocomplete="off" type="text" required>
+                    <mat-error *ngIf="f.nitInstitution.hasError('required')">
+                        <strong>{{'msg.campoRequerido'|translate}}</strong>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+
+            <div class="col-xs-12 col-md-3 form-group">
+                <mat-form-field appearance="{{appearanceInput}}">
+                    <mat-label>{{'lbl.institucionDVNit'|translate}}</mat-label>
+                    <input matInput="matInput" formControlName="institutionDVNit"
+                        placeholder="{{'lbl.institucionDVNit'|translate}}" autocomplete="off" type="text" required>
+                    <mat-error *ngIf="f.institutionDVNit.hasError('required')">
+                        <strong>{{'msg.campoRequerido'|translate}}</strong>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+
+            <div class="col-xs-12 col-md-3 form-group">
+                <mat-form-field appearance="{{appearanceInput}}">
+                    <mat-label>{{'lbl.telefonoInstitucion'|translate}}</mat-label>
+                    <input matInput="matInput" formControlName="institutionTelephone"
+                        placeholder="{{'lbl.telefonoInstitucion'|translate}}" autocomplete="off" type="number" required>
+                    <mat-error *ngIf="f.institutionTelephone.hasError('required')">
+                        <strong>{{'msg.campoRequerido'|translate}}</strong>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+
+            <div class="col-xs-12 col-md-3 form-group">
+                <mat-form-field appearance="{{appearanceInput}}">
+                    <mat-label>{{'lbl.direccionInstitucion'|translate}}</mat-label>
+                    <input matInput="matInput" formControlName="institutionAddress"
+                        placeholder="{{'lbl.direccionInstitucion'|translate}}" autocomplete="off" type="text" required>
+                    <mat-error *ngIf="f.institutionAddress.hasError('required')">
+                        <strong>{{'msg.campoRequerido'|translate}}</strong>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+
+            <div class="col-xs-12 col-md-3 form-group">
+                <mat-form-field appearance="{{appearanceInput}}">
+                    <mat-label>{{'lbl.esAdscrita'|translate}}</mat-label>
+                    <input matInput="matInput" formControlName="sAscribed" placeholder="{{'lbl.esAdscrita'|translate}}"
+                        autocomplete="off" type="text" required>
+                    <mat-error *ngIf="f.sAscribed.hasError('required')">
+                        <strong>{{'msg.campoRequerido'|translate}}</strong>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+
+            <div class="col-xs-12 col-md-3 form-group">
+                <mat-form-field appearance="{{appearanceInput}}">
+                    <mat-label>{{'lbl.esEducativa'|translate}}</mat-label>
+                    <input matInput="matInput" formControlName="sEducational"
+                        placeholder="{{'lbl.esEducativa'|translate}}" autocomplete="off" type="text" required>
+                    <mat-error *ngIf="f.sEducational.hasError('required')">
+                        <strong>{{'msg.campoRequerido'|translate}}</strong>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+
+            <div class="col-xs-12 col-md-3 form-group">
+                <mat-form-field appearance="{{appearanceInput}}">
+                    <mat-label>{{'lbl.codigoCiudad'|translate}}</mat-label>
+                    <input matInput="matInput" formControlName="codCity" placeholder="{{'lbl.codigoCiudad'|translate}}"
+                        autocomplete="off" type="text" required>
+                    <mat-error *ngIf="f.codCity.hasError('required')">
+                        <strong>{{'msg.campoRequerido'|translate}}</strong>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+
+            <div class="col-xs-12 col-md-3 form-group">
+                <mat-form-field appearance="{{appearanceInput}}">
+                    <mat-label>{{'lbl.codigoIcfes'|translate}}</mat-label>
+                    <input matInput="matInput" formControlName="codIcfes" placeholder="{{'lbl.codigoIcfes'|translate}}"
+                        autocomplete="off" type="text" required>
+                    <mat-error *ngIf="f.codIcfes.hasError('required')">
+                        <strong>{{'msg.campoRequerido'|translate}}</strong>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class="col-sm-12 pull-right form-group">
+                <button mat-raised-button color="primary" class="pull-right" [disabled]="submit"
+                    (click)="addInstitution()" title="{{'btn.guardar'|translate}}">{{'btn.guardar'|translate}}<mat-icon>
+                        save</mat-icon>
+                </button>
+                <button mat-raised-button type="button" class="pull-right mr-1" (click)="cleanForm()"
+                    title="{{'btn.limpiar'|translate}}">{{'btn.limpiar'|translate}}
+                    <mat-icon>clear_all</mat-icon></button>
+            </div>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col-xs-12 col-md-12">
+                <div class="col-xs-12 col-md-6">
+                    <mat-form-field>
+                        <mat-label>{{'lbl.buscar'|translate}}</mat-label>
+                        <input matInput (keyup)="applyFilter($event , dataSource)"
+                            placeholder="{{'lbl.buscarPlh'|translate}}" autocomplete="off">
+                    </mat-form-field>
+                </div>
+                <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8 col-xs-12 full-width">
+
+                    <ng-container matColumnDef="id">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.id'|translate}}</th>
+                        <td mat-cell *matCellDef=" let element " style="font-size: 10px;">{{element.id}}</td>
+                    </ng-container>
+                    
+                    <ng-container matColumnDef="institucion">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.institucion'|translate}}</th>
+                        <td mat-cell *matCellDef=" let element ">{{element.institucion}}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="nitInstitucion">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.nitInstitucion'|translate}}</th>
+                        <td mat-cell *matCellDef=" let element " class="mat-cell-right">{{element.nitInstitucion}}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="institucionDVNit">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.institucionDVNit'|translate}}</th>
+                        <td mat-cell *matCellDef=" let element " class="mat-cell-right">{{element.institucionDVNit}}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="institucionTelefono">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.telefonoInstitucion'|translate}}</th>
+                        <td mat-cell *matCellDef=" let element " class="mat-cell-right">{{element.institucionTelefono}}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="institucionDireccion">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.direccionInstitucion'|translate}}
+                        </th>
+                        <td mat-cell *matCellDef=" let element ">{{element.institucionDireccion}}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="esAdscrita">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.esAdscrita'|translate}}</th>
+                        <td mat-cell *matCellDef=" let element ">{{element.esAdscrita}}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="esEducativa">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.esEducativa'|translate}}</th>
+                        <td mat-cell *matCellDef=" let element ">{{element.esEducativa}}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="codCiudad">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.codigoCiudad'|translate}}</th>
+                        <td mat-cell *matCellDef=" let element " class="mat-cell-right">{{element.codCiudad}}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="codIcfes">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.codigoIcfes'|translate}}</th>
+                        <td mat-cell *matCellDef=" let element " class="mat-cell-right">{{element.codIcfes}}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="options">
+                        <th mat-header-cell *matHeaderCellDef>{{'lbl.editarEliminar'|translate}}</th>
+                        <td mat-cell *matCellDef="let element" class="mat-cell-left">
+                            <button (click)="edit(element)" type="button" title="{{'lbl.editar'|translate}}"
+                                color="primary" mat-icon-button aria-label=" Example icon-button with a heart icon ">
+                                <mat-icon>edit</mat-icon>
+                            </button>
+
+                            <button type="button" color="warn" mat-icon-button title="{{'lbl.eliminar'|translate}}"
+                                (click)="delete(element)">
+                                <mat-icon>delete</mat-icon>
+                            </button>
+                        </td>
+                    </ng-container>
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns "></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns; "
+                        [ngClass]="{hovered: row.hovered, highlighted: isSelectedTable(elementCurrent , row.id)}"
+                        (mouseover)="row.hovered = true" (mouseout)="row.hovered = false"></tr>
+                </table>
+                <mat-paginator [pageSizeOptions]="[5,10, 20]" showFirstLastButtons></mat-paginator>
+            </div>
+        </div>
+    </div>
+</form>

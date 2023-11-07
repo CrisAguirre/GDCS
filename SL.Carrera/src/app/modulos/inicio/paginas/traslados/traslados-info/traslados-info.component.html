@@ -1,0 +1,98 @@
+<mat-card>
+    <mat-card-header>
+        <mat-card-title>{{'ttl.trasladosInfo'| translate}}</mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+
+        <div class="row">
+
+            <div class="col-xs-12 col-sm-6">
+                <app-input-search-table (eventEmmitter)="applyFilter($event , dataSource)">
+                </app-input-search-table>
+            </div>
+
+            <div class="col-xs-12 col-md-12 form-group">
+                <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8 col-xs-12 full-width" (matSortChange)="sortData($event)">
+
+                    <ng-container matColumnDef="numeroDocumento">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.numDocumentoServidor'|translate}}</th>
+                        <td mat-cell *matCellDef=" let element " style="width: 12%;">{{element.numeroDocumentoServidor}}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="tipoTraslado">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.tipoTraslado'|translate}}</th>
+                        <td mat-cell *matCellDef=" let element " style="width: 20%;">{{element.tipoTraslado}}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="motivo">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.motivoTraslado'|translate}}</th>
+                        <td mat-cell *matCellDef=" let element " style="width: 20%;">{{element.motivoTraslado}}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="fechaSolicitud">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.fechaSolicitud'|translate}}</th>
+                        <td mat-cell *matCellDef=" let element " style="width: 10%;">{{element.fechaSolicitud | date:formatDateView}}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="options">
+                        <th mat-header-cell *matHeaderCellDef style="text-align: center;">{{'lbl.acciones'|translate}}</th>
+                        <td mat-cell *matCellDef="let element" style="width: 5%;" class="mat-cell-left">
+                            <button (click)="seeSupports(element)" type="button" color="primary" title="{{'btn.verMasDetalles'|translate}}" mat-icon-button type="button" mat-icon-button title="{{'btn.verMasDetalles'|translate}}">
+                                <mat-icon>remove_red_eye</mat-icon>
+                            </button>
+                        </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns; " [ngClass]="{hovered: row.hovered, highlighted: isSelectedTable(elementCurrent , row.id)}" (mouseover)="row.hovered = true" (mouseout)="row.hovered = false"></tr>
+                </table>
+                <mat-paginator [pageSizeOptions]="[5,10, 20]" showFirstLastButtons></mat-paginator>
+            </div>
+        </div>
+    </mat-card-content>
+</mat-card>
+
+<ng-template #dialogInfo>
+    <h2 matDialogTitle>{{'ttl.soportes'| translate}}</h2>
+    <div class="row">
+        <div class="col-xs-12 col-md-12 form-group">
+            <table mat-table [dataSource]="dataSourceInfo" matSort class="mat-elevation-z8 col-xs-12 full-width">
+
+                <ng-container matColumnDef="tipoTraslado">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.tipoTraslado'|translate}}</th>
+                    <td mat-cell *matCellDef=" let element ">{{elementCurrent.tipoTraslado}}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="tipoSoporte">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.tipoDocumento'|translate}}</th>
+                    <td mat-cell *matCellDef=" let element ">{{element.nombreTipoDocumentoTraslado}}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="soporte">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.nombreSoporte'|translate}}</th>
+                    <td mat-cell *matCellDef=" let element ">{{element.soporte.nombreAuxiliar}}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="verSoporte">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header style="text-align: center;">{{'lbl.verSoporte'|translate}}</th>
+                    <td mat-cell *matCellDef="let element" style="width: 5%; text-align: center;">
+                        <button (click)="viewFile(element.idSoporte)" type="button" color="primary" title="{{'lbl.verSoporte'|translate}}" mat-icon-button>
+                            <mat-icon>attach_file</mat-icon>
+                        </button>
+                    </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns2 "></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns2; "></tr>
+            </table>
+            <mat-paginator #paginatorDialog2="matPaginator" [pageSizeOptions]="[5,10, 20]" showFirstLastButtons>
+            </mat-paginator>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12 pull-right form-group">
+            <app-buttons-fotter [showBtnCancel]="true" (eventEmmitterCancel)="closeDialogInfo()" [labelBtnCancel]="'btn.cerrar'" [iconCancel]="'close'"></app-buttons-fotter>
+        </div>
+    </div>
+</ng-template>

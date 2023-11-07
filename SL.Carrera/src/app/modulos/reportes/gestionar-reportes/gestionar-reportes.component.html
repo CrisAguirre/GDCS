@@ -1,0 +1,103 @@
+<mat-card>
+    <mat-card-header>
+        <mat-card-title>{{'ttl.gestionarReportes'|translate}}</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+            <form #formV="ngForm" [formGroup]="form">
+                <div class="col-sm-12 col-md-12 col-lg-12">
+
+                    <div class="row mt-4">
+                        <div class="col-xs-12 col-md-4 form-group">
+                            <app-input-general formControlName="nombreReporte" [controll]="f.nombreReporte"
+                                [label]="'lbl.nombreReporte'"></app-input-general>
+                        </div>
+
+                        <div class="col-xs-12 col-md-4 form-group">
+                            <app-input-general formControlName="nombreServicio" [controll]="f.nombreServicio"
+                                [label]="'lbl.nombreServicio'"></app-input-general>
+                        </div>
+
+                        <div class="col-xs-12 col-md-4 form-group">
+                            <app-input-general formControlName="nombreArchivo" [controll]="f.nombreArchivo"
+                                [label]="'lbl.nombreArchivo'"></app-input-general>
+                        </div>
+
+                        <div class="col-xs-12 col-md-4 form-group">
+                            <app-input-general formControlName="nombreDescarga" [controll]="f.nombreDescarga"
+                                [label]="'lbl.nombreDescarga'"></app-input-general>
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-12 pull-right form-group">
+                            <app-buttons-fotter [showBtnAccept]="true" [submit]="submit" (eventEmmitterAccept)="add()"
+                                [labelBtnAccept]="'btn.guardar'" [iconAccept]="'save'" [showBtnCancel]="true"
+                                (eventEmmitterCancel)="cleanForm()" [labelBtnCancel]="'btn.limpiar'"
+                                [iconCancel]="'clear_all'">
+                            </app-buttons-fotter>
+                        </div>
+                    </div>
+
+                    <div class="row mt-4">
+
+                        <div class="col-xs-12 col-md-12">
+
+                            <app-input-search-table (eventEmmitter)="applyFilter($event , dataSource)">
+                            </app-input-search-table>
+
+                            <table mat-table [dataSource]="dataSource" matSort
+                                class="mat-elevation-z8 col-xs-12 full-width" (matSortChange)="sortData($event)">
+
+                                <ng-container matColumnDef="nombreReporte">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                        {{'lbl.nombreReporte'|translate}}</th>
+                                    <td mat-cell *matCellDef=" let element ">{{element.nombreReporte}}</td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="nombreArchivo">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                        {{'lbl.nombreArchivo'|translate}}
+                                    </th>
+                                    <td mat-cell *matCellDef=" let element ">{{element.nombreArchivo}}</td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="nombreDescarga">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                        {{'lbl.nombreDescarga'|translate}}</th>
+                                    <td mat-cell *matCellDef=" let element ">{{element.nombreDescarga}}</td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="nombreServicio">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                        {{'lbl.nombreServicio'|translate}}
+                                    </th>
+                                    <td mat-cell *matCellDef=" let element ">{{element.nombreServicio}}</td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="options">
+                                    <th mat-header-cell *matHeaderCellDef>{{'lbl.editarEliminar'|translate}}</th>
+                                    <td mat-cell *matCellDef="let element">
+                                        <button (click)="edit(element)" type="button" title="{{'btn.editar'|translate}}"
+                                            color="primary" mat-icon-button>
+                                            <mat-icon>edit</mat-icon>
+                                        </button>
+
+                                        <button type="button" color="warn" mat-icon-button
+                                            title="{{'btn.eliminar'|translate}}" (click)="delete(element)">
+                                            <mat-icon>delete</mat-icon>
+                                        </button>
+                                    </td>
+                                </ng-container>
+                                <tr mat-header-row *matHeaderRowDef="displayedColumns "></tr>
+                                <tr mat-row *matRowDef="let row; columns: displayedColumns; "
+                                    [ngClass]="{hovered: row.hovered, highlighted: isSelectedTable(elementCurrent , row.id)}"
+                                    (mouseover)="row.hovered = true" (mouseout)="row.hovered = false"></tr>
+                            </table>
+                            <mat-paginator [pageSizeOptions]="[5,10, 20]" showFirstLastButtons></mat-paginator>
+                        </div>
+                    </div>
+                </div>
+            </form>
+    </mat-card-content>
+</mat-card>

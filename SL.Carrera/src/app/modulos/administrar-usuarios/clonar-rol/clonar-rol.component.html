@@ -1,0 +1,63 @@
+<form #formV2="ngForm" [formGroup]="form2">
+    <mat-card>
+        <mat-card-header>
+            <mat-card-title>{{'ttl.clonarRoles'| translate}}</mat-card-title>
+        </mat-card-header>
+
+        <mat-card-content>
+            <div class="row">
+                <div *ngIf="showSelectCompany" class="col-xs-12 offset-md-2 col-md-4 form-group">
+                    <app-input-select [label]="'lbl.empresa'" [lst]="lstEmpresas" [xOption]="'nombreEmpresa'"
+                        [xId]="'id'" formControlName="idEmpresa1" [controll]="f2.idEmpresa1"
+                        (eventEmmitter)='cargarRolesPorEmpresa2($event, 1)'>
+                    </app-input-select>
+                </div>
+
+                <div class="col-xs-12 col-md-4 form-group">
+                    <app-input-select [label]="'lbl.rolAClonar'" [lst]="lstRolUsuario1" [xOption]="'rol'" [xId]="'id'"
+                        formControlName="idRolUsuarioAClonar" [controll]="f2.idRolUsuarioAClonar"
+                        (eventEmmitter)='loadRolVistaByRolUsuarioClonar($event, 1)'>
+                    </app-input-select>
+                </div>
+
+                <div class="col-xs-12 col-md-12 form-group text-center">
+                    <div class="mt-1 mb-2">
+                        <i class="fa fa-long-arrow-down" aria-hidden="true"></i>
+                        <i class="fa fa-long-arrow-down" aria-hidden="true"></i>
+                    </div>
+                </div>
+                
+
+                <div *ngIf="showSelectCompany" class="col-xs-12  offset-md-2 col-md-4 form-group">
+                    <app-input-select [label]="'lbl.empresa'" [lst]="lstEmpresas" [xOption]="'nombreEmpresa'"
+                        [xId]="'id'" formControlName="idEmpresa2" [controll]="f2.idEmpresa2"
+                        (eventEmmitter)='cargarRolesPorEmpresa2($event, 2)'>
+                    </app-input-select>
+                </div>
+
+                <div class="col-xs-12 col-md-4 form-group">
+                    <app-input-select [label]="'lbl.rol'" [lst]="lstRolUsuario2" [xOption]="'rol'" [xId]="'id'"
+                        formControlName="idRolUsuarioNuevo" [controll]="f2.idRolUsuarioNuevo"
+                        (eventEmmitter)='loadRolVistaByRolUsuarioClonar($event, 2)'>
+                    </app-input-select>
+                </div>
+
+            </div>
+
+            <div class="row">
+                <div class="col-sm-12 pull-right form-group">
+                    <button mat-raised-button color="primary" (click)="saveCloneRolVista()" [disabled]="submit2"
+                        class="pull-right" title="{{'btn.clonar'|translate}}">{{'btn.clonar' | translate}}<mat-icon>save
+                        </mat-icon>
+                    </button>
+                    <button mat-raised-button type="button" class="pull-right mr-1" (click)="cleanForm2()"
+                        title="{{'btn.limpiar'|translate}}">{{'btn.limpiar'|translate}}
+                        <mat-icon>clear_all</mat-icon></button>
+                </div>
+            </div>
+
+            <app-table-rol-vista></app-table-rol-vista>
+
+        </mat-card-content>
+    </mat-card>
+</form>

@@ -1,0 +1,491 @@
+<mat-card>
+    <mat-card-header>
+        <mat-card-title>{{'ttl.citacionPruebas'|translate}}</mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+        <form #formV="ngForm" [formGroup]="form">
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 form-group" *ngIf="showSelectCompany">
+                    <app-input-select [label]="'lbl.empresa'" [lst]="lstCompanies" [xOption]="'nombreEmpresa'"
+                        [xId]="'id'" formControlName="idEmpresa" [controll]="f.idEmpresa" [required]="false"
+                        (eventEmmitter)="loadDataByEmpresa($event)">
+                    </app-input-select>
+                </div>
+
+                <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 form-group">
+                    <app-input-select [label]="'lbl.convocatoria'" [lst]="lstConvocatories"
+                        [xOption]="'nombreConvocatoria'" [xId]="'id'" formControlName="idConvocatoria"
+                        [controll]="f.idConvocatoria" (eventEmmitter)="loadDataByConvocatoria($event)">
+                    </app-input-select>
+                </div>
+            </div>
+
+            <div class="row">
+
+                <div class="col-xs-12 col-md-4 form-group">
+                    <app-input-select [label]="'lbl.lugarPrueba'" [lst]="lstLugarPruebasByConvocatoria"
+                        [xOption]="'lugarPrueba'" [xId]="'id'" formControlName="idLugarPrueba"
+                        [controll]="f.idLugarPrueba">
+                    </app-input-select>
+                </div>
+
+                <div class="col-xs-12 col-md-3 form-group">
+                    <mat-form-field>
+                        <mat-label>{{'lbl.fechaPrueba'|translate}}</mat-label>
+                        <!-- <input matInput [ngxMatDatetimePicker]="picker" placeholder="{{'lbl.fechaPrueba'|translate}}" formControlName="fechaPrueba" style="margin: 6px;" [min]="minDate" [max]="maxDate" autocomplete="off"> -->
+                        <input matInput [ngxMatDatetimePicker]="picker" placeholder="{{'lbl.fechaPrueba'|translate}}"
+                            formControlName="fechaPrueba" style="margin: 6px;" autocomplete="off">
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <!-- <ngx-mat-datetime-picker #picker [showSpinners]="showSpinners" [showSeconds]="showSeconds" [stepHour]="stepHour" [stepMinute]="stepMinute" [stepSecond]="stepSecond" [touchUi]="touchUi" [color]="color" [enableMeridian]="enableMeridian" [disabled]="false"> -->
+                        <ngx-mat-datetime-picker #picker [disabled]="false">
+                        </ngx-mat-datetime-picker>
+                        <mat-error *ngIf="f.fechaPrueba.hasError('required')">
+                            <strong>{{'msg.campoRequerido'|translate}}</strong>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+
+                <!-- <input matInput value="{{f.horaPrueba.value | date:formatTimeView }}" placeholder="{{'lbl.horaPrueba'|translate}}" formControlName="horaPrueba" style="margin: 6px;"> -->
+                <div class="col-xs-12 col-md-2 form-group">
+                    <mat-form-field>
+                        <mat-label>{{'lbl.horaPrueba'|translate}}</mat-label>
+                        <input matInput placeholder="{{'lbl.horaPrueba'|translate}}" formControlName="horaPrueba"
+                            style="margin: 6px;">
+                        <mat-error *ngIf="f.horaPrueba.hasError('required')">
+                            <strong>{{'msg.campoRequerido'|translate}}</strong>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+
+            <!-- ACCORDION -->
+            <mat-accordion #accordionPC="matAccordion" [multi]="true">
+
+                <!-- PRUEBAS -->
+                <mat-expansion-panel [expanded]="false">
+
+                    <mat-expansion-panel-header>
+                        <mat-panel-title class="title-accordeon">
+                            {{'ttl.seleccionPruebas'|translate}}
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+
+                    <div class="row">
+                        <div class="col-sm-8 offset-lg-2 offset-md-2">
+                            <div class="col-xs-12 col-md-6">
+                                <app-input-search-table (eventEmmitter)="applyFilter($event , dataSourcePruebas)">
+                                </app-input-search-table>
+                            </div>
+
+                            <div class="height-container pl-1 pr-1">
+                                <table mat-table [dataSource]="dataSourcePruebas" matSort
+                                    class="mat-elevation-z8 col-xs-12 full-width" (matSortChange)="sortData($event, 1)">
+
+                                    <!-- Checkbox Column -->
+                                    <ng-container matColumnDef="select">
+                                        <th mat-header-cell *matHeaderCellDef>
+                                            <mat-checkbox (change)="$event ? masterToggle() : null"
+                                                [checked]="selection.hasValue() && isAllSelected()"
+                                                [indeterminate]="selection.hasValue() && !isAllSelected()"
+                                                [aria-label]="checkboxLabel()">
+                                            </mat-checkbox>
+                                        </th>
+                                        <td mat-cell *matCellDef="let row" style="width: 5%;">
+                                            <mat-checkbox (click)="$event.stopPropagation()"
+                                                (change)="$event ? selection.toggle(row) : null"
+                                                [checked]="selection.isSelected(row)" [aria-label]="checkboxLabel(row)">
+                                            </mat-checkbox>
+                                        </td>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="tipoPrueba">
+                                        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                            {{'lbl.tipoPrueba'|translate}}</th>
+                                        <td mat-cell *matCellDef=" let element ">
+                                            {{element.tipoPrueba}}
+                                        </td>
+                                    </ng-container>
+
+                                    <tr mat-header-row *matHeaderRowDef="displayedColumnsEtapas ; sticky: true"></tr>
+                                    <tr mat-row *matRowDef="let row; columns: displayedColumnsEtapas;"
+                                        (click)="selection.toggle(row)">
+                                    </tr>
+                                </table>
+                                <mat-paginator #matPaginator2 [pageSizeOptions]="[5,10, 20]" showFirstLastButtons>
+                                </mat-paginator>
+                            </div>
+                        </div>
+                    </div>
+                </mat-expansion-panel>
+
+                <!-- ASPIRANTES -->
+                <mat-expansion-panel *ngIf="modelo == 1 ">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title class="title-accordeon">
+                            {{'ttl.seleccionAspirantes'|translate}}
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="col-xs-12 col-md-6">
+                                <app-input-search-table (eventEmmitter)="applyFilter($event , dataSourceAspirantes)">
+                                </app-input-search-table>
+                            </div>
+
+                            <div class="height-container pl-1 pr-1">
+                                <table mat-table [dataSource]="dataSourceAspirantes" matSort
+                                    class="mat-elevation-z8 col-xs-12 full-width" (matSortChange)="sortData($event, 2)">
+
+                                    <!-- Checkbox Column -->
+                                    <ng-container matColumnDef="select">
+                                        <th mat-header-cell *matHeaderCellDef>
+                                            <mat-checkbox (change)="$event ? masterToggle2() : null"
+                                                [checked]="selectionAspirante.hasValue() && isAllSelected2()"
+                                                [indeterminate]="selectionAspirante.hasValue() && !isAllSelected2()"
+                                                [aria-label]="checkboxLabel2()">
+                                            </mat-checkbox>
+                                        </th>
+                                        <td mat-cell *matCellDef="let row" style="width: 10%;">
+                                            <mat-checkbox (click)="$event.stopPropagation()"
+                                                (change)="$event ? selectionAspirante.toggle(row) : null"
+                                                [checked]="selectionAspirante.isSelected(row)"
+                                                [aria-label]="checkboxLabel2(row)">
+                                            </mat-checkbox>
+                                        </td>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="numeroDocumento">
+                                        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                            {{'lbl.identificacion'|translate}}</th>
+                                        <td mat-cell *matCellDef=" let element " style="width: 20%;">
+                                            {{commonService.getNumeroDocumento(element.inscripcionAspirante)}}
+                                        </td>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="usuario">
+                                        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                            {{'lbl.usuario'|translate}}</th>
+                                        <td mat-cell *matCellDef=" let element " style="width: 20%;">
+                                            {{commonService.getNameAspirante(element.inscripcionAspirante)}}
+                                        </td>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="codCargo">
+                                        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                            {{'lbl.codigoCargo'|translate}}</th>
+                                        <td mat-cell *matCellDef=" let element " style="width: 25%;">
+                                            {{getCodCargoAspirante(element)}}
+                                        </td>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="cargoAspirante">
+                                        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                            {{'lbl.nombreCargo'|translate}}</th>
+                                        <td mat-cell *matCellDef=" let element " style="width: 25%;">
+                                            {{commonService.getCargoAspirante(element.inscripcionAspirante)}}
+                                        </td>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="observacion">
+                                        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                            {{'lbl.observaciones'|translate}}</th>
+                                        <td mat-cell *matCellDef=" let element " style="width: 25%;">
+                                            {{element.observacion}}</td>
+                                    </ng-container>
+
+                                    <tr mat-header-row *matHeaderRowDef="displayedColumnsAspirantes ; sticky: true">
+                                    </tr>
+                                    <tr mat-row *matRowDef="let row; columns: displayedColumnsAspirantes;"
+                                        (click)="selectionAspirante.toggle(row)">
+                                    </tr>
+                                </table>
+                                <mat-paginator #paginatorAspirantes1 [pageSizeOptions]="[5,10, 20]" showFirstLastButtons>
+                                </mat-paginator>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </mat-expansion-panel>
+
+                <!-- INSCRITOS M2 -->
+                <mat-expansion-panel *ngIf="modelo == 2">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title class="title-accordeon">
+                            {{'ttl.seleccionAspirantes'|translate}}
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="col-xs-12 col-md-6">
+                                <app-input-search-table (eventEmmitter)="applyFilter($event , dataSourceInscripcionM2)">
+                                </app-input-search-table>
+                            </div>
+
+                            <div class="height-container pl-1 pr-1">
+                                <table mat-table [dataSource]="dataSourceInscripcionM2" matSort
+                                    class="mat-elevation-z8 col-xs-12 full-width" (matSortChange)="sortData($event, 2)">
+
+                                    <!-- Checkbox Column -->
+                                    <ng-container matColumnDef="select">
+                                        <th mat-header-cell *matHeaderCellDef>
+                                            <mat-checkbox (change)="$event ? masterToggleM2() : null"
+                                                [checked]="selectionInscripcionM2.hasValue() && isAllSelectedM2()"
+                                                [indeterminate]="selectionInscripcionM2.hasValue() && !isAllSelectedM2()"
+                                                [aria-label]="checkboxLabelM2()">
+                                            </mat-checkbox>
+                                        </th>
+                                        <td mat-cell *matCellDef="let row" style="width: 10%;">
+                                            <mat-checkbox (click)="$event.stopPropagation()"
+                                                (change)="$event ? selectionInscripcionM2.toggle(row) : null"
+                                                [checked]="selectionInscripcionM2.isSelected(row)"
+                                                [aria-label]="checkboxLabelM2(row)">
+                                            </mat-checkbox>
+                                        </td>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="identificacion">
+                                        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                            {{'lbl.identificacion'|translate}}
+                                        </th>
+                                        <td mat-cell *matCellDef=" let element " style="width: 15%;">
+                                            {{commonService.getNumeroDocumento(element)}}
+                                        </td>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="usuario">
+                                        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                            {{'lbl.usuario'|translate}}</th>
+                                        <td mat-cell *matCellDef=" let element " style="width: 20%;">
+                                            {{commonService.getNameAspirante(element)}}
+                                        </td>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="cargoAspirante">
+                                        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                            {{'lbl.nombreCargo'|translate}}</th>
+                                        <td mat-cell *matCellDef=" let element " style="width: 25%;">
+                                            {{commonService.getCargoAspirante(element)}}
+                                        </td>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="gradoCargo">
+                                        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                            {{'lbl.grado'|translate}}</th>
+                                        <td mat-cell *matCellDef=" let element " style="width: 10%;">
+                                            {{commonService.getGradoCargo(element)}}
+                                        </td>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="dependencia">
+                                        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                            {{'lbl.tipoDependencia'|translate}}</th>
+                                        <td mat-cell *matCellDef=" let element " style="width: 25%;">
+                                            {{commonService.getTipoDependencia(element)}}
+                                        </td>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="lugar">
+                                        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                            {{'lbl.tipoDependenciaHija'|translate}}</th>
+                                        <td mat-cell *matCellDef=" let element " style="width: 25%;">
+                                            {{commonService.getDependenciaLugar(element)}}
+                                        </td>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="estadoAspirante">
+                                        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                            {{'lbl.estadoAspirante'|translate}}</th>
+                                        <td mat-cell *matCellDef=" let element " style="width: 25%;">
+                                            {{element.estadoAspiranteModel ?
+                                            element.estadoAspiranteModel['nombreCategoria'+this.lang] :
+                                            ''}}
+                                        </td>
+                                    </ng-container>
+
+                                    <tr mat-header-row *matHeaderRowDef="displayedColumnsM2 ; sticky: true">
+                                    </tr>
+                                    <tr mat-row *matRowDef="let row; columns: displayedColumnsM2;"
+                                        (click)="selectionInscripcionM2.toggle(row)">
+                                    </tr>
+                                </table>
+                                <mat-paginator #paginatorAspirantes2 [pageSizeOptions]="[5,10, 20]" showFirstLastButtons>
+                                </mat-paginator>
+                            </div>
+
+                        </div>
+                    </div>
+                </mat-expansion-panel>
+            </mat-accordion>
+
+
+            <!-- BOTONES -->
+            <div class="row mt-4" *ngIf="modelo == 1">
+                <div class="col-xs-12 col-md-12 form-group">
+                    <button mat-raised-button class="pull-right" color="primary" title="{{'btn.citar'|translate}}"
+                        [disabled]="submit" (click)="saveCitacionAspirante()">{{'btn.citar'|translate}}<mat-icon>save
+                        </mat-icon>
+                    </button>
+                    <button mat-raised-button type="button" class="pull-right mr-1" (click)="cleanForm()"
+                        title="{{'btn.limpiar'|translate}}">{{'btn.limpiar'|translate}}
+                        <mat-icon>clear_all</mat-icon>
+                    </button>
+                </div>
+            </div>
+
+            <div class="row mt-4" *ngIf="modelo == 2">
+                <div class="col-xs-12 col-md-12 form-group">
+                    <button mat-raised-button class="pull-right" color="primary" title="{{'btn.citar'|translate}}"
+                        [disabled]="submit" (click)="saveInscripciones()">{{'btn.citar'|translate}}<mat-icon>save
+                        </mat-icon>
+                    </button>
+                    <button mat-raised-button type="button" class="pull-right mr-1" (click)="cleanForm()"
+                        title="{{'btn.limpiar'|translate}}">{{'btn.limpiar'|translate}}
+                        <mat-icon>clear_all</mat-icon>
+                    </button>
+                </div>
+            </div>
+
+
+
+
+            <!-- CITACIONES -->
+            <div class="row">
+                <div class="col-xs-12 col-md-12 form-group">
+                    <div class="col-xs-12 col-md-6">
+                        <mat-form-field>
+                            <mat-label>{{'lbl.buscar'|translate}}</mat-label>
+                            <input matInput (keyup)="applyFilter($event , dataSource)"
+                                placeholder="{{'lbl.buscarPlh'|translate}}" autocomplete="off">
+                        </mat-form-field>
+                    </div>
+
+                    <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8 col-xs-12 full-width"
+                        (matSortChange)="sortData($event, 3)">
+
+                        <ng-container matColumnDef="identificacionUsuario">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.identificacion'|translate}}
+                            </th>
+                            <td mat-cell *matCellDef=" let element ">
+                                {{commonService.getNumeroDocumento(element.inscripcionAspiranteModel)}}</td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="usuario">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.nombreAspirante'|translate}}
+                            </th>
+                            <td mat-cell *matCellDef=" let element ">
+                                {{commonService.getNameAspirante(element.inscripcionAspiranteModel)}}</td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="convocatoria">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.nombreConvocatoria'|translate}}
+                            </th>
+                            <td mat-cell *matCellDef=" let element ">{{element.nombreConvocatoria}}</td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="codCargoUsuario">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.codigoCargo'|translate}}</th>
+                            <td mat-cell *matCellDef=" let element ">{{getCodCargoAspiranteCitacion(element)}}</td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="cargoUsuario">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'lbl.cargo'|translate}}</th>
+                            <td mat-cell *matCellDef=" let element ">
+                                {{commonService.getCargoAspirante(element.inscripcionAspiranteModel)}}</td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="options">
+                            <th mat-header-cell *matHeaderCellDef style="text-align: center;">
+                                {{'lbl.acciones'|translate}}</th>
+                            <td mat-cell *matCellDef="let element" style="width: 15%;">
+
+                                <button (click)="showDetailCitacion(element)" type="button"
+                                    title="{{'btn.verMasDetalles'|translate}}" color="primary" mat-icon-button>
+                                    <mat-icon>visibility</mat-icon>
+                                </button>
+
+                                <button (click)="edit(element)" type="button" title="{{'btn.editar'|translate}}"
+                                    color="primary" mat-icon-button>
+                                    <mat-icon>edit</mat-icon>
+                                </button>
+
+                                <button type="button" color="warn" mat-icon-button title="{{'btn.eliminar'|translate}}"
+                                    (click)="delete(element)">
+                                    <mat-icon>delete</mat-icon>
+                                </button>
+
+                            </td>
+                        </ng-container>
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns "></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns; "
+                            [ngClass]="{hovered: row.hovered, highlighted: isSelectedTable(elementCurrent , row.id)}"
+                            (mouseover)="row.hovered = true" (mouseout)="row.hovered = false"></tr>
+                    </table>
+                    <mat-paginator #matPaginator1 [pageSizeOptions]="[5,10, 20]" showFirstLastButtons></mat-paginator>
+                </div>
+            </div>
+
+            <div class="row mt-4">
+                <div *ngIf="f.idConvocatoria?.value" class="col-xs-12 col-md-12 form-group">
+                    <button mat-raised-button type="button" class="pull-right mr-1" color="primary" [disabled]="submit"
+                        (click)="generarReporte(f.idConvocatoria.value)" title="{{ 'btn.generarReporte' | translate }}">
+                        {{ 'btn.generarReporte' | translate }}
+                        <mat-icon>get_app</mat-icon>
+                    </button>
+                </div>
+            </div>
+        </form>
+    </mat-card-content>
+</mat-card>
+
+<!-- DIALOGO -->
+<ng-template #dialogInfo>
+    <h2 matDialogTitle>{{'ttl.detalleCitacion'| translate}}</h2>
+    <form #formV2="ngForm" [formGroup]="form2">
+
+
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-3 form-group">
+                <app-input-general formControlName="ciudadPrueba" [controll]="f2.ciudadPrueba"
+                    [label]="'lbl.ciudadPrueba'"></app-input-general>
+            </div>
+
+            <div class="col-xs-12 col-sm-12 col-md-5 form-group">
+                <app-input-general formControlName="lugarPrueba" [controll]="f2.lugarPrueba"
+                    [label]="'lbl.lugarPrueba'"></app-input-general>
+            </div>
+
+            <div class="col-xs-12 col-sm-12 col-md-2 form-group">
+                <app-input-general formControlName="fechaPrueba" [controll]="f2.fechaPrueba"
+                    [label]="'lbl.fechaPrueba'"></app-input-general>
+            </div>
+
+            <div class="col-xs-12 col-sm-12 col-md-2 form-group">
+                <app-input-general formControlName="horaPrueba" [controll]="f2.horaPrueba" [label]="'lbl.horaPrueba'">
+                </app-input-general>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 form-group">
+                <mat-form-field appearance="{{appearanceInput}}">
+                    <mat-label>{{'lbl.pruebas'|translate}}</mat-label>
+                    <mat-chip-list [disabled]="true">
+                        <mat-chip *ngFor="let prueba of lstPruebasByCitacion">{{prueba.tipoPrueba}}</mat-chip>
+                        <!-- <mat-chip *ngFor="let prueba of lstPruebasByCitacion" color="primary" selected>{{prueba.tipoPrueba}}</mat-chip> -->
+                    </mat-chip-list>
+                </mat-form-field>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-12 pull-right form-group">
+                <app-buttons-fotter [showBtnCancel]="true" (eventEmmitterCancel)="closeDialogInfo()"
+                    [labelBtnCancel]="'btn.cerrar'" [iconCancel]="'close'"></app-buttons-fotter>
+            </div>
+        </div>
+    </form>
+</ng-template>

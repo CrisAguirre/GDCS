@@ -1,0 +1,72 @@
+.example-viewport {
+    min-height: 150px;
+    width: 95% !important;
+    //border: 1px solid black;
+  }
+  
+  .example-item {
+    height: 50px;
+  }
+
+ .opcion:hover{
+  cursor: pointer;
+ }
+  
+  .titulo {
+    margin-bottom: 0px;
+    color: #000;
+    font-weight: 100;
+    font-size: 15px;
+  }
+  
+  .opciones {
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0px 5px 10px rgba(0,0,0,.16);
+    max-height: 400px;
+    overflow: auto;
+    z-index: 100;
+    width: 95%;
+    display: none;
+  }
+  
+  .opciones.active {
+    display: block;
+    position: absolute;
+    animation: fadeIn .3s forwards;
+  }
+  
+  @keyframes fadeIn {
+    from {
+      transform: translateY(-200px) scale(.5);
+    }
+    to {
+      transform: translateY(0) scale(1);
+    }
+  }
+  
+  .contenido-opcion {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    transition: .2s ease all;
+  }
+  
+  .opciones .contenido-opcion {
+    padding: 10px;
+  }
+  
+  .opciones .contenido-opcion:hover {
+    background: #213F8F;
+  }
+  
+  .opciones .contenido-opcion:hover .titulo,
+  .opciones .contenido-opcion:hover .descripcion {
+    color: #fff;
+  }
+  
+  @media screen and (max-width: 800px){
+    .selectbox {
+      width: 100%;
+    }
+  }

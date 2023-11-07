@@ -1,0 +1,9 @@
+{
+    "api": "http://40.125.76.188:8080/api",
+    "apiChatBot": "https://portalhumanous.azurewebsites.net/qnamaker/knowledgebases/afb0fa18-ffcb-4a90-996c-98c790e95e7a/generateAnswer",
+    "endPointToken": "b06fdebe-efc7-4e27-9e4c-51ea8ec831ed",
+    "showCaptcha": "false",
+    "siteKeyCaptcha": "6LfX9akZAAAAAGq1OQZJ1ewroMmZ3dB0v-kDZxBD",
+    "secretKeyCaptcha": "6LfX9akZAAAAAGH03uDGyN3tye9jQ9LWZH7cegZ9",
+    "soportes":"http://40.117.114.61:90/SoportesVirtuales/"
+}

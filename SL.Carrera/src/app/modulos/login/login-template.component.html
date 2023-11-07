@@ -1,0 +1,34 @@
+<div class="body-fake">
+
+  <!-- <mat-toolbar color="primary" class="app-header" style="height: 80px;"> -->
+  <mat-toolbar color="primary" class="app-header" style="height: 75px;">
+    <div class="row">
+      <img src="../../../assets/imagenes/logo1.png" width="45%" height="90">
+
+    </div>
+
+    <span class="nav-tool-items">
+      <a mat-button routerLink="/login" class="lnk-login" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">{{'lbl.ingresar'|translate}}</a>
+      <a mat-button routerLink="register" class="lnk-login" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">{{'lbl.registrarse'|translate}}</a>
+      <a mat-button routerLink="tutorial" class="lnk-login" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">{{'ttl.videoTutoriales'|translate}}</a>
+      <!-- <app-ayuda-select class="ayuda-select-class"></app-ayuda-select> -->
+      <app-traduction class="traduction-class" style="color: black;"></app-traduction>
+    </span>
+  </mat-toolbar>
+  <!-- <mat-toolbar  class="app-header" style="height: 30px; width: 100%; background-color: white;"> -->
+  <!-- <mat-toolbar  class="app-header" style="height: 55px; width: 45%; background-color: white;"> -->
+    <!-- <div class="row offset-1" style="text-align: center;">
+      <h3><b>{{'APP.nombre'|translate}}</b></h3>&nbsp;
+      <h4>{{'APP.nombre2'|translate}}</h4>
+    </div>
+  </mat-toolbar> -->
+
+  <!-- <div class="row h-100"> -->
+  <!-- <div class="col-lg-3 ml-auto mr-auto my-auto"> -->
+  <router-outlet></router-outlet>
+  <!-- </div> -->
+  <!-- </div> -->
+  <div class="clearfix"></div>
+  <app-footer></app-footer>
+  <div class="clearfix"></div>
+</div>
